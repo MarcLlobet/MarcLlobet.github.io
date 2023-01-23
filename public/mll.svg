@@ -1,0 +1,15 @@
+<svg 
+     xmlns="http://www.w3.org/2000/svg" 
+     viewBox="0 0 100 100"
+     width="50"
+     height="50"
+>
+ <path 
+       id="halfM" 
+       d="M50,70 L25,50 V80 H40 V100 H0 V0 L 50,40z"
+ />
+  <use 
+       href="#halfM" 
+       transform="translate(100 0), scale(-1, 1)" 
+  />
+</svg>

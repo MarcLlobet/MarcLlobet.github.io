@@ -1,0 +1,161 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Berlin"
+      },
+      "geometry": {
+        "coordinates": [
+          13.389258387326635,
+          52.51778249659972
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ramallah"
+      },
+      "geometry": {
+        "coordinates": [
+          35.19721641654874,
+          31.903398078091826
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Petra"
+      },
+      "geometry": {
+        "coordinates": [
+          35.39749265756035,
+          30.324007107765098
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Caire"
+      },
+      "geometry": {
+        "coordinates": [
+          31.238942980838658,
+          30.056428353560094
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Istanbul"
+      },
+      "geometry": {
+        "coordinates": [
+          28.970182306544956,
+          41.01653418004358
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Marrakesh"
+      },
+      "geometry": {
+        "coordinates": [
+          -7.971379689667117,
+          31.626926104409165
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ho Chi Minh"
+      },
+      "geometry": {
+        "coordinates": [
+          106.72906871947191,
+          10.798654277306326
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hong Kong"
+      },
+      "geometry": {
+        "coordinates": [
+          114.1686914522432,
+          22.29972922645102
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Filipines"
+      },
+      "geometry": {
+        "coordinates": [
+          120.985857134826,
+          14.61037049585839
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "India"
+      },
+      "geometry": {
+        "coordinates": [
+          77.2221279510614,
+          28.58990714819066
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mexico"
+      },
+      "geometry": {
+        "coordinates": [
+          -99.01042001218013,
+          19.52332384044206
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lima"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.01056320249467,
+          -11.947739200315155
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
