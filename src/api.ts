@@ -1,5 +1,5 @@
 import type { Endpoints } from "@octokit/types";
-import { GITHUB_USERNAME, githubApi } from "./githubApi";
+import { API_USERNAME, githubApi } from "./githubApi";
 
 const GET_README_ENDPOINT = 'GET /repos/{owner}/{repo}/readme';
 type ReadmeResponse = Endpoints[typeof GET_README_ENDPOINT]["response"];
@@ -16,7 +16,7 @@ export type Project = ReposResponse['data'][number] & {
   readme: Readme | null
 }
 
-const getGithubSocialPreview = (repositoryName: string) => `https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${repositoryName}`;
+const getGithubSocialPreview = (repositoryName: string) => `https://opengraph.githubassets.com/1/${API_USERNAME}/${repositoryName}`;
 
 const decodeBase64 = (base64: string) => {
   const binary = atob(base64.replace(/[\r\n]/g, ""));
@@ -29,7 +29,7 @@ const decodeBase64 = (base64: string) => {
 
 const fetchReadme = async (repositoryName: string) : Promise<Readme> => {
   const { data: readme }: ReadmeResponse = await githubApi.request<typeof GET_README_ENDPOINT>(GET_README_ENDPOINT, {
-    owner: GITHUB_USERNAME,
+    owner: API_USERNAME,
     repo: repositoryName,
   });
 
@@ -48,7 +48,7 @@ const fetchReadme = async (repositoryName: string) : Promise<Readme> => {
 export const fetchProjects = async (): Promise<Project[]> => {
   const { data: repos }: ReposResponse = await githubApi.request<typeof GET_REPOS_ENDPOINT>(GET_REPOS_ENDPOINT, {
     type: 'owner',
-    username: GITHUB_USERNAME,
+    username: API_USERNAME,
     visibility: 'public',
   });
   
