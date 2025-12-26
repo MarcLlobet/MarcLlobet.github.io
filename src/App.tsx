@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react'
 import { fetchProjects, type Project } from './api'
 
+const ProjectWapper = ({children}) => (
+  <div style={{
+    width: '60ch',
+    padding: '1rem',
+  }}>
+    {children}
+  </div>
+)
+
 function App() {
   const [projects, setProjects] = useState<Project[]>([])
 
@@ -10,26 +19,32 @@ function App() {
     })
   }, [])
 
-  return projects.map(project => (
+  return (
+    <ProjectWapper>
+    {projects.map(project => (
     <div key={project.id}>
       <h4>{project.name}</h4>
       <p>{project.description}</p>
-      <p>{project.language}</p>
-      {project.homepage && <p>
-        <a href={project.homepage} target='_blank' rel="noopener noreferrer">
-          {project.homepage}
-        </a>
-      </p>}
+      <img src={project.preview} alt={`Preview of ${project.name} repository`} style={{maxWidth: '100%'}} />
       <p>
+      {project.homepage && (<><span>
+          <a href={project.homepage} target='_blank' rel="noopener noreferrer">
+            Link
+          </a>
+        </span>&nbsp;</>)
+      }
+      <span>
         <a href={project.html_url} target='_blank' rel="noopener noreferrer">
-          github: {project.html_url}
+          Github
         </a>
+      </span>
+      &nbsp;
+      <span>{project.language}</span>
       </p>
-      {/* <div 
-        style={{whiteSpace: "pre-wrap"}} 
-        dangerouslySetInnerHTML={{ __html: project.readme?.decodedContent ?? ''}} /> */}
     </div>
-  ))
+  ))}
+  </ProjectWapper>
+  )
 }
 
 export default App
