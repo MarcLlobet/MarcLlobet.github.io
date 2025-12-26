@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { fetchProjects, type Project } from './api'
 
-const ProjectWapper = ({children}) => (
+const ProjectWapper = ({children} : {children: ReactNode}) => (
   <div style={{
     width: '60ch',
     padding: '1rem',
