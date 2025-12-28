@@ -1,5 +1,5 @@
 
-import React, { useRef, forwardRef, useImperativeHandle } from "react";
+import { useRef, forwardRef, useImperativeHandle } from "react";
 
 type MorphShapeProps = {
   size?: "small" | "big";
