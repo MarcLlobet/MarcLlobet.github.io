@@ -1,49 +1,110 @@
-import { useEffect, useState, type ReactNode } from 'react'
-import { fetchProjects, type Project } from './api'
+import { useEffect, useRef, useState } from 'react'
+import { fetchRepositories, type Repository } from './services'
+import { PageWrapper } from './components/PageWrapper'
+import styled, { keyframes } from 'styled-components'
+import { MorphShape } from './components/MorphShape';
 
-const ProjectWapper = ({children} : {children: ReactNode}) => (
-  <div style={{
-    width: '60ch',
-    padding: '1rem',
-  }}>
-    {children}
-  </div>
-)
+const toHeavyFontWeightAnimation = keyframes`
+  0% { font-weight: 300; }
+  100% { font-weight: 900; }
+`;
+
+const AnimationWrapper = styled.span`
+  animation-name: ${toHeavyFontWeightAnimation};
+  animation-duration: 2s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
+  display: inline-flex;
+`;
+
+const FirstNameWrapper = styled(AnimationWrapper)`
+  animation-direction: reverse;
+`;
+const SurnameWrapper = styled(AnimationWrapper)`
+  animation-direction: normal;
+`;
+
+const NameWrapper = styled.h1`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+`;
+
+const HeroWrapper = styled.hgroup`
+  display: flex;
+  flex-direction: column;
+  block-size: 80dvh;
+  inline-size: 80dvw;
+  padding-block-start: 5dvh;
+  padding-block-end: 5dvh;
+  justify-content: center;
+  z-index: 10;
+  position: absolute;
+  left: 10dvw;
+  right: 10dvw;
+  top: 10dvh;
+`;
+
+const CircularAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const CircularShape = styled.div`
+  color: var(--color-muted);
+  position: absolute;
+  top: 40dvh;
+  right: 15dvw;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 0;
+  animation: ${CircularAnimation} 5s linear infinite;
+  transform-origin: 35% 45%;
+`;
 
 function App() {
-  const [projects, setProjects] = useState<Project[]>([])
+  const [repositories, setRepositories] = useState<Repository[]>([])
+  const morphRef = useRef<{ 
+    morph: () => void; 
+    reset: () => void;
+  }>(null);
 
   useEffect(() => {
-    fetchProjects().then(fetchedProjects => {
-      setProjects(fetchedProjects)
+    fetchRepositories()
+    .then((fetchedRepositories) => {
+      setRepositories(fetchedRepositories)
     })
   }, [])
 
+
+
   return (
-    <ProjectWapper>
-    {projects.map(project => (
-    <div key={project.id}>
-      <h4>{project.name}</h4>
-      <p>{project.description}</p>
-      <img src={project.preview} alt={`Preview of ${project.name} repository`} style={{maxWidth: '100%'}} />
-      <p>
-      {project.homepage && (<><span>
-          <a href={project.homepage} target='_blank' rel="noopener noreferrer">
-            Link
-          </a>
-        </span>&nbsp;</>)
-      }
-      <span>
-        <a href={project.html_url} target='_blank' rel="noopener noreferrer">
-          Github
-        </a>
-      </span>
-      &nbsp;
-      <span>{project.language}</span>
-      </p>
-    </div>
-  ))}
-  </ProjectWapper>
+    <>
+      <HeroWrapper>
+        <NameWrapper>
+          <FirstNameWrapper>
+            Marc
+          </FirstNameWrapper>
+          <SurnameWrapper>
+            Ll<span style={{color: 'var(--color-accent)'}}>o</span>bet
+          </SurnameWrapper>
+        </NameWrapper>
+      </HeroWrapper>
+      <CircularShape>
+        <MorphShape 
+          ref={morphRef} 
+          size="big" 
+          infiniteAnimation
+          stroke="var(--color-accent)"
+        />
+      </CircularShape>
+      <PageWrapper repositories={repositories}/>
+    </>
   )
 }
 

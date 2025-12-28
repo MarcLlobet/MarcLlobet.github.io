@@ -1,73 +1,81 @@
-# React + TypeScript + Vite
+Typography System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🎯 Intent & Motivation
 
-Currently, two official plugins are available:
+The typographic system is intentionally minimal and role-driven.
+Rather than relying on a single versatile typeface, the system separates expression from information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Display typography is used to introduce each project as a strong visual statement, while a neutral text typeface ensures clarity and continuity. This contrast allows projects to “sell themselves” visually without compromising readability or structure.
 
-## React Compiler
+⸻
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔠 Stardom — Titles
 
-## Expanding the ESLint configuration
+Role: Expression, identity, visual impact
+Used for: Project titles only
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Why Stardom
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Stardom is a display serif designed for extreme large sizes. Its exaggerated proportions and sharp triangular serifs give each title a sculptural, almost graphic presence.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Instead of being treated as a reading typeface, Stardom is used deliberately as a visual element, framing each project as a bold, self-contained piece. Its limited scope reinforces intentionality and avoids overuse.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Key reasons for choosing it:
+	•	Strong contemporary character
+	•	Distinct triangular serif forms
+	•	Designed specifically for large-scale usage
+	•	Helps differentiate projects visually
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Use
+Size
+Weight
+Project title (hero)
+96–140 px
+Regular
+Project title (compact layouts)
+64–80 px
+Regular
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+
+🔡 Satoshi — Descriptions
+
+Role: Clarity, readability, structure
+Used for: Project descriptions
+
+Why Satoshi
+
+Satoshi is a modern sans-serif with balanced proportions and a subtle human tone. It provides a neutral foundation that complements the expressive nature of Stardom without competing for attention.
+
+Its legibility at small and medium sizes makes it ideal for short descriptive texts, ensuring that project summaries remain clear and accessible.
+
+Key reasons for choosing it:
+	•	Excellent screen readability
+	•	Neutral but not cold
+	•	Pairs naturally with a strong display serif
+	•	Suitable for modern web interfaces
+
+Use
+Size
+Weight
+Project description
+18–20 px
+Regular (400)
+Secondary description / metadata
+14–16 px
+Medium (500)
+
+
+🧱 System Summary
+This pairing creates a clear visual hierarchy:
+	•	Stardom establishes identity and impact
+	•	Satoshi supports understanding and flow
+
+🧠 Closing Rationale
+
+By limiting each typeface to a specific role, the system remains focused and intentional. Stardom brings character and presence to each project, while Satoshi ensures that supporting information is easy to read and visually calm.
+
+The result is a portfolio that feels confident, editorial, and purpose-driven—where typography supports the content rather than overwhelming it.
+
+🧑‍⚖️ License-wise
+The typographic choices are fully open-source compatible. Both typefaces are released under the SIL Open Font License, ensuring they can be freely used, embedded, and distributed alongside the project without licensing constraints.
