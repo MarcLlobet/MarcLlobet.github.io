@@ -125,7 +125,7 @@ export const PageWrapper = ({ repositories }: { repositories: Repository[] }) =>
         </AsideLeftWrapper>
       </AsideWrapper>
       <ColumnWrapper>
-        <NavWrapper />
+        <NavWrapper repositories={repositories} />
         <MainWrapper>
           {repositories.map(repository => 
             <SectionWrapper 

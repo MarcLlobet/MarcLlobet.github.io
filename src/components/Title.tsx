@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledTitle = styled.h3`
   grid-area: title;
+  overflow-wrap: break-word;
 `;
 
 const highlightLetters = ['o', 'g', 'd', 'e']

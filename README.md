@@ -25,9 +25,11 @@ This project is a modern, performant, and visually engaging personal portfolio a
 
 - Project and repository data is fetched from my github repositories using the GitHub API. This ensures the portfolio always displays up-to-date information about public projects, languages, and demos.
 - I used a .github/preview.png naming convention for images of each project.
+- About section displays github user bio
 
 ## TODOs
 - Improve CI. Add a workflow_dispatch option
+- See how to trigger deploys from other githu pages updates
 - Add precommit hooks with husky
 - Update the design system with components and documention and deploy it
 - Add user and e2e testing
@@ -35,6 +37,12 @@ This project is a modern, performant, and visually engaging personal portfolio a
 - Review accessibility
 - Rewrite components to avoid rerenders and improve composing
 - Generate links and previews for missing projects
+- Rethink how "topics" can be used in github projects (plus study other API options)
+- Wrap state in a higher component manager
+- Suppport light/dark mode (and other themes)
+- Add contact details
+- Insert a 'scroll to top' feature
+- Improve SEO metrics with lighthouse adn speedInsights
 
 ---
 

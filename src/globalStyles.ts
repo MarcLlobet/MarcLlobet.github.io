@@ -52,6 +52,12 @@ html {
   color: var(--color-text);
 }
 
+@media (max-width: 600px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 a {
   font-weight: 500;
   color: var(--color-muted);

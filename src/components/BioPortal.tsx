@@ -1,6 +1,8 @@
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { StyledNavWrapper } from "./NavWrapper";
+import type { Repository } from "../services";
+import { getSentenceList } from "../utils/getSentenceList";
 
 const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
   padding-inline-start: 10dvw;
@@ -33,22 +35,31 @@ const CloseButton = styled.button<{ $showBio: boolean }>`
   color: var(--color-accent);
 `;
 
-const BigParagraph = styled.div`
-  font-size: 3rem;
-  line-height: 3.5rem;
-  font-weight: 900;
-  width: 20ch;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  padding-block-end: 10dvh;
-`;
+const getAllLanguages = (repositories: Repository[]) => {
+  const valueByLanguages = repositories.reduce((prev, repo) => ({
+    ...prev,
+    ...repo.languages.reduce((langPrev, lang) => ({
+      ...langPrev,
+      [lang.name]: (prev[lang.name] ?? 0) + 1,
+    }), {} as Record<string, number>),
+    [repo.primaryLanguage.name]: (prev[repo.primaryLanguage.name] ?? 0) + 3,
+  }), {} as Record<Repository['name'], number>);
 
-const BioPortal = forwardRef<HTMLDivElement, { bio: string | null, showBio: boolean, onClose: () => void }>(
-  ({ bio, showBio, onClose }, ref) => {
-  const handleClick = () => {
-    onClose();
-  };
+  const sortedLanguages = Object.entries(valueByLanguages)
+    .sort(([,a], [,b]) => b - a);
+  return sortedLanguages.map(([language]) => language);
+}
+
+const BioPortal = forwardRef<HTMLDivElement, { bio: string | null, showBio: boolean, onClose: () => void, repositories: Repository[] }>(
+  ({ bio, showBio, onClose, repositories }, ref) => {
+    const technologiesSentence = useMemo(() => {
+      const allLanguages = getAllLanguages(repositories);
+      return getSentenceList(allLanguages)
+    }, [repositories]);
+    
+    const handleClick = () => {
+      onClose();
+    };
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -66,7 +77,6 @@ const BioPortal = forwardRef<HTMLDivElement, { bio: string | null, showBio: bool
       document.removeEventListener('keydown', handleEscape);
     };
   }, [onClose, showBio]);
-
 
   return (
     <BioPortalWrapper $showBio={showBio} ref={ref}>
@@ -91,9 +101,8 @@ const BioPortal = forwardRef<HTMLDivElement, { bio: string | null, showBio: bool
           </svg>
         </CloseButton>
       </StyledNavWrapper>
-      <BigParagraph>
-        <p>{bio}</p>
-      </BigParagraph>
+      <p>{bio}</p>
+      <p>The list of technologies I used to build my projects, from more used to less used, is the following: {technologiesSentence}.</p>
     </BioPortalWrapper>
   );
 });

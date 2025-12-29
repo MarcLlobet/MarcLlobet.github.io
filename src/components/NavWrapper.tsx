@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { fetchBio } from "../services";
+import { fetchBio, type Repository } from "../services";
 import { useState, useRef, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 
@@ -26,11 +26,12 @@ const Button = styled.button`
   appearance: none;
   font-family: inherit;
   cursor: pointer;
+  font-weight: 500;
 `;
 
 const BioPortal = lazy(() => import("./BioPortal"));
 
-export const NavWrapper = () => {
+export const NavWrapper = ({ repositories }: { repositories: Repository[] }) => {
   const [bio, setBio] = useState<string | null>(null);
   const [showBio, setShowBio] = useState<boolean>(false);
   const portalRef = useRef<HTMLDivElement>(null);
@@ -56,7 +57,8 @@ export const NavWrapper = () => {
               ref={portalRef}
               bio={bio}
               showBio={showBio}
-              onClose={() => setShowBio(false)} 
+              onClose={() => setShowBio(false)}
+              repositories={repositories} 
             />
           </Suspense>,
           document.body
