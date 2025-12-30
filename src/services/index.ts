@@ -29,13 +29,13 @@ export type Repository = {
   languages: { name: string; color: string }[];
   topics: string[];
   preview: string;
-}
+};
 
 const getPreview = (repo: RepositoryGraphQL): string => {
   return `https://raw.githubusercontent.com/${repo.owner.login}/${repo.name}/${repo.defaultBranchRef.name}/.github/preview.png`;
 };
 
-type FetchProjectsResponse = GraphQlQueryResponseData & {
+export type FetchProjectsResponse = GraphQlQueryResponseData & {
   user: {
     repositories: {
       nodes: RepositoryGraphQL[];
@@ -43,8 +43,8 @@ type FetchProjectsResponse = GraphQlQueryResponseData & {
   };
 };
 
-  const query = `
-    query($login: String!) {
+const query = `
+    query GetGithubRepositories ($login: String!) {
       user(login: $login) {
         repositories(first: 100, ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false, orderBy: {field: CREATED_AT, direction: DESC}) {
           nodes {
@@ -73,35 +73,33 @@ type FetchProjectsResponse = GraphQlQueryResponseData & {
     }
   `;
 export const fetchRepositories = async (): Promise<Repository[]> => {
-  const data = await githubApi<FetchProjectsResponse>(query, { 
+  const data = await githubApi<FetchProjectsResponse>(query, {
     login: API_USERNAME,
   });
   const repos = data.user.repositories.nodes;
   return repos
-    .filter(
-      repo => repo.repositoryTopics?.nodes?.some(
-        node => node.topic.name === 'demo'
-      )
+    .filter((repo) =>
+      repo.repositoryTopics?.nodes?.some((node) => node.topic.name === "demo"),
     )
-    .map((repo: RepositoryGraphQL): Repository => ({
-      id: repo.id,
-      name: repo.name,
-      isArchived: repo.isArchived,
-      owner: repo.owner,
-      defaultBranchRef: repo.defaultBranchRef,
-      homepageUrl: repo.homepageUrl,
-      url: repo.url,
-      description: repo.description,
-      primaryLanguage: repo.primaryLanguage,
-      languages: repo.languages?.nodes ?? [],
-      topics: repo.repositoryTopics?.nodes?.map((n) => n.topic.name) ?? [],
-      preview: getPreview(repo),
-    }));
+    .map(
+      (repo: RepositoryGraphQL): Repository => ({
+        id: repo.id,
+        name: repo.name,
+        isArchived: repo.isArchived,
+        owner: repo.owner,
+        defaultBranchRef: repo.defaultBranchRef,
+        homepageUrl: repo.homepageUrl,
+        url: repo.url,
+        description: repo.description,
+        primaryLanguage: repo.primaryLanguage,
+        languages: repo.languages?.nodes ?? [],
+        topics: repo.repositoryTopics?.nodes?.map((n) => n.topic.name) ?? [],
+        preview: getPreview(repo),
+      }),
+    );
 };
 
-
-
-type FetchBioResponse = GraphQlQueryResponseData & {
+export type FetchBioResponse = GraphQlQueryResponseData & {
   user: {
     bio: string;
   };
@@ -109,17 +107,19 @@ type FetchBioResponse = GraphQlQueryResponseData & {
 
 export const fetchBio = async (): Promise<string> => {
   const query = `
-    query($login: String!) {
+    query GetGithubUserData ($login: String!) {
       user(login: $login) {
         bio
       }
     }
   `;
-  const data = await githubApi<FetchBioResponse>(query, { login: API_USERNAME });
-  return data.user.bio ?? '';
+  const data = await githubApi<FetchBioResponse>(query, {
+    login: API_USERNAME,
+  });
+  return data.user.bio ?? "";
 };
 
 export const fetchPens = async () => {
   const pens = await codepenApi.getPens();
   return pens;
-}
+};

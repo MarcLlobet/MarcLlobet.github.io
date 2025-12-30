@@ -4,29 +4,34 @@ const StyledTitle = styled.h3`
   word-wrap: break-word;
   word-break: break-word;
   inline-size: 100%;
-  padding-block-end: 1rem;
+  padding-block-end: 3rem;
+  font-size: calc(1rem * var(--golden-ratio) * 3);
+
+  @media (max-width: 900px) {
+    padding-block-end: 1rem;
+    font-size: calc(1rem * var(--golden-ratio) * 2);
+  }
 `;
 
-const highlightLetters = ['o', 'g', 'd', 'e']
+const highlightLetters = ["o", "g", "d", "e"];
 
 const getStylizedTitle = (title: string) => {
-  const letters = title.replaceAll('-', ' ').split('');
+  const letters = title.replaceAll("-", " ").split("");
 
-  bigIteration: for(let l = 0; l < highlightLetters.length; l++) {
-    for(let i = 0; i < letters.length; i++) {
+  bigIteration: for (let l = 0; l < highlightLetters.length; l++) {
+    for (let i = 0; i < letters.length; i++) {
       if (letters[i] === highlightLetters[l]) {
-        letters[i] = `<span style="color: var(--color-accent)">${letters[i]}</span>`;
+        letters[i] =
+          `<span style="color: var(--color-accent)">${letters[i]}</span>`;
         break bigIteration;
       }
     }
   }
 
-  return letters.join('');
+  return letters.join("");
 };
 
-export const Title = ({title}: {title: string}) => {
+export const Title = ({ title }: { title: string }) => {
   const stylizedTitle = getStylizedTitle(title);
-  return (
-    <StyledTitle dangerouslySetInnerHTML={{ __html: stylizedTitle }} />
-  );
-}
+  return <StyledTitle dangerouslySetInnerHTML={{ __html: stylizedTitle }} />;
+};

@@ -1,49 +1,52 @@
 import { useEffect, useMemo, useRef } from "react";
-import { MorphShape } from "./MorphShape"
+import { MorphShape } from "./MorphShape";
 import styled from "styled-components";
 
 const StyledSectionSelector = styled.a<{ $isSelected: boolean }>`
   display: inline-flex;
 
-  color: ${props => props.$isSelected 
-    ? 'var(--color-accent)' 
-    : 'var(--color-muted)'
-  };
+  color: ${(props) =>
+    props.$isSelected ? "var(--color-accent)" : "var(--color-muted)"};
 
   transition: color 150ms ease-in-out;
- 
+
   svg {
     color: currentColor;
   }
 `;
 
 export const SectionSelector = ({
-  repository, 
+  repository,
   currentSection,
 }: {
-  repository: { id: string; name: string },
-  currentSection: string | null,
+  repository: { id: string; name: string };
+  currentSection: string | null;
 }) => {
-  const morphRef = useRef<{ 
-    morph: () => void; 
+  const morphRef = useRef<{
+    morph: () => void;
     reset: () => void;
   }>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
     event.preventDefault();
-    const targetId = event.currentTarget.getAttribute('href')?.substring(1);
+    const targetId = event.currentTarget.getAttribute("href")?.substring(1);
     if (targetId) {
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
         window.scrollTo({
           top: targetElement.offsetTop,
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       }
     }
   };
 
-  const isSelected = useMemo(() => repository.name === currentSection, [repository.name, currentSection]);
+  const isSelected = useMemo(
+    () => repository.name === currentSection,
+    [repository.name, currentSection],
+  );
 
   useEffect(() => {
     if (isSelected) {
@@ -52,6 +55,17 @@ export const SectionSelector = ({
       morphRef.current?.reset();
     }
   }, [isSelected]);
+
+  useEffect(() => {
+    const currentHash = window.location.hash.slice(1);
+
+    if (!!currentSection && currentHash !== currentSection) {
+      history.replaceState(history.state, "", `#${currentSection}`);
+    } else if (!currentSection && currentHash.length) {
+      const urlWithNoHash = window.location.origin + window.location.pathname;
+      history.replaceState(history.state, "", urlWithNoHash);
+    }
+  }, [currentSection]);
 
   return (
     <StyledSectionSelector
@@ -64,5 +78,5 @@ export const SectionSelector = ({
     >
       <MorphShape ref={morphRef} size="small" />
     </StyledSectionSelector>
-  )
-}
+  );
+};

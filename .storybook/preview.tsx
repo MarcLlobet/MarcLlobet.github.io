@@ -1,6 +1,6 @@
-import type { Preview } from '@storybook/react-vite';
-import React from 'react';
-import { GlobalStyles } from '../src/globalStyles';
+import type { Preview } from "@storybook/react-vite";
+import React from "react";
+import { GlobalStyles } from "../src/globalStyles";
 
 const preview: Preview = {
   parameters: {
@@ -11,7 +11,7 @@ const preview: Preview = {
       },
     },
     a11y: {
-      test: 'todo',
+      test: "todo",
     },
   },
   decorators: [

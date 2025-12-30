@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { fetchBio, type Repository } from "../services";
-import { useState, useRef, lazy, Suspense } from "react";
+import { fetchBio } from "../services";
+import React, { useState, Suspense } from "react";
 import { createPortal } from "react-dom";
 
 export const StyledNavWrapper = styled.nav`
@@ -31,46 +31,63 @@ const Button = styled.button`
   }
 `;
 
-const BioPortal = lazy(() => import("./BioPortal"));
-
-export const NavWrapper = ({ repositories }: { repositories: Repository[] }) => {
-  const [bio, setBio] = useState<string | null>(null);
-  const [showBio, setShowBio] = useState<boolean>(false);
-  const portalRef = useRef<HTMLDivElement>(null);
+export const NavWrapper = () => {
+  const [showBio, setShowBio] = useState(false);
+  const [ComponentWithBio, createComponentWithBio] = useState<
+    | null
+    | (({
+        showBio,
+        onClose,
+      }: {
+        showBio: boolean;
+        onClose: () => void;
+      }) => React.ReactNode)
+  >(null);
 
   const handleMouseEnter = () => {
-    if (!bio) {
-      fetchBio().then((bio) => {
-        setBio(bio);
-      });
+    if (!ComponentWithBio) {
+      Promise.all([fetchBio(), import("./BioPortal")]).then(
+        ([fetchedBio, BioPortalModule]) =>
+          createComponentWithBio(
+            () =>
+              ({
+                showBio,
+                onClose,
+              }: {
+                showBio: boolean;
+                onClose: () => void;
+              }) =>
+                createPortal(
+                  <BioPortalModule.default
+                    bio={fetchedBio}
+                    showBio={showBio}
+                    onClose={onClose}
+                  />,
+                  document.body,
+                ),
+          ),
+      );
     }
   };
 
-  const handleClick = () => {
-    setShowBio(true);
-  };
+  const handleClick = () => setShowBio(true);
 
   const handleTheme = () => {
-    document.documentElement.classList.toggle('light-theme');
+    document.documentElement.classList.toggle("light-theme");
   };
 
   return (
     <StyledNavWrapper onMouseEnter={handleMouseEnter}>
       <Button onClick={handleTheme}>Theme</Button>
       <Button onClick={handleClick}>About</Button>
-      {createPortal(
-          <Suspense fallback={null}>
-            <BioPortal
-              ref={portalRef}
-              bio={bio}
-              showBio={showBio}
-              onClose={() => setShowBio(false)}
-              repositories={repositories} 
-            />
-          </Suspense>,
-          document.body
-        )
-      }
+      {ComponentWithBio && (
+        <Suspense fallback={null}>
+          <ComponentWithBio
+            showBio={showBio}
+            onClose={() => setShowBio(false)}
+          />
+        </Suspense>
+      )}
     </StyledNavWrapper>
   );
 };

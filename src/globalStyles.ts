@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle } from "styled-components";
 import { Stardom } from "./fonts/stardom/stardom";
 import { Satoshi } from "./fonts/satoshi/satoshi";
 
@@ -53,7 +53,7 @@ html {
 
 @media (max-width: 600px) {
   html {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -142,4 +142,4 @@ export const GlobalStyles = createGlobalStyle`
   ${Satoshi}
   ${Stardom}
   ${GenericStyles}
-`
+`;

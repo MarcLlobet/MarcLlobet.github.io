@@ -3,6 +3,7 @@ import type { Repository } from "../services";
 import { SectionWrapper } from "./SectionWrapper";
 import { useMemo } from "react";
 import { useCurrentSection } from "../utils/useCurrentSection";
+import { useStateContext } from "../state";
 
 const toVisible = keyframes`
   0% { opacity: 0; }
@@ -15,17 +16,20 @@ const ScreenWrapper = styled.div`
   display: flex;
   flex-direction: row;
   top: 0;
-`
+  inline-size: 100%;
+`;
 
 const ColumnWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`
+  inline-size: 100%;
+`;
 
 const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
-`
+  inline-size: 100%;
+`;
 
 const Footer = styled.footer`
   padding-block-end: var(--spacing);
@@ -48,7 +52,7 @@ const ScrollToTopButton = styled.button<{ $shouldShow: boolean }>`
   font-weight: 500;
   transition: opacity 300ms ease-in;
   cursor: pointer;
-  pointer-events: ${(props) => (props.$shouldShow ? 'auto' : 'none')};
+  pointer-events: ${(props) => (props.$shouldShow ? "auto" : "none")};
   opacity: ${(props) => (props.$shouldShow ? 1 : 0)};
   color: var(--color-muted);
   &:hover {
@@ -60,52 +64,56 @@ const ScrollToTopButton = styled.button<{ $shouldShow: boolean }>`
   }
 `;
 
+export const PageWrapper = () => {
+  const { repositories } = useStateContext();
 
-export const PageWrapper = ({ repositories }: { repositories: Repository[] }) => {
   const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const isLastSectionsByName = useMemo(() =>
-    repositories.reduce((prev, repository, repositoryIndex) => ({
-      ...prev,
-      [repository.name]: repositoryIndex >= repositories.length / 2
-    }), {} as Record<Repository['name'], boolean>)
-  , [repositories]);
+  const isLastSectionsByName = useMemo(
+    () =>
+      repositories.reduce(
+        (prev, repository, repositoryIndex) => ({
+          ...prev,
+          [repository.name]: repositoryIndex >= repositories.length / 2,
+        }),
+        {} as Record<Repository["name"], boolean>,
+      ),
+    [repositories],
+  );
 
   const currentSection = useCurrentSection(repositories);
 
-  const isLastSections = isLastSectionsByName[currentSection as string] ?? false;
+  const isLastSections =
+    isLastSectionsByName[currentSection as string] ?? false;
 
   return (
     <ScreenWrapper>
       <ColumnWrapper>
         <MainWrapper>
           {repositories.map((repository) => (
-            <SectionWrapper 
-              key={repository.id}
-              repository={repository}
-            />
+            <SectionWrapper key={repository.id} repository={repository} />
           ))}
           <Footer>
-            <ScrollToTopButton 
+            <ScrollToTopButton
               onClick={handleScrollTop}
               $shouldShow={isLastSections}
               aria-label="Scroll to top"
             >
-              <svg 
+              <svg
                 stroke="currentColor"
                 strokeWidth={4}
-                fill="none" 
+                fill="none"
                 viewBox="0 0 100 100"
               >
                 <desc>Scroll to top</desc>
-                <path d="M50 2L2 98h98L50 2z"/>
+                <path d="M50 2L2 98h98L50 2z" />
               </svg>
             </ScrollToTopButton>
           </Footer>
         </MainWrapper>
       </ColumnWrapper>
     </ScreenWrapper>
-  )
-}
+  );
+};

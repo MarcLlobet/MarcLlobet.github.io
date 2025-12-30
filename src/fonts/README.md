@@ -21,11 +21,10 @@ Stardom is a display serif designed for extreme large sizes. Its exaggerated pro
 Instead of being treated as a reading typeface, Stardom is used deliberately as a visual element, framing each project as a bold, self-contained piece. Its limited scope reinforces intentionality and avoids overuse.
 
 Key reasons for choosing it:
-	•	Strong contemporary character
-	•	Distinct triangular serif forms
-	•	Designed specifically for large-scale usage
-	•	Helps differentiate projects visually
-
+• Strong contemporary character
+• Distinct triangular serif forms
+• Designed specifically for large-scale usage
+• Helps differentiate projects visually
 
 🔡 Satoshi — Descriptions
 
@@ -39,16 +38,15 @@ Satoshi is a modern sans-serif with balanced proportions and a subtle human tone
 Its legibility at small and medium sizes makes it ideal for short descriptive texts, ensuring that project summaries remain clear and accessible.
 
 Key reasons for choosing it:
-	•	Excellent screen readability
-	•	Neutral but not cold
-	•	Pairs naturally with a strong display serif
-	•	Suitable for modern web interfaces
-
+• Excellent screen readability
+• Neutral but not cold
+• Pairs naturally with a strong display serif
+• Suitable for modern web interfaces
 
 🧱 System Summary
 This pairing creates a clear visual hierarchy:
-	•	Stardom establishes identity and impact
-	•	Satoshi supports understanding and flow
+• Stardom establishes identity and impact
+• Satoshi supports understanding and flow
 
 🧠 Closing Rationale
 

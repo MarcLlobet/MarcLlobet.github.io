@@ -1,8 +1,8 @@
-import { writeFileSync } from 'fs';
-import 'dotenv/config';
+import { writeFileSync } from "fs";
+import "dotenv/config";
 
-import { chromium } from 'playwright-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { chromium } from "playwright-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 chromium.use(StealthPlugin());
 
@@ -13,30 +13,30 @@ const browserContext = {
     width: 1280,
     height: 720,
   },
-  locale: 'en-US',
+  locale: "en-US",
   extraHTTPHeaders: {
-    'accept-language': 'en-US,en;q=0.9',
-    'referer': 'https://codepen.io/',
+    "accept-language": "en-US,en;q=0.9",
+    referer: "https://codepen.io/",
   },
   userAgent: [
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 
-    'AppleWebKit/537.36 (KHTML, like Gecko)', 
-    'Chrome/120.0.0.0 Safari/537.36'
-  ].join(' ')
-}
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "AppleWebKit/537.36 (KHTML, like Gecko)",
+    "Chrome/120.0.0.0 Safari/537.36",
+  ].join(" "),
+};
 
 type PenDataResponse = {
   href: string | null;
   name: string | null;
   description: string | null;
   slug: string | null;
-}
+};
 
 type FilteredPenData = {
   href: string;
   name: string;
   slug: string;
-}
+};
 
 const baseUrl = `https://codepen.io/${API_USERNAME}`;
 
@@ -59,7 +59,7 @@ const getPenData = ({
   };
 
   return penData;
-}
+};
 
 const getCodepenPens = async (): Promise<PenDataResponse[]> => {
   const browser = await chromium.launch();
@@ -68,74 +68,87 @@ const getCodepenPens = async (): Promise<PenDataResponse[]> => {
   const pensPage = await context.newPage();
   await pensPage.goto(
     `${baseUrl}/pens/tags/?selected_tag=demo&grid_type=list`,
-    { waitUntil: 'load' }
+    { waitUntil: "load" },
   );
-  
-  await pensPage.waitForSelector('table');
 
-  const pensAttributes = await pensPage.locator('th.title a').evaluateAll(anchors =>   
-    anchors.map(anchor => ({
-      href: anchor.getAttribute('href'),
-      name: anchor.textContent || null,
-    }) as FilteredPenData)
-  );
+  await pensPage.waitForSelector("table");
+
+  const pensAttributes = await pensPage
+    .locator("th.title a")
+    .evaluateAll((anchors) =>
+      anchors.map(
+        (anchor) =>
+          ({
+            href: anchor.getAttribute("href"),
+            name: anchor.textContent || null,
+          }) as FilteredPenData,
+      ),
+    );
 
   await pensPage.close();
 
-  const pens = pensAttributes.map(pen => ({
+  const pens = pensAttributes.map((pen) => ({
     ...pen,
     slug: pen.href?.slice(`${baseUrl}/pens`.length) ?? null,
-  }))
-
-  const descriptions = await Promise.all(pens.map(async (pen) => {
-    const descriptionPage = await context.newPage();
-    const descriptionUrl = `${baseUrl}/details/${pen.slug}`;
-    
-    await descriptionPage.goto(descriptionUrl);
-
-    const descriptionElement = await descriptionPage.waitForSelector(":not(.about-user-info, #resources-box) > p", {
-      state: 'attached'
-    });
-
-    const descriptionText = await descriptionElement.evaluate((el) => el.textContent);
-
-    await descriptionPage.close();
-
-    return descriptionText;
   }));
+
+  const descriptions = await Promise.all(
+    pens.map(async (pen) => {
+      const descriptionPage = await context.newPage();
+      const descriptionUrl = `${baseUrl}/details/${pen.slug}`;
+
+      await descriptionPage.goto(descriptionUrl);
+
+      const descriptionElement = await descriptionPage.waitForSelector(
+        ":not(.about-user-info, #resources-box) > p",
+        {
+          state: "attached",
+        },
+      );
+
+      const descriptionText = await descriptionElement.evaluate(
+        (el) => el.textContent,
+      );
+
+      await descriptionPage.close();
+
+      return descriptionText;
+    }),
+  );
 
   await browser.close();
 
-  const filteredPens = pens
-    .filter((pen): pen is FilteredPenData => !!pen.href && !!pen.name)
+  const filteredPens = pens.filter(
+    (pen): pen is FilteredPenData => !!pen.href && !!pen.name,
+  );
 
-  const penData: PenDataResponse[] = filteredPens.map((pen, index) => 
+  const penData: PenDataResponse[] = filteredPens.map((pen, index) =>
     getPenData({
       ...pen,
       description: descriptions[index],
-    })
+    }),
   );
 
   return penData;
 };
 
 export type Pen = {
-  name: string
-  href: string
-  description: string
-  slug: string
-  link: string
+  name: string;
+  href: string;
+  description: string;
+  slug: string;
+  link: string;
   preview: {
-    large: string
-    small: string
-  }
-}
+    large: string;
+    small: string;
+  };
+};
 
 getCodepenPens().then((pens) => {
   writeFileSync(
-    'public/codepen-pens.json', 
-    JSON.stringify(pens, null, 2), 
-    null
+    "public/codepen-pens.json",
+    JSON.stringify(pens, null, 2),
+    null,
   );
-  console.log('✓ codepen-pens.json generated.');
-})
+  console.log("✓ codepen-pens.json generated.");
+});

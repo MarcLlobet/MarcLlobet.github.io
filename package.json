@@ -9,12 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest --watchAll=false"
   },
   "dependencies": {
     "@octokit/graphql": "^9.0.3",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.3",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
@@ -26,6 +26,9 @@
     "@storybook/addon-onboarding": "^10.1.10",
     "@storybook/addon-vitest": "^10.1.10",
     "@storybook/react-vite": "^10.1.10",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
@@ -38,10 +41,16 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "eslint-plugin-storybook": "^10.1.10",
     "globals": "^16.5.0",
+    "html-validate": "^10.5.0",
+    "jest-snapshot": "^30.2.0",
+    "jsdom": "^27.4.0",
+    "msw": "^2.12.7",
     "playwright": "^1.57.0",
     "playwright-extra": "^4.3.6",
     "playwright-extra-plugin-stealth": "^0.0.1",
+    "prettier": "^3.7.4",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "react": "^19.2.3",
     "storybook": "^10.1.10",
     "tsx": "^4.21.0",
     "typescript": "~5.9.3",

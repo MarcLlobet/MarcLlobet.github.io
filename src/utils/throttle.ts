@@ -8,11 +8,14 @@ export const throttle = <T extends () => void>(fn: T, wait: number): T => {
       lastTime = now;
       fn();
     } else if (!timeout) {
-      timeout = setTimeout(() => {
-        lastTime = Date.now();
-        timeout = null;
-        fn();
-      }, wait - (now - lastTime));
+      timeout = setTimeout(
+        () => {
+          lastTime = Date.now();
+          timeout = null;
+          fn();
+        },
+        wait - (now - lastTime),
+      );
     }
   }) as T;
-}
+};
