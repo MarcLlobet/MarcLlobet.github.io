@@ -1,4 +1,4 @@
-import { writeFile } from 'fs';
+import { writeFileSync } from 'fs';
 import 'dotenv/config';
 
 import { chromium } from 'playwright-extra';
@@ -62,7 +62,9 @@ const getPenData = ({
 }
 
 const getCodepenPens = async (): Promise<PenDataResponse[]> => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ 
+    ignoreDefaultArgs: ['--no-sandbox'] 
+  });
   const context = await browser.newContext(browserContext);
 
   const pensPage = await context.newPage();
@@ -132,11 +134,10 @@ export type Pen = {
 }
 
 getCodepenPens().then((pens) => {
-  writeFile(
+  writeFileSync(
     'public/codepen-pens.json', 
     JSON.stringify(pens, null, 2), 
-    null, 
-    () => {
-      console.log('✓ codepen-pens.json generated.');
-    });
+    null
+  );
+  console.log('✓ codepen-pens.json generated.');
 })
