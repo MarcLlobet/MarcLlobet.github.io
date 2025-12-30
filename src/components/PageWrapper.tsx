@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { throttle } from "../utils/throttle";
 import type { Repository } from "../services";
 import { SectionWrapper } from "./SectionWrapper";
 
@@ -29,7 +27,6 @@ const MainWrapper = styled.main`
 
 
 export const PageWrapper = ({ repositories }: { repositories: Repository[] }) => {
-
   return (
     <>
       <ScreenWrapper>
