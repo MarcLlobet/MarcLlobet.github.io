@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { fetchPens, fetchRepositories } from "../services";
 import { stateContext, type State } from "./context";
 

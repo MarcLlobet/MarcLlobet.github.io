@@ -29,6 +29,7 @@ Here's more details about [typography decisions](./src/fonts/README.md) and the 
 It has support for both light and dark (default) themes.
 
 ## TODOs
+
 - See how to trigger deploys from other github pages updates
 - Add precommit hooks with husky
 - Update the design system with components and documention and deploy it
@@ -37,10 +38,12 @@ It has support for both light and dark (default) themes.
 - Add contact details
 - Improve SEO metrics with lighthouse adn speedInsights
 - Review possibilities with new codepen's data
+- Update favicon to a triangle icon
 
 ### Todos updates
 
 ### Done
+
 - Improve CI
 - Improve UI for mobile devices
 - Unit tests
@@ -48,7 +51,6 @@ It has support for both light and dark (default) themes.
 - Generate links and previews for missing projects
 - Wrap state in a higher component manager
 - Insert a 'scroll to top' feature
-
 
 #### Added codepen source
 
