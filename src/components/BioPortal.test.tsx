@@ -1,10 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import BioPortal, { getAllLanguages } from "./BioPortal";
+import BioPortal from "./BioPortal";
 import { StateProvider } from "../state/stateProvider";
 import { mockBio } from "../mocks/bio";
 import { userEvent } from "@testing-library/user-event/dist/cjs/setup/index.js";
-import { mockRepos } from "../mocks/repos";
 
 describe("BioPortal", () => {
   it("shows the bio and the list of technologies", async () => {
@@ -31,12 +30,5 @@ describe("BioPortal", () => {
     render(<BioPortal bio={mockBio} showBio={true} onClose={onClose} />);
     await userEvent.keyboard("{Escape}");
     expect(onClose).toHaveBeenCalled();
-  });
-});
-
-describe("getAllLanguages", () => {
-  it("returns a sorted array of languages from repositories", () => {
-    const result = getAllLanguages(mockRepos);
-    expect(result).toEqual(["TypeScript", "CSS"]);
   });
 });
