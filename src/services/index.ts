@@ -14,6 +14,7 @@ type RepositoryGraphQL = {
 
 import type { GraphQlQueryResponseData } from "@octokit/graphql";
 import { API_USERNAME, githubApi } from "./apis/githubApi";
+import { codepenApi } from "./apis/codepenApi";
 
 export type Repository = {
   id: string;
@@ -77,8 +78,11 @@ export const fetchRepositories = async (): Promise<Repository[]> => {
   });
   const repos = data.user.repositories.nodes;
   return repos
-    .filter(repo => !repo.isArchived)
-    .filter(repo => !repo.name.includes(API_USERNAME))
+    .filter(
+      repo => repo.repositoryTopics?.nodes?.some(
+        node => node.topic.name === 'demo'
+      )
+    )
     .map((repo: RepositoryGraphQL): Repository => ({
       id: repo.id,
       name: repo.name,
@@ -114,3 +118,8 @@ export const fetchBio = async (): Promise<string> => {
   const data = await githubApi<FetchBioResponse>(query, { login: API_USERNAME });
   return data.user.bio ?? '';
 };
+
+export const fetchPens = async () => {
+  const pens = await codepenApi.getPens();
+  return pens;
+}

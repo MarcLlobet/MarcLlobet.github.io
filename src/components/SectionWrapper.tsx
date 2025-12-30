@@ -5,8 +5,8 @@ import { useMemo, type ReactNode } from "react";
 import { getSentenceList } from "../utils/getSentenceList";
 
 const StyledSectionWrapper = styled.section`
-  width: 100%;
-  height: 100dvh;
+  block-size: 100dvh;
+  inline-size: 100%;
   display: flex;
   align-items: center;
   scroll-snap-align: start;
@@ -31,7 +31,7 @@ const InnerSectionWrapper = styled.div`
       "desc image"
       "languages image"
       "links image";
-    grid-template-columns: 34ch 1fr;
+    grid-template-columns: 26ch 1fr;
     grid-template-rows: auto auto auto;
     align-items: start;
     column-gap: 4dvw;
@@ -42,14 +42,17 @@ const InnerSectionWrapper = styled.div`
 const PreviewImage = styled.img`
   grid-area: image;
   filter: grayscale(1);
-  width: 100%;
-  height: auto;
+  inline-size: 100%;
+  block-size: auto;
   align-self: start;
-  width: 100%;
-  height: 100%;
   object-fit: cover;
   object-position: center;
   padding-block-end: 3dvh;
+  mix-blend-mode: plus-lighter;
+
+  @media (prefers-color-scheme: light) {
+    mix-blend-mode: overlay;
+  }
 
   @media (min-width: 800px) {
     justify-self: end;
@@ -58,18 +61,20 @@ const PreviewImage = styled.img`
 `;
 const Description = styled.p`
   grid-area: desc;
-  width: 34ch;
-  padding-block-end: 1dvh;
+  padding-block-end: 3dvh;
 `;
 
 const Links = styled.p`
   grid-area: links;
+  
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const StyledLanguages = styled.p`
   grid-area: languages;
-  padding-block-end: 3dvh;  
-  width: 34ch;
+  padding-block-end: 3dvh;
   & > b {
     font-weight: var(--satoshi-weight-bold);
   }

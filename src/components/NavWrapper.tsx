@@ -4,29 +4,31 @@ import { useState, useRef, lazy, Suspense } from "react";
 import { createPortal } from "react-dom";
 
 export const StyledNavWrapper = styled.nav`
-  block-size: 10dvh;
-  inline-size: 100%;
+  padding-block: var(--spacing);
   position: sticky;
   top: 0;
   display: flex;
-  gap: 20px;
+  gap: var(--spacing);
   align-items: center;
   justify-content: flex-end;
-  padding-block-end: 2px;
-  padding-block-start: 2px;
-  padding-inline-end: 10px;
-  padding-inline-start: 10px;
+  z-index: 1;
+  inline-size: 100%;
 `;
 
 const Button = styled.button`
   background: none;
   border: none;
   font-size: 1rem;
+  line-height: var(--spacing);
   padding: 0;
   appearance: none;
   font-family: inherit;
   cursor: pointer;
   font-weight: 500;
+
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const BioPortal = lazy(() => import("./BioPortal"));
@@ -48,8 +50,13 @@ export const NavWrapper = ({ repositories }: { repositories: Repository[] }) => 
     setShowBio(true);
   };
 
+  const handleTheme = () => {
+    document.documentElement.classList.toggle('light-theme');
+  };
+
   return (
     <StyledNavWrapper onMouseEnter={handleMouseEnter}>
+      <Button onClick={handleTheme}>Theme</Button>
       <Button onClick={handleClick}>About</Button>
       {createPortal(
           <Suspense fallback={null}>

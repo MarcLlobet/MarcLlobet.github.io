@@ -1,0 +1,34 @@
+# Color Palette
+ - Background
+    - Color: #0A0C10
+    - Role: Primary background
+    - Notes: Near-black with a subtle cool undertone to add depth and reduce harsh contrast compared to pure black.
+ - Headings
+    - Color: #E9CFA4
+    - Role: Project titles and primary headings
+    - Notes: Warm, light-infused tone to enhance large display typography and create strong visual hierarchy.
+ - Body Text
+    - Color: #D1CDC4
+    - Role: Primary descriptive text
+    - Notes: Warm neutral optimized for readability on dark backgrounds while remaining visually subordinate to headings.
+ - Secondary Text
+    - Color: #8E8A80
+    - Role: Metadata, secondary descriptions
+    - Notes: Reduced contrast to reinforce hierarchy without sacrificing legibility.
+ - Accent
+    - Color: #B0483A
+    - Role: Interactive states (hover, focus), highlights, separators
+    - Notes: Used sparingly to introduce rhythm and emphasis without becoming decorative.
+ - Contrast Strategy
+    - High contrast reserved for headings
+    - Medium contrast for body text
+    - Low contrast for secondary information
+    - Accent color never used for long-form text
+ - Accessibility
+    - Text colors selected to maintain comfortable contrast on dark backgrounds
+    - Avoids pure white to reduce eye strain
+    - Hierarchy enforced through tone, not color saturation
+ - Usage Constraints
+    - No large background areas using accent color
+    - No gradients or neon hues
+    - Palette intended to support typography, not compete with it

@@ -2,13 +2,15 @@ import styled from "styled-components";
 
 const StyledTitle = styled.h3`
   grid-area: title;
-  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  inline-size: 100%;
 `;
 
 const highlightLetters = ['o', 'g', 'd', 'e']
 
 const getStylizedTitle = (title: string) => {
-  const letters = title.split('');
+  const letters = title.replaceAll('-', ' ').split('');
 
   bigIteration: for(let l = 0; l < highlightLetters.length; l++) {
     for(let i = 0; i < letters.length; i++) {
@@ -19,7 +21,7 @@ const getStylizedTitle = (title: string) => {
     }
   }
 
-  return (letters.join(''));
+  return letters.join('');
 };
 
 export const Title = ({title}: {title: string}) => {

@@ -1,5 +1,6 @@
 
 import { useRef, forwardRef, useImperativeHandle } from "react";
+import styled from "styled-components";
 
 type MorphShapeProps = {
   size?: "small" | "big";
@@ -10,12 +11,6 @@ type MorphShapeProps = {
   stroke?: string;
   fill?: string;
   infiniteAnimation?: boolean;
-};
-
-
-const sizeOptions = {
-  small: 20,
-  big: 150,
 };
 
 const strokeWidthBySize = {
@@ -64,6 +59,23 @@ const TRIANGLE_PATH = pointsToPath(trianglePoints);
 const circlePoints = getPolygonPoints(cx, cy, r, NUM_POINTS);
 const CIRCLE_PATH = pointsToPath(circlePoints);
 
+const StyledMorphShape =  styled.svg<{ $size: "small" | "big" }>`
+  display: inline-block;
+  ${props => {
+    const size = props.$size === 'small' ? 20 : 150;
+    const mobileSize = props.$size === 'small' ? 30 : 100;
+    return `
+      width: ${size}px;
+      height: ${size}px;
+
+      @media (max-width: 600px) {
+        width: ${mobileSize}px;
+        height: ${mobileSize}px;
+      }
+    `;
+  }}
+`;
+
 
 export const MorphShape = forwardRef<
   { morph: () => void; reset: () => void },
@@ -92,11 +104,9 @@ export const MorphShape = forwardRef<
     }));
 
     return (
-      <svg
-        width={sizeOptions[size]}
-        height={sizeOptions[size]}
+      <StyledMorphShape
+        $size={size}
         viewBox="0 0 100 100"
-        style={{ display: "inline-block", cursor: "pointer" }}
         {...rest}
       >
         <path
@@ -125,7 +135,7 @@ export const MorphShape = forwardRef<
             begin={infiniteAnimation ? "morphAnimate.end+2s" : "indefinite"}id="resetAnimate"
           />
         </path>
-      </svg>
+      </StyledMorphShape>
     );
   }
 );

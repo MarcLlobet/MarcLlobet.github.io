@@ -5,8 +5,8 @@ import type { Repository } from "../services";
 import { getSentenceList } from "../utils/getSentenceList";
 
 const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
-  padding-inline-start: 10dvw;
-  padding-inline-end: 10dvw;
+  padding-inline-start: 5dvw;
+  padding-inline-end: 5dvw;
   position: fixed;
   top: 0;
   left: 0;
@@ -33,6 +33,18 @@ const CloseButton = styled.button<{ $showBio: boolean }>`
   cursor: pointer;
   appearance: none;
   color: var(--color-accent);
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 90dvw;
+  justify-content: center;
+  gap: 20px;
+  padding-block-end: 5dvw;
+  p {
+    max-width: 32ch;
+  }
 `;
 
 const getAllLanguages = (repositories: Repository[]) => {
@@ -101,8 +113,10 @@ const BioPortal = forwardRef<HTMLDivElement, { bio: string | null, showBio: bool
           </svg>
         </CloseButton>
       </StyledNavWrapper>
-      <p>{bio}</p>
-      <p>The list of technologies I used to build my projects, from more used to less used, is the following: {technologiesSentence}.</p>
+      <TextWrapper>
+        <p>{bio}</p>
+        <p>The list of technologies I used to build my projects, from more used to less used, is the following: {technologiesSentence}.</p>
+      </TextWrapper>
     </BioPortalWrapper>
   );
 });
