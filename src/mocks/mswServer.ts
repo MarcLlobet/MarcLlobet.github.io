@@ -1,18 +1,18 @@
 import { setupServer } from "msw/node";
-import { http, graphql, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw";
 
 import { mockPens } from "./pens";
 import { mockGetGithubUserData } from "./bio";
-import { mockGetGithubRepositories } from "./repos";
+import { mockRepos } from "./repos";
 
 export const handlers = [
-  graphql.query("GetGithubRepositories", () => {
-    return HttpResponse.json({ data: mockGetGithubRepositories });
+  http.get("/data/github-repos.json", () => {
+    return HttpResponse.json(mockRepos);
   }),
-  graphql.query("GetGithubUserData", () => {
-    return HttpResponse.json({ data: mockGetGithubUserData });
+  http.get("/data/github-bio.json", () => {
+    return HttpResponse.json(mockGetGithubUserData);
   }),
-  http.get("/codepen-pens.json", () => {
+  http.get("/data/codepen-pens.json", () => {
     return HttpResponse.json(mockPens);
   }),
 ];

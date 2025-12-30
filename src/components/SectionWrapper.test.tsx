@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { SectionWrapper } from "./SectionWrapper";
 import { mockRepos } from "../mocks/repos";
 
-const [firstMockRepo] = mockRepos;
+const [firstMockRepo] = mockRepos.data;
 
 describe("SectionWrapper", () => {
   it("returns section", async () => {

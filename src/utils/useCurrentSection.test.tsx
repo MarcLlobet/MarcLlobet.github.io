@@ -74,7 +74,7 @@ describe("useCurrentSection", () => {
     });
     document.body.appendChild(section2);
 
-    const { result } = renderHook(() => useCurrentSection(mockRepos));
+    const { result } = renderHook(() => useCurrentSection(mockRepos.data));
 
     // Simula scrollY a 0 (primer section)
     Object.defineProperty(window, "scrollY", { value: 0, writable: true });

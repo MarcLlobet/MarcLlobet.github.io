@@ -14,7 +14,7 @@ describe("BioPortal", () => {
     );
     expect(await screen.findByText(mockBio)).toBeInTheDocument();
     expect(await screen.findByText("TypeScript")).toBeInTheDocument();
-    expect(await screen.findByText("JavaScript")).toBeInTheDocument();
+    expect(await screen.findByText("CSS")).toBeInTheDocument();
   });
 
   it("calls onClose when clicking the button", async () => {

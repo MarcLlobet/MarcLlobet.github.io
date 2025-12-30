@@ -1,19 +1,13 @@
 import { describe, it, expect } from "vitest";
-import {
-  fetchRepositories,
-  fetchPens,
-  fetchBio,
-  type Repository,
-} from "./index";
-import type { Pen } from "../../scripts/get-codepen-pens";
-
+import { fetchRepos, fetchPens, fetchBio, type Repository } from "./index";
+import type { Pen } from "../services";
 describe("services/index", () => {
-  it("returns repositories when we call fetchRepositories", async () => {
-    const repos: Repository[] = await fetchRepositories();
+  it("returns repositories when we call fetchRepos", async () => {
+    const repos: Repository[] = await fetchRepos();
     expect(repos).toBeDefined();
     expect(Array.isArray(repos)).toBe(true);
     expect(repos[0].name).toBe("repo-1");
-    expect(repos[0].preview).toContain("preview.png");
+    expect(repos[0].preview).toContain("preview-1.png");
   });
 
   it("returns pens when we call fetchPens", async () => {
@@ -26,7 +20,7 @@ describe("services/index", () => {
   });
 
   it("returns bio when we call fetchBio", async () => {
-    const bio = await fetchBio();
+    const { bio } = await fetchBio();
     expect(bio).toEqual("Test bio");
   });
 });

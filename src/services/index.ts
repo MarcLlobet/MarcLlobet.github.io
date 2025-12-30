@@ -1,122 +1,21 @@
-type RepositoryGraphQL = {
-  id: string;
-  name: string;
-  isArchived: boolean;
-  owner: { login: string };
-  defaultBranchRef: { name: string };
-  homepageUrl: string;
-  url: string;
-  description: string;
-  primaryLanguage: { name: string };
-  languages: { nodes: { name: string; color: string }[] };
-  repositoryTopics: { nodes: { topic: { name: string } }[] };
-};
-
-import type { GraphQlQueryResponseData } from "@octokit/graphql";
-import { API_USERNAME, githubApi } from "./apis/githubApi";
 import { codepenApi } from "./apis/codepenApi";
+import { githubApi } from "./apis/githubApi";
 
-export type Repository = {
-  id: string;
-  name: string;
-  isArchived: boolean;
-  owner: { login: string };
-  defaultBranchRef: { name: string };
-  homepageUrl: string;
-  url: string;
-  description: string;
-  primaryLanguage: { name: string };
-  languages: { name: string; color: string }[];
-  topics: string[];
-  preview: string;
+import type { GithubTypes } from "./apis/githubApi";
+import type { CodepenTypes } from "./apis/codepenApi";
+
+export type Repository = GithubTypes["Repository"];
+export type Bio = GithubTypes["Bio"];
+export type Pen = CodepenTypes["Pen"];
+
+export const fetchRepos = async () => {
+  const repos = await githubApi.getRepositories();
+  return repos;
 };
 
-const getPreview = (repo: RepositoryGraphQL): string => {
-  return `https://raw.githubusercontent.com/${repo.owner.login}/${repo.name}/${repo.defaultBranchRef.name}/.github/preview.png`;
-};
-
-export type FetchProjectsResponse = GraphQlQueryResponseData & {
-  user: {
-    repositories: {
-      nodes: RepositoryGraphQL[];
-    };
-  };
-};
-
-const query = `
-    query GetGithubRepositories ($login: String!) {
-      user(login: $login) {
-        repositories(first: 100, ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false, orderBy: {field: CREATED_AT, direction: DESC}) {
-          nodes {
-            id
-            name
-            isArchived
-            owner { login }
-            defaultBranchRef { name }
-            url
-            homepageUrl
-            description
-            primaryLanguage { name }
-            languages(first: 5) {
-              nodes {
-                name
-              }
-            }
-            repositoryTopics(first: 10) {
-              nodes {
-                topic { name }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-export const fetchRepositories = async (): Promise<Repository[]> => {
-  const data = await githubApi<FetchProjectsResponse>(query, {
-    login: API_USERNAME,
-  });
-  const repos = data.user.repositories.nodes;
-  return repos
-    .filter((repo) =>
-      repo.repositoryTopics?.nodes?.some((node) => node.topic.name === "demo"),
-    )
-    .map(
-      (repo: RepositoryGraphQL): Repository => ({
-        id: repo.id,
-        name: repo.name,
-        isArchived: repo.isArchived,
-        owner: repo.owner,
-        defaultBranchRef: repo.defaultBranchRef,
-        homepageUrl: repo.homepageUrl,
-        url: repo.url,
-        description: repo.description,
-        primaryLanguage: repo.primaryLanguage,
-        languages: repo.languages?.nodes ?? [],
-        topics: repo.repositoryTopics?.nodes?.map((n) => n.topic.name) ?? [],
-        preview: getPreview(repo),
-      }),
-    );
-};
-
-export type FetchBioResponse = GraphQlQueryResponseData & {
-  user: {
-    bio: string;
-  };
-};
-
-export const fetchBio = async (): Promise<string> => {
-  const query = `
-    query GetGithubUserData ($login: String!) {
-      user(login: $login) {
-        bio
-      }
-    }
-  `;
-  const data = await githubApi<FetchBioResponse>(query, {
-    login: API_USERNAME,
-  });
-  return data.user.bio ?? "";
+export const fetchBio = async () => {
+  const bio = await githubApi.getBio();
+  return bio;
 };
 
 export const fetchPens = async () => {

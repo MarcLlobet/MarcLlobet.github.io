@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { fetchPens, fetchRepositories } from "../services";
+import { fetchPens, fetchRepos } from "../services";
 import { stateContext, type State } from "./context";
 
 export const StateProvider: React.FC<{ children: ReactNode }> = ({
@@ -13,7 +13,7 @@ export const StateProvider: React.FC<{ children: ReactNode }> = ({
       return;
     }
 
-    Promise.all([fetchRepositories(), fetchPens()]).then(
+    Promise.all([fetchRepos(), fetchPens()]).then(
       ([fetchedRepositories, fetchedPens]) => {
         isFetched.current = true;
         setState({

@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import type { Repository } from "../services";
 import { Title } from "./Title";
 import { useMemo, type ReactNode } from "react";
 import { getSentenceList } from "../utils/getSentenceList";
+import type { Repository } from "../services";
 
 const StyledSectionWrapper = styled.section`
   block-size: 100dvh;

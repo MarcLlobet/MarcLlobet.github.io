@@ -1,9 +1,9 @@
 import styled, { keyframes } from "styled-components";
-import type { Repository } from "../services";
 import { SectionWrapper } from "./SectionWrapper";
 import { useMemo } from "react";
 import { useCurrentSection } from "../utils/useCurrentSection";
 import { useStateContext } from "../state";
+import type { Repository } from "../services";
 
 const toVisible = keyframes`
   0% { opacity: 0; }

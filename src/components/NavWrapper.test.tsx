@@ -4,7 +4,7 @@ import { NavWrapper } from "./NavWrapper";
 import userEvent from "@testing-library/user-event";
 import { StateProvider } from "../state/stateProvider";
 import { server } from "../mocks/mswServer";
-import { graphql, HttpResponse } from "msw";
+import { http, HttpResponse } from "msw";
 import { mockGetGithubUserData } from "../mocks/bio";
 
 describe("NavWrapper", () => {
@@ -45,9 +45,9 @@ describe("NavWrapper", () => {
   it("fetch GetGithubUserData on nav hover", async () => {
     const fetchSpy = vi.fn();
     server.use(
-      graphql.query("GetGithubUserData", () => {
+      http.get("/data/github-bio.json", () => {
         fetchSpy();
-        return HttpResponse.json({ data: mockGetGithubUserData });
+        return HttpResponse.json(mockGetGithubUserData);
       }),
     );
     render(

@@ -2,8 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { StateProvider } from "./stateProvider";
 import { useStateContext } from "./index";
-import type { Pen } from "../../scripts/get-codepen-pens";
-import type { Repository } from "../services";
+import type { Repository, Pen } from "../services";
 
 const Consumer = () => {
   const { repositories, pens } = useStateContext();

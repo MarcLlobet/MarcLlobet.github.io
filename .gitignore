@@ -28,4 +28,5 @@ dist-ssr
 storybook-static
 
 # generated file by scripts/get-codepen-pens.ts
-public/codepen-pens.json
+public/data/**
+!public/data/.gitkeep

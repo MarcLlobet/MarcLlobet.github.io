@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest --watchAll=false"
+    "test": "vitest",
+    "preinstall": "husky || true"
   },
   "dependencies": {
     "@octokit/graphql": "^9.0.3",
@@ -42,6 +43,7 @@
     "eslint-plugin-storybook": "^10.1.10",
     "globals": "^16.5.0",
     "html-validate": "^10.5.0",
+    "husky": "^9.1.7",
     "jest-snapshot": "^30.2.0",
     "jsdom": "^27.4.0",
     "msw": "^2.12.7",

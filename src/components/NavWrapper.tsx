@@ -59,7 +59,7 @@ export const NavWrapper = () => {
               }) =>
                 createPortal(
                   <BioPortalModule.default
-                    bio={fetchedBio}
+                    bio={fetchedBio.bio}
                     showBio={showBio}
                     onClose={onClose}
                   />,

@@ -4,7 +4,7 @@ import { mockRepos } from "../mocks/repos";
 
 describe("getAllLanguages", () => {
   it("returns a sorted array of languages from repositories", () => {
-    const result = getAllLanguages(mockRepos);
+    const result = getAllLanguages(mockRepos.data);
     expect(result).toEqual(["TypeScript", "CSS"]);
   });
 });

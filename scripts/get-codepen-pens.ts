@@ -1,8 +1,8 @@
-import { writeFileSync } from "fs";
 import "dotenv/config";
-
 import { chromium } from "playwright-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import type { Pen } from "../src/services";
+import { createReport } from "./common";
 
 chromium.use(StealthPlugin());
 
@@ -132,23 +132,4 @@ const getCodepenPens = async (): Promise<PenDataResponse[]> => {
   return penData;
 };
 
-export type Pen = {
-  name: string;
-  href: string;
-  description: string;
-  slug: string;
-  link: string;
-  preview: {
-    large: string;
-    small: string;
-  };
-};
-
-getCodepenPens().then((pens) => {
-  writeFileSync(
-    "public/codepen-pens.json",
-    JSON.stringify(pens, null, 2),
-    null,
-  );
-  console.log("✓ codepen-pens.json generated.");
-});
+createReport(getCodepenPens, "codepen-pens");

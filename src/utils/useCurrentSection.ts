@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Repository } from "../services";
 import { throttle } from "./throttle";
+import type { Repository } from "../services";
 
 export const useCurrentSection = (repositories: Repository[]) => {
   const [currentSection, setCurrentSection] = useState<

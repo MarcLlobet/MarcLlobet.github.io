@@ -31,7 +31,6 @@ It has support for both light and dark (default) themes.
 ## TODOs
 
 - See how to trigger deploys from other github pages updates
-- Add precommit hooks with husky
 - Update the design system with components and documention and deploy it
 - Add e2e testing
 - Review accessibility (html-validate added)
@@ -39,6 +38,7 @@ It has support for both light and dark (default) themes.
 - Improve SEO metrics with lighthouse adn speedInsights
 - Review possibilities with new codepen's data
 - Update favicon to a triangle icon
+- Support for horizontal viewport
 
 ### Todos updates
 
@@ -51,6 +51,8 @@ It has support for both light and dark (default) themes.
 - Generate links and previews for missing projects
 - Wrap state in a higher component manager
 - Insert a 'scroll to top' feature
+- Add precommit hooks with husky
+- Persistance data between builds
 
 #### Added codepen source
 
