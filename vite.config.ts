@@ -16,7 +16,7 @@ export default defineConfig({
       {
         name: 'run-codepen-pens-script',
         async buildStart() {
-          execSync('pnpm exec tsx scripts/get-codepen-pens.ts', { 
+          execSync('tsx scripts/get-codepen-pens.ts', { 
             stdio: 'inherit',
             env: { 
               ...process.env,

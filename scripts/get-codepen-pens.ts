@@ -62,9 +62,7 @@ const getPenData = ({
 }
 
 const getCodepenPens = async (): Promise<PenDataResponse[]> => {
-  const browser = await chromium.launch({ 
-    ignoreDefaultArgs: ['--no-sandbox'] 
-  });
+  const browser = await chromium.launch();
   const context = await browser.newContext(browserContext);
 
   const pensPage = await context.newPage();
