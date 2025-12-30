@@ -5,7 +5,7 @@ import styled, { keyframes } from 'styled-components'
 import { MorphShape } from './components/MorphShape';
 import { NavWrapper } from './components/NavWrapper';
 import { SectionSelector } from './components/SectionSelector';
-import { throttle } from './utils/throttle';
+import { useCurrentSection } from './utils/useCurrentSection';
 
 const toHeavyFontWeightAnimation = keyframes`
   0% { font-weight: 300; }
@@ -31,11 +31,22 @@ const NameWrapper = styled.h1`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  font-size: calc(1rem * var(--golden-ratio) * 4);
+  line-height: calc(1rem * var(--golden-ratio) * 3.5);
+
+  @media (max-width: 600px) {
+    font-size: calc(1rem * var(--golden-ratio) * 2.5);
+    line-height: calc(1rem * var(--golden-ratio) * 2.25);
+  }
 `;
 
 const HeroWrapper = styled.hgroup`
   display: flex;
-  inline-size: 100%;
+  inline-size: 50dvw;
+  block-size: calc(100dvh - 60px);
+  display: flex;
+  align-items: center;
+  padding-block-end: 60px;
 `;
 
 const CircularAnimation = keyframes`
@@ -48,24 +59,27 @@ const CircularAnimation = keyframes`
 `;
 
 const CircularShape = styled.div`
+  margin-block: calc((100dvh - 60px - 150px) / 2);
+  inline-size: calc(50dvw - 30px - 5rem);
+  block-size: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-muted);
-  top: 40dvh;
-  right: 15dvw;
   border-radius: 50%;
-  overflow: hidden;
+  position: sticky;
+  top: 40dvh;
   z-index: 1;
-  animation: ${CircularAnimation} 5s linear infinite;
-  transform-origin: 35% 45%;
-  position: fixed;
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
-    position: absolute;
+    position: static;
   }
+`;
 
-  @media (prefers-color-scheme: light) {
-    z-index: 0;
-  }
+const CircularShapeWrapper = styled.div`
+  animation: ${CircularAnimation} 5s linear infinite;
+  transform-origin: 30% 50%;
 `;
 
 const AsideWrapper = styled.aside`
@@ -95,33 +109,7 @@ const SectionsSelectorWrapper = styled.div`
 `;
 
 const SectionsSelector = ({repositories }: { repositories: Repository[] }) => {
-  const [currentSection, setCurrentSection] = useState<Repository['name'] | null>(null);
-
-  useEffect(() => {
-    const sections = document.getElementsByClassName('page-section');
-    const sectionsBoundary = Array.from(sections).map((section) => {
-      const rect = section?.getBoundingClientRect();
-      return {
-        top: rect.top,
-        name: section.id as Repository['name'],
-      };
-    });
-
-    const onScroll = throttle(() => {
-      const currentPosition = window.scrollY;
-      const halfWindowHeight = window.innerHeight / 2;
-      const currentSectionInViewport = sectionsBoundary.findLast((section) => currentPosition + halfWindowHeight >= section.top);
-      
-      setCurrentSection(currentSectionInViewport?.name ?? null);
-    }, 500);
-
-    window.addEventListener('scroll', onScroll);
-    window.addEventListener('touchmove', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('touchmove', onScroll);
-    };
-  }, [repositories]);
+  const currentSection = useCurrentSection(repositories);
 
   useEffect(() => {
     const currentHash = window.location.hash.slice(1);
@@ -175,7 +163,7 @@ function App() {
       gap: 'var(--spacing) calc(var(--spacing) * 2)',
       inlineSize: '100%',
     }}>
-    <AsideWrapper>
+      <AsideWrapper>
         <AsideLeftWrapper>
           <SectionsSelector
             repositories={repositories} 
@@ -184,37 +172,32 @@ function App() {
       </AsideWrapper>
       <div style={{
         display: 'flex', 
-        flexDirection: 'column', 
-        flexGrow: 1
+        flexDirection: 'row', 
+        flexGrow: 1,
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
       }}>
         <NavWrapper repositories={repositories} />
-        <div style={{
-          display: 'flex', 
-          flexDirection: 'row',
-          blockSize: 'calc(100dvh - var(--spacing) * 3)',
-          paddingBlockEnd: 'calc(var(--spacing) * 3)',
-          justifyContent: 'center',
-          alignItems: 'center', 
-        }}>
-          <HeroWrapper>
-            <NameWrapper>
-              <FirstNameWrapper>
-                Marc
-              </FirstNameWrapper>
-              <SurnameWrapper>
-                Ll<span style={{color: 'var(--color-accent)'}}>o</span>bet
-              </SurnameWrapper>
-            </NameWrapper>
-          </HeroWrapper>
-          <CircularShape>
+        <HeroWrapper>
+          <NameWrapper>
+            <FirstNameWrapper>
+              Marc
+            </FirstNameWrapper>
+            <SurnameWrapper>
+              Ll<span style={{color: 'var(--color-accent)'}}>o</span>bet
+            </SurnameWrapper>
+          </NameWrapper>
+        </HeroWrapper>
+        <CircularShape>
+          <CircularShapeWrapper>
             <MorphShape 
               ref={morphRef} 
               size="big" 
               infiniteAnimation
               stroke="var(--color-accent)"
             />
-          </CircularShape>
-        </div>
+          </CircularShapeWrapper>
+        </CircularShape>
         <PageWrapper repositories={repositories}/>
       </div>
     </div>

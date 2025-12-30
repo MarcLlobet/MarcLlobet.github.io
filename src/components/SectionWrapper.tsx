@@ -13,70 +13,45 @@ const StyledSectionWrapper = styled.section`
 `
 
 const InnerSectionWrapper = styled.div`
-  display: grid;
-  grid-template-areas:
-    "title"
-    "image"
-    "desc"
-    "languages"
-    "links";
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto auto;
-  padding-block-start: 3dvh;
-  padding-block-end: 3dvh;
-
-  @media (min-width: 800px) {
-    grid-template-areas:
-      "title title"
-      "desc image"
-      "languages image"
-      "links image";
-    grid-template-columns: 26ch 1fr;
-    grid-template-rows: auto auto auto;
-    align-items: start;
-    column-gap: 4dvw;
-    row-gap: 0;
-  }
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 
 const PreviewImage = styled.img`
-  grid-area: image;
   filter: grayscale(1);
-  inline-size: 100%;
-  block-size: auto;
-  align-self: start;
+  inline-size: calc(100% - 30ch - 4dvw);
+  max-inline-size: 450px;
   object-fit: cover;
   object-position: center;
   padding-block-end: 3dvh;
   mix-blend-mode: plus-lighter;
+  order: 1;
+  padding-block-end: 0;
 
-  @media (prefers-color-scheme: light) {
-    mix-blend-mode: overlay;
+  html.light-theme & {
+    mix-blend-mode: darken;
   }
 
-  @media (min-width: 800px) {
-    justify-self: end;
+  @media (max-width: 900px) {
+    order: 0;
+    inline-size: 100%;
     padding-block-end: 0;
   }
 `;
-const Description = styled.p`
-  grid-area: desc;
-  padding-block-end: 3dvh;
-`;
 
-const Links = styled.p`
-  grid-area: links;
-  
-  @media (max-width: 600px) {
-    font-size: 1.5rem;
-  }
-`;
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  inline-size: 30ch;
 
-const StyledLanguages = styled.p`
-  grid-area: languages;
-  padding-block-end: 3dvh;
-  & > b {
-    font-weight: var(--satoshi-weight-bold);
+  @media (max-width: 900px) {
+    inline-size: 100%;
+    max-inline-size: 42ch;
   }
 `;
 
@@ -99,9 +74,9 @@ const Languages = ({
   }, [languages]);
 
   return (
-    <StyledLanguages>
+    <p>
       <span>{technologies}</span>
-    </StyledLanguages>
+    </p>
   )
 }
 
@@ -115,24 +90,26 @@ export const SectionWrapper = ({repository}: {repository: Repository}) => {
       <InnerSectionWrapper>
         <Title title={repository.name} />
         <PreviewImage src={repository.preview} alt={`Preview of ${repository.name} repository`} />
-        <Description>{repository.description}</Description>
-        <Languages 
-          primaryLanguage={repository.primaryLanguage.name}
-          languages={repository.languages} 
-        />
-        <Links>
-          {repository.homepageUrl && (<><span>
-              <a href={repository.homepageUrl} target='_blank' rel="noopener noreferrer">
-                Demo
+        <TextWrapper>
+          <p>{repository.description}</p>
+          <Languages 
+            primaryLanguage={repository.primaryLanguage.name}
+            languages={repository.languages} 
+          />
+          <p>
+            {repository.homepageUrl && (<><span>
+                <a href={repository.homepageUrl} target='_blank' rel="noopener noreferrer">
+                  Demo
+                </a>
+              </span>&nbsp;•&nbsp;</>)
+            }
+            <span>
+              <a href={repository.url} target='_blank' rel="noopener noreferrer">
+                Code
               </a>
-            </span>&nbsp;•&nbsp;</>)
-          }
-          <span>
-            <a href={repository.url} target='_blank' rel="noopener noreferrer">
-              Code
-            </a>
-          </span>
-        </Links>
+            </span>
+          </p>
+        </TextWrapper>
       </InnerSectionWrapper>
     </StyledSectionWrapper>
   )

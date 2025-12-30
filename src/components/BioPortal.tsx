@@ -38,12 +38,15 @@ const CloseButton = styled.button<{ $showBio: boolean }>`
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 90dvw;
   justify-content: center;
   gap: 20px;
   padding-block-end: 5dvw;
   p {
     max-width: 32ch;
+
+    @media (max-width: 600px) {
+      font-size: 1.5rem;
+    }
   }
 `;
 

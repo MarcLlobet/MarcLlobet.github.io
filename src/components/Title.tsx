@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const StyledTitle = styled.h3`
-  grid-area: title;
   word-wrap: break-word;
   word-break: break-word;
   inline-size: 100%;
+  padding-block-end: 1rem;
 `;
 
 const highlightLetters = ['o', 'g', 'd', 'e']

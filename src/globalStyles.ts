@@ -84,6 +84,10 @@ p {
   margin-block-end: 0;
 }
 
+b {
+  font-weight: var(--satoshi-weight-bold);
+}
+
 h2,h3,h4,h5,h6 {
   color: var(--color-heading);
   display: block;
@@ -109,7 +113,6 @@ h2 {
 
 h3 {
   font-size: calc(1rem * var(--golden-ratio) * 2);
-  padding-block-end: calc(1rem * var(--golden-ratio) * 1);
   line-height: calc(1rem * var(--golden-ratio) * 2);
 }
 

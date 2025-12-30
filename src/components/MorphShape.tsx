@@ -59,21 +59,16 @@ const TRIANGLE_PATH = pointsToPath(trianglePoints);
 const circlePoints = getPolygonPoints(cx, cy, r, NUM_POINTS);
 const CIRCLE_PATH = pointsToPath(circlePoints);
 
-const StyledMorphShape =  styled.svg<{ $size: "small" | "big" }>`
+const StyledMorphShape =  styled.svg<{ $isSmall: boolean }>`
   display: inline-block;
-  ${props => {
-    const size = props.$size === 'small' ? 20 : 150;
-    const mobileSize = props.$size === 'small' ? 30 : 100;
-    return `
-      width: ${size}px;
-      height: ${size}px;
+  transform: rotate(90deg);
+  inline-size: ${({$isSmall}) => ($isSmall ? 20 : 150)}px;
+  block-size: ${({$isSmall}) => ($isSmall ? 20 : 150)}px;
 
-      @media (max-width: 600px) {
-        width: ${mobileSize}px;
-        height: ${mobileSize}px;
-      }
-    `;
-  }}
+  @media (max-width: 600px) {
+    inline-size: ${({$isSmall}) => ($isSmall ? 30 : 100)}px;
+    block-size: ${({$isSmall}) => ($isSmall ? 30 : 100)}px;
+  }
 `;
 
 
@@ -105,7 +100,7 @@ export const MorphShape = forwardRef<
 
     return (
       <StyledMorphShape
-        $size={size}
+        $isSmall={size === 'small'}
         viewBox="0 0 100 100"
         {...rest}
       >
@@ -115,26 +110,39 @@ export const MorphShape = forwardRef<
           stroke={stroke}
           strokeWidth={strokeWidthBySize[size]}
         >
+        {infiniteAnimation ? (
           <animate
             ref={morphRef}
             attributeName="d"
-            from={CIRCLE_PATH}
-            to={TRIANGLE_PATH}
-            dur="0.5s"
+            values={`${CIRCLE_PATH};${TRIANGLE_PATH};${TRIANGLE_PATH};${CIRCLE_PATH};${CIRCLE_PATH}`}
+            keyTimes="0;0.1;0.5;0.6;1"
+            dur="6s"
             fill="freeze"
-            begin={infiniteAnimation ? "0;resetAnimate.end+2s" : "indefinite"}
-            id="morphAnimate"
+            repeatCount="indefinite"
           />
-          <animate
-            ref={resetRef}
-            attributeName="d"
-            from={TRIANGLE_PATH}
-            to={CIRCLE_PATH}
-            dur="0.5s"
-            fill="freeze"
-            begin={infiniteAnimation ? "morphAnimate.end+2s" : "indefinite"}id="resetAnimate"
-          />
-        </path>
+        ) : (
+          <>
+            <animate
+              ref={morphRef}
+              attributeName="d"
+              from={CIRCLE_PATH}
+              to={TRIANGLE_PATH}
+              dur="0.5s"
+              fill="freeze"
+              begin="indefinite"
+            />
+            <animate
+              ref={resetRef}
+              attributeName="d"
+              from={TRIANGLE_PATH}
+              to={CIRCLE_PATH}
+              dur="0.5s"
+              fill="freeze"
+              begin="indefinite"
+            />
+          </>
+        )}
+      </path>
       </StyledMorphShape>
     );
   }
