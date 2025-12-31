@@ -20,7 +20,7 @@ describe("services/index", () => {
   });
 
   it("returns bio when we call fetchBio", async () => {
-    const { bio } = await fetchBio();
+    const bio = await fetchBio();
     expect(bio).toEqual("Test bio");
   });
 });

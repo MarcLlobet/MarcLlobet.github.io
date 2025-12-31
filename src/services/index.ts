@@ -8,17 +8,8 @@ export type Repository = GithubTypes["Repository"];
 export type Bio = GithubTypes["Bio"];
 export type Pen = CodepenTypes["Pen"];
 
-export const fetchRepos = async () => {
-  const repos = await githubApi.getRepositories();
-  return repos;
-};
+export const fetchRepos = () => githubApi.getRepositories();
 
-export const fetchBio = async () => {
-  const bio = await githubApi.getBio();
-  return bio;
-};
+export const fetchBio = () => githubApi.getBio();
 
-export const fetchPens = async () => {
-  const pens = await codepenApi.getPens();
-  return pens;
-};
+export const fetchPens = () => codepenApi.getPens();

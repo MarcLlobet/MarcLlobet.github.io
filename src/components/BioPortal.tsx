@@ -41,13 +41,28 @@ const TextWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  padding-block-end: 5dvw;
+  padding-block-end: 5dvh;
+  font-size: 2rem;
+  block-size: calc(100dvh - 66px);
+
   p {
     max-width: 32ch;
 
     @media (max-width: 600px) {
       font-size: 1.5rem;
     }
+  }
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    font-size: 1.5rem;
+    padding-block-start: 0;
+    justify-content: center;
+  }
+`;
+
+const StyledAboutNav = styled(StyledNavWrapper)`
+  @media (orientation: landscape) and (max-height: 400px) {
+    margin-block-end: 0;
   }
 `;
 
@@ -56,7 +71,7 @@ const BioPortal = ({
   showBio,
   onClose,
 }: {
-  bio: string | null;
+  bio: string;
   showBio: boolean;
   onClose: () => void;
 }) => {
@@ -90,7 +105,7 @@ const BioPortal = ({
 
   return (
     <BioPortalWrapper $showBio={showBio}>
-      <StyledNavWrapper>
+      <StyledAboutNav>
         <CloseButton
           onClick={handleClick}
           aria-label="Close"
@@ -110,7 +125,7 @@ const BioPortal = ({
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </CloseButton>
-      </StyledNavWrapper>
+      </StyledAboutNav>
       <TextWrapper>
         <p>{bio}</p>
         <p>

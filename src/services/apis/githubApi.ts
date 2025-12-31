@@ -15,7 +15,7 @@ type Repository = {
   preview: string;
 };
 
-type Bio = { bio: string };
+type Bio = string;
 
 export type GithubTypes = {
   Repository: Repository;

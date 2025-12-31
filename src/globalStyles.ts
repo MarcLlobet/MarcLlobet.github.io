@@ -44,6 +44,12 @@ html.light-theme {
   padding-inline: var(--spacing) calc(var(--spacing) * 2);
 }
 
+@media (orientation: landscape) and (max-height: 400px){
+  #root {
+    padding-inline: calc(var(--spacing) * 4);
+  }
+}
+
 html {
   font-size: 20px;
   scroll-snap-type: y mandatory;
@@ -54,6 +60,12 @@ html {
 @media (max-width: 600px) {
   html {
     font-size: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 400px){
+  html {
+    font-size: 14px;
   }
 }
 

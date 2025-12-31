@@ -37,13 +37,13 @@ It has support for both light and dark (default) themes.
 - Add contact details
 - Improve SEO metrics with lighthouse adn speedInsights
 - Review possibilities with new codepen's data
-- Update favicon to a triangle icon
-- Support for horizontal viewport
 
 ### Todos updates
 
 ### Done
 
+- Support for horizontal viewport
+- Update favicon to a triangle icon
 - Improve CI
 - Improve UI for mobile devices
 - Unit tests

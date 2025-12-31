@@ -13,6 +13,10 @@ export const StyledNavWrapper = styled.nav`
   justify-content: flex-end;
   z-index: 1;
   inline-size: 100%;
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    margin-block-end: 30px;
+  }
 `;
 
 const Button = styled.button`
@@ -30,6 +34,18 @@ const Button = styled.button`
     font-size: 1.5rem;
   }
 `;
+
+const witheFavicon = "/favicon-white.svg";
+const redFavicon = "/favicon-red.svg";
+
+const toggleFavicon = () => {
+  const favicon = document.querySelector("link[rel~='icon']");
+  const href = favicon?.getAttribute("href");
+  favicon?.setAttribute(
+    "href",
+    href === witheFavicon ? redFavicon : witheFavicon,
+  );
+};
 
 export const NavWrapper = () => {
   const [showBio, setShowBio] = useState(false);
@@ -59,7 +75,7 @@ export const NavWrapper = () => {
               }) =>
                 createPortal(
                   <BioPortalModule.default
-                    bio={fetchedBio.bio}
+                    bio={fetchedBio}
                     showBio={showBio}
                     onClose={onClose}
                   />,
@@ -74,6 +90,8 @@ export const NavWrapper = () => {
 
   const handleTheme = () => {
     document.documentElement.classList.toggle("light-theme");
+
+    toggleFavicon();
   };
 
   return (

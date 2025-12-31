@@ -40,6 +40,10 @@ export const HeroWrapper = styled.hgroup`
   display: flex;
   align-items: center;
   padding-block: var(--spacing);
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    inline-size: 43dvw;
+  }
 `;
 
 const CircularAnimation = keyframes`
@@ -64,6 +68,10 @@ export const CircularShape = styled.div`
   top: 40dvh;
   z-index: 1;
 
+  @media (orientation: landscape) and (max-height: 400px) {
+    top: 30dvh;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     animation: none;
     position: static;
@@ -83,6 +91,14 @@ export const AsideWrapper = styled.aside`
   top: 0;
   justify-content: center;
   align-items: center;
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    flex-direction: row;
+    block-size: auto;
+    inline-size: 50dvw;
+    margin-inline: auto;
+    z-index: 2;
+  }
 `;
 
 export const AsideLeftWrapper = styled.div`
@@ -95,6 +111,10 @@ export const MainWrapper = styled.div`
   flex-grow: 1;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    margin-top: -60px;
+  }
 `;
 
 export const WindowWrapper = styled.div`
@@ -102,4 +122,8 @@ export const WindowWrapper = styled.div`
   flex-direction: row;
   gap: var(--spacing) calc(var(--spacing) * 2);
   inline-size: 100%;
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    flex-direction: column;
+  }
 `;

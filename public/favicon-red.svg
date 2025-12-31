@@ -1,0 +1,8 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  fill="#B0483A"
+  viewBox="0 0 100 100"
+>
+  <desc>Red triangle</desc>
+  <path d="M50 2L2 98h98L50 2z" />
+</svg>

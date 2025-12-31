@@ -19,6 +19,9 @@ const InnerSectionWrapper = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
+  @media (orientation: landscape) and (max-height: 400px) {
+    padding-block-start: 4dvw;
+  }
 `;
 
 const PreviewImage = styled.img`
@@ -41,6 +44,11 @@ const PreviewImage = styled.img`
     inline-size: 100%;
     padding-block-end: 0;
     max-inline-size: 450px;
+  }
+
+  @media (orientation: landscape) and (max-height: 400px) {
+    max-inline-size: 250px;
+    order: 1;
   }
 `;
 

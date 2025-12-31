@@ -29,6 +29,7 @@ const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  padding-block-start: 60px;
 `;
 
 const Footer = styled.footer`
