@@ -3,6 +3,9 @@
 ## Motivation
 
 This project is a modern, performant, and visually engaging personal portfolio and playground. The main goal is to showcase projects, technical skills, and creative UI/UX solutions using the latest web technologies, with a strong focus on animation, interactivity, and code quality.
+- [Demo](https://marcllobet.github.io/)
+- [Design](https://marcllobet.github.io/design) with visual guidelines
+- [Storybook]((https://marcllobet.github.io/storybook)) with UI components
 
 ## Development
 

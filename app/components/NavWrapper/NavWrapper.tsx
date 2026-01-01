@@ -45,7 +45,7 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
 
   return (
     <StyledNavWrapper onMouseEnter={handleMouseEnter}>
-      <LinkButton href="design-system">Design</LinkButton>
+      <LinkButton href="design">Design</LinkButton>
       <Button type="button" onClick={handleTheme}>
         Theme
       </Button>
