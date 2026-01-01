@@ -70,6 +70,7 @@ export const SectionWrapper = ({ repository }: SectionWrapperProps) => {
                     href={repository.homepageUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`Demo for ${repository.name}`}
                   >
                     Demo
                   </a>
@@ -82,6 +83,7 @@ export const SectionWrapper = ({ repository }: SectionWrapperProps) => {
                 href={repository.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Source code for ${repository.name}`}
               >
                 Code
               </a>

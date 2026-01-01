@@ -9,7 +9,9 @@ describe("SectionSelector", () => {
     render(
       <SectionSelector repository={mockRepository} currentSection={null} />,
     );
-    const link = screen.getByRole("menuitemradio", { name: "repo-1" });
+    const link = screen.getByRole("menuitemradio", {
+      name: "Go to repo-1 section",
+    });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "#repo-1");
     expect(link).toHaveAttribute("aria-checked", "false");
@@ -19,7 +21,9 @@ describe("SectionSelector", () => {
     render(
       <SectionSelector repository={mockRepository} currentSection={"repo-1"} />,
     );
-    const link = screen.getByRole("menuitemradio", { name: "repo-1" });
+    const link = screen.getByRole("menuitemradio", {
+      name: "Go to repo-1 section",
+    });
     expect(link).toHaveAttribute("aria-checked", "true");
   });
 
@@ -32,7 +36,9 @@ describe("SectionSelector", () => {
     render(
       <SectionSelector repository={mockRepository} currentSection={null} />,
     );
-    const link = screen.getByRole("menuitemradio", { name: "repo-1" });
+    const link = screen.getByRole("menuitemradio", {
+      name: "Go to repo-1 section",
+    });
     fireEvent.click(link);
     expect(window.scrollTo).toHaveBeenCalled();
     document.body.removeChild(dummy);

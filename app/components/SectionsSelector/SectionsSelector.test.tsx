@@ -8,10 +8,14 @@ describe("SectionsSelector", () => {
     render(<SectionsSelector repositories={mockRepos} />);
 
     expect(
-      await screen.findByRole("menuitemradio", { name: "repo-1" }),
+      await screen.findByRole("menuitemradio", {
+        name: "Go to repo-1 section",
+      }),
     ).toBeInTheDocument();
     expect(
-      await screen.findByRole("menuitemradio", { name: "repo-2" }),
+      await screen.findByRole("menuitemradio", {
+        name: "Go to repo-2 section",
+      }),
     ).toBeInTheDocument();
   });
 });

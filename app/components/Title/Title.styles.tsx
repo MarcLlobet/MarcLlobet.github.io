@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-export const StyledTitle = styled.h3`
+export const StyledTitle = styled.h2`
   word-wrap: break-word;
   word-break: break-word;
   inline-size: 100%;

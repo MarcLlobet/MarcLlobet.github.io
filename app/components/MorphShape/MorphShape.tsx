@@ -22,6 +22,8 @@ const strokeWidthBySize = {
   big: 1,
 };
 
+const round = (n: number) => Math.round(n * 1000) / 1000;
+
 function getPolygonPoints(
   cx: number,
   cy: number,
@@ -32,7 +34,10 @@ function getPolygonPoints(
   const points: [number, number][] = [];
   for (let i = 0; i < sides; i++) {
     const angle = ((2 * Math.PI) / sides) * i + offsetAngle;
-    points.push([cx + r * Math.cos(angle), cy + r * Math.sin(angle)]);
+    points.push([
+      round(cx + r * Math.cos(angle)),
+      round(cy + r * Math.sin(angle)),
+    ]);
   }
   return points;
 }
@@ -61,8 +66,8 @@ for (let i = 0; i < 3; i++) {
   for (let j = 0; j < NUM_POINTS / 3; j++) {
     const t = j / (NUM_POINTS / 3);
     trianglePoints.push([
-      p1[0] + (p2[0] - p1[0]) * t,
-      p1[1] + (p2[1] - p1[1]) * t,
+      round(p1[0] + (p2[0] - p1[0]) * t),
+      round(p1[1] + (p2[1] - p1[1]) * t),
     ]);
   }
 }

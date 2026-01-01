@@ -64,6 +64,7 @@ export const SectionSelector = ({
       onClick={handleClick}
       role="menuitemradio"
       aria-checked={isSelected}
+      aria-label={`Go to ${repository.name} section`}
       $isSelected={isSelected}
     >
       <MorphShape ref={morphRef} size="small" title={repository.name} />
