@@ -1,0 +1,398 @@
+{
+  "data": [
+    {
+      "id": "R_kgDOQrH-Zg",
+      "name": "fluency-report",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/fluency-report/",
+      "url": "https://github.com/MarcLlobet/fluency-report",
+      "description": "A web-based reporting tool that transforms raw fluency data into a clear and structured overview, helping educators understand learning patterns, compare progress across multiplication tables, and identify gaps early in order to support better teaching and assessment decisions.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "Makefile"
+        },
+        {
+          "name": "Dockerfile"
+        },
+        {
+          "name": "PHP"
+        },
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "HTML"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/fluency-report/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOQn0Mkw",
+      "name": "adventofcode",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/adventofcode/",
+      "url": "https://github.com/MarcLlobet/adventofcode",
+      "description": "Solutions for the daily logic challenges by breaking each puzzle into smaller reasoning steps, helping learners strengthen analytical thinking, experiment with different problem‑solving strategies, and better understand how structured approaches shape outcomes.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "HTML"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/adventofcode/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOPes8nw",
+      "name": "semantic-git",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/semantic-git/",
+      "url": "https://github.com/MarcLlobet/semantic-git",
+      "description": "A shell utility that converts everyday commit actions into more intentional, descriptive messages, helping developers track the evolution of their work, maintain clearer histories across branches, and understand why certain decisions were made as a project naturally grows.",
+      "primaryLanguage": {
+        "name": "HTML"
+      },
+      "languages": [
+        {
+          "name": "Shell"
+        },
+        {
+          "name": "HTML"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/semantic-git/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOPSng2Q",
+      "name": "accordion-progress",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/accordion-progress/",
+      "url": "https://github.com/MarcLlobet/accordion-progress",
+      "description": "Created to guide users through multi‑step tasks, this project organizes information in a way that reveals context at the right moment, making it easier to understand progress, follow instructions, and stay oriented while working through layered content.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "TypeScript"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/accordion-progress/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOPCL9Vw",
+      "name": "vanilla-documents",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/vanilla-documents/",
+      "url": "https://github.com/MarcLlobet/vanilla-documents",
+      "description": "Focused on making document management feel organized rather than chaotic, this project brings updates, notifications, and file changes into a unified flow that helps users keep context, respond confidently, and stay aware of everything happening in real time.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "Go"
+        },
+        {
+          "name": "CSS"
+        },
+        {
+          "name": "Bru"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/vanilla-documents/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOO7M_Sg",
+      "name": "pet-manager",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/pet-manager/",
+      "url": "https://github.com/MarcLlobet/pet-manager",
+      "description": "Built around clear flows and predictable interactions, this project helps users review pet information, update details with confidence, and understand how changes tie together, creating a smoother experience when managing several profiles at once.",
+      "primaryLanguage": {
+        "name": "HTML"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "CSS"
+        },
+        {
+          "name": "Bru"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/pet-manager/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOOu6ixQ",
+      "name": "ts-only",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/ts-only/",
+      "url": "https://github.com/MarcLlobet/ts-only",
+      "description": "Purposefully minimal, this project offers a clean starting point that highlights reasoning and structure over configuration, helping developers express ideas more clearly and build toward maintainable logic without distractions from heavy setup decisions.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "HTML"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/ts-only/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOOZABaw",
+      "name": "wordle-app",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/wordle-app/",
+      "url": "https://github.com/MarcLlobet/wordle-app",
+      "description": "Using word‑frequency patterns and positional analysis, this project helps Wordle players choose stronger opening guesses, compare the effectiveness of options, and approach each round with a clearer sense of how probability influences their choices.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "CSS"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/wordle-app/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOONg1tw",
+      "name": "atlesdevidessecretes",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/atlesdevidessecretes/",
+      "url": "https://github.com/MarcLlobet/atlesdevidessecretes",
+      "description": "By curating articles and materials into a navigable format, this project helps readers explore content steadily, move between sections with ease, and understand how each piece fits within a larger collection or narrative.",
+      "primaryLanguage": {
+        "name": "HTML"
+      },
+      "languages": [
+        {
+          "name": "HTML"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/atlesdevidessecretes/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOIq-vMg",
+      "name": "users-by-colors",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/users-by-colors/",
+      "url": "https://github.com/MarcLlobet/users-by-colors",
+      "description": "By reorganizing people based on color preferences and ranking, this project reveals patterns that might otherwise stay hidden, helping viewers compare groups, understand relationships in the data, and draw clearer insights from visual sorting.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "CSS"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/users-by-colors/main/.github/preview.png"
+    },
+    {
+      "id": "MDEwOlJlcG9zaXRvcnkyODI4MjIxMDg=",
+      "name": "scheduling-ui",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "master"
+      },
+      "homepageUrl": "https://marcllobet.github.io/scheduling-ui/",
+      "url": "https://github.com/MarcLlobet/scheduling-ui",
+      "description": "Designed to make rescheduling feel intuitive, this project presents availability changes in a structured way that helps users understand conflicts, evaluate options, and manage time with more confidence across repeated interactions.",
+      "primaryLanguage": {
+        "name": "JavaScript"
+      },
+      "languages": [
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "CSS"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/scheduling-ui/master/.github/preview.png"
+    },
+    {
+      "id": "MDEwOlJlcG9zaXRvcnkyNjYwNTc5NDE=",
+      "name": "image-gallery",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "master"
+      },
+      "homepageUrl": "https://marcllobet.github.io/image-gallery/",
+      "url": "https://github.com/MarcLlobet/image-gallery",
+      "description": "Designed for smooth, uninterrupted exploration, this project arranges images in a continuously loading flow that helps users discover visual patterns, browse naturally, and move through content without manual reloading or complexity.",
+      "primaryLanguage": {
+        "name": "JavaScript"
+      },
+      "languages": [
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "HTML"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/image-gallery/master/.github/preview.png"
+    },
+    {
+      "id": "MDEwOlJlcG9zaXRvcnkyNTE3MjQyNjc=",
+      "name": "scss-helpers",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "master"
+      },
+      "homepageUrl": "https://marcllobet.github.io/scss-helpers/",
+      "url": "https://github.com/MarcLlobet/scss-helpers",
+      "description": "Created to avoid repeating the same styling logic across projects, this collection of helpers brings structure and consistency to visual decisions, helping developers reason about design rules and apply them with ease.",
+      "primaryLanguage": {
+        "name": "HTML"
+      },
+      "languages": [
+        {
+          "name": "JavaScript"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "SCSS"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/scss-helpers/master/.github/preview.png"
+    }
+  ],
+  "queryId": "github-repos"
+}

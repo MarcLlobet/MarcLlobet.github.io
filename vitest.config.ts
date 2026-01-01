@@ -6,13 +6,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    exclude: [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/.storybook/**",
-      "**/*.stories.*",
-      "**/storybook-static/**",
-    ],
-    setupFiles: ["./src/setupTests.ts"],
+    exclude: ["**/node_modules/**", "**/dist/**", "**/out/**", "**/.next/**"],
+    setupFiles: ["./setupTests.ts"],
   },
 });

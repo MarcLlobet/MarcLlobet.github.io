@@ -1,8 +1,19 @@
 import "dotenv/config";
 import { chromium } from "playwright-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import type { Pen } from "../src/services";
 import { createReport } from "./common";
+
+type Pen = {
+  name: string;
+  href: string;
+  description: string;
+  slug: string;
+  link: string;
+  preview: {
+    small: string;
+    large: string;
+  };
+};
 
 chromium.use(StealthPlugin());
 

@@ -1,6 +1,20 @@
 import type { GraphQlQueryResponseData } from "@octokit/graphql";
 import { githubApi, GH_API_USERNAME, createReport } from "./common";
-import type { Repository } from "../src/services";
+
+type Repository = {
+  id: string;
+  name: string;
+  isArchived: boolean;
+  owner: { login: string };
+  defaultBranchRef: { name: string };
+  homepageUrl: string;
+  url: string;
+  description: string;
+  primaryLanguage: { name: string };
+  languages: { name: string; color?: string }[];
+  topics: string[];
+  preview: string;
+};
 
 type RepositoryGraphQL = {
   id: string;

@@ -22,7 +22,7 @@ export const createReport = async <T>(
 ) => {
   const response: T = await asyncIntructions();
   writeFileSync(
-    `public/data/${name}.json`,
+    `app/public/data/${name}.json`,
     JSON.stringify(
       {
         data: response,

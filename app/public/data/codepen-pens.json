@@ -1,0 +1,71 @@
+{
+  "data": [
+    {
+      "name": "Improved logo animation",
+      "href": "https://codepen.io/llobet/pen/PovmpKj",
+      "description": "A dynamic SVG logo animation created using animateTransform and path elements. The project emphasizes smooth, hardware-accelerated motion and clean markup, with a focus on accessibility and maintainable code structure.",
+      "slug": "PovmpKj",
+      "link": "https://codepen.io/llobet/full/PovmpKj",
+      "preview": {
+        "small": "https://codepen.io/llobet/pen/PovmpKj/image/small.png",
+        "large": "https://codepen.io/llobet/pen/PovmpKj/image/large.png"
+      }
+    },
+    {
+      "name": "Pencil with wings",
+      "href": "https://codepen.io/llobet/pen/yLzmBWP",
+      "description": "An expressive SVG emoji depicting a pencil with wings, built using SVG features like clipPath and semantic  tags. The design ensures both visual and code clarity.",
+      "slug": "yLzmBWP",
+      "link": "https://codepen.io/llobet/full/yLzmBWP",
+      "preview": {
+        "small": "https://codepen.io/llobet/pen/yLzmBWP/image/small.png",
+        "large": "https://codepen.io/llobet/pen/yLzmBWP/image/large.png"
+      }
+    },
+    {
+      "name": "Penrose triangle",
+      "href": "https://codepen.io/llobet/pen/qBOEMBm",
+      "description": "A geometric composition leveraging Snap.svg to layer gradients and paths. The project explores dynamic color blending and shape construction, balancing aesthetics with efficient, readable JavaScript-driven SVG code.",
+      "slug": "qBOEMBm",
+      "link": "https://codepen.io/llobet/full/qBOEMBm",
+      "preview": {
+        "small": "https://codepen.io/llobet/pen/qBOEMBm/image/small.png",
+        "large": "https://codepen.io/llobet/pen/qBOEMBm/image/large.png"
+      }
+    },
+    {
+      "name": "CV template",
+      "href": "https://codepen.io/llobet/pen/dyowayQ",
+      "description": "A modern CV template featuring a responsive layout, theme switching, and a custom SVG-based skills graph. The design integrates UI/UX best practices with advanced SVG path manipulation for a polished, interactive user experience.",
+      "slug": "dyowayQ",
+      "link": "https://codepen.io/llobet/full/dyowayQ",
+      "preview": {
+        "small": "https://codepen.io/llobet/pen/dyowayQ/image/small.png",
+        "large": "https://codepen.io/llobet/pen/dyowayQ/image/large.png"
+      }
+    },
+    {
+      "name": "Countdown",
+      "href": "https://codepen.io/llobet/pen/aWdWVZ",
+      "description": "An interactive countdown timer combining SVG graphics with accessible form controls. The timer synchronizes SVG transforms with user input, using animation, accessibility, and UI logic.",
+      "slug": "aWdWVZ",
+      "link": "https://codepen.io/llobet/full/aWdWVZ",
+      "preview": {
+        "small": "https://codepen.io/llobet/pen/aWdWVZ/image/small.png",
+        "large": "https://codepen.io/llobet/pen/aWdWVZ/image/large.png"
+      }
+    },
+    {
+      "name": "Power",
+      "href": "https://codepen.io/llobet/pen/qRPREy",
+      "description": "A minimal SVG power button featuring a smooth animated transition. The project highlights clean design and straightforward SVG animation for an intuitive user interaction.",
+      "slug": "qRPREy",
+      "link": "https://codepen.io/llobet/full/qRPREy",
+      "preview": {
+        "small": "https://codepen.io/llobet/pen/qRPREy/image/small.png",
+        "large": "https://codepen.io/llobet/pen/qRPREy/image/large.png"
+      }
+    }
+  ],
+  "queryId": "codepen-pens"
+}

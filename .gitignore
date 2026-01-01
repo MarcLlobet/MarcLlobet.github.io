@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+out
+.next
 *.local
 
 # Editor directories and files
@@ -23,10 +25,19 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment and secrets
 .env
+
+# Storybook
 *storybook.log
 storybook-static
 
-# generated file by scripts/get-codepen-pens.ts
-public/data/**
-!public/data/.gitkeep
+# TypeScript build cache
+tsconfig.tsbuildinfo
+
+# Claude Code
+.claude
+
+# Generated data files
+app/public/data/**
+!app/public/data/.gitkeep
