@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "dev": "npm run fetch-data && next dev",
     "build": "npm run fetch-data && next build",
@@ -49,6 +58,7 @@
     "husky": "^9.1.7",
     "jest-styled-components": "^7.2.0",
     "jsdom": "^27.4.0",
+    "lint-staged": "^16.2.7",
     "msw": "^2.12.7",
     "playwright": "^1.57.0",
     "playwright-extra": "^4.3.6",

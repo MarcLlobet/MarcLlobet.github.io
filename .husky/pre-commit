@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 
-pnpm exec prettier -w .
-pnpm exec eslint --fix .
+pnpm exec lint-staged
 pnpm run test

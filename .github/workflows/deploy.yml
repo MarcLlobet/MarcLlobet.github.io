@@ -49,9 +49,6 @@ jobs:
       - name: Build Storybook
         run: pnpm build-storybook --output-dir ./out/storybook
 
-      - name: Add .nojekyll file
-        run: touch ./out/.nojekyll
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
