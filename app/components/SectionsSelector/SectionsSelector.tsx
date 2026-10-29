@@ -1,6 +1,5 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import { useCurrentSection } from "../../utils/useCurrentSection";
 import { SectionSelector } from "../SectionSelector";
 import { SectionsSelectorWrapper } from "./SectionsSelector.styles";
@@ -14,10 +13,7 @@ export const SectionsSelector = ({ repositories }: SectionsSelectorProps) => {
   const currentSection = useCurrentSection(repositories);
 
   return (
-    <SectionsSelectorWrapper
-      role="menu"
-      style={{ "--sections": repositories.length } as CSSProperties}
-    >
+    <SectionsSelectorWrapper role="menu" $sections={repositories.length}>
       {repositories.map((repository) => (
         <SectionSelector
           key={repository.id}

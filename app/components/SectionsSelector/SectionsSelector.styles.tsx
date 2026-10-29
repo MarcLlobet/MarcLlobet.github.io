@@ -2,7 +2,8 @@
 
 import styled from "styled-components";
 
-export const SectionsSelectorWrapper = styled.div`
+export const SectionsSelectorWrapper = styled.div<{ $sections: number }>`
+  --sections: ${({ $sections }) => $sections};
   display: flex;
   flex-direction: column;
   justify-content: center;

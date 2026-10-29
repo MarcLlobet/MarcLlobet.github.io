@@ -2,7 +2,8 @@
 
 import styled from "styled-components";
 
-export const StyledTitle = styled.h2`
+export const StyledTitle = styled.h2<{ $longestWord: number }>`
+  --longest-word: ${({ $longestWord }) => $longestWord};
   grid-area: title;
   margin: 0;
   padding-block: 0 clamp(0rem, 3cqi, 2rem);
