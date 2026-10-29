@@ -39,7 +39,7 @@ jobs:
         run: pnpm run lint
 
       - name: Run stylelint
-        run: pnpm run lint:css
+        run: pnpm run lint:css --formatter github
 
       - name: Run unit tests
         run: pnpm exec vitest run
