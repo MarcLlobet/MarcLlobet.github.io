@@ -9,7 +9,6 @@ export const SectionsSelectorWrapper = styled.div<{ $sections: number }>`
   justify-content: center;
   min-inline-size: var(--selector-size);
   max-block-size: 100%;
-  /* Shrink the gap so every selector fits, even on a landscape phone */
   gap: clamp(
     2px,
     (
@@ -19,7 +18,6 @@ export const SectionsSelectorWrapper = styled.div<{ $sections: number }>`
       max(var(--sections, 1) - 1, 1),
     var(--space-s)
   );
-  /* Last resort when there are too many projects to fit */
   overflow: auto;
   scrollbar-width: none;
 `;

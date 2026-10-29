@@ -12,7 +12,6 @@ export const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
   align-items: center;
   padding-inline: max(var(--space-gutter), env(safe-area-inset-left))
     max(var(--space-gutter), env(safe-area-inset-right));
-  /* Long bios scroll instead of being cut on small screens */
   overflow: auto;
   overscroll-behavior: contain;
   background-color: var(--color-bg);

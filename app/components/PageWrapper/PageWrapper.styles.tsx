@@ -27,7 +27,6 @@ export const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  /* Sections lay themselves out against this column's width */
   container-type: inline-size;
 `;
 
@@ -55,9 +54,6 @@ const revealOnScroll = keyframes`
   }
 `;
 
-/* A link to #top. It fades in once you are halfway down the page, driven by
-   the scroll position in CSS; browsers without scroll-driven animations
-   simply always show it. */
 export const ScrollToTopButton = styled.a`
   display: inline-flex;
   align-items: center;

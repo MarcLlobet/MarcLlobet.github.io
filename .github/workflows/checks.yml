@@ -36,7 +36,6 @@ jobs:
         run: pnpm run lint
 
       - name: Run stylelint
-        # Problems are shown as annotations on the changed lines of a PR
         run: |
           status=0
           pnpm run --silent lint:css --formatter json 2> stylelint.json || status=$?
@@ -82,8 +81,11 @@ jobs:
       - name: Install playwright chromium browser
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Build site (with committed data)
-        run: pnpm exec next build
+      - name: Build site
+        run: pnpm build
+        env:
+          GH_API_TOKEN: ${{ secrets.API_TOKEN }}
+          GH_API_USERNAME: ${{ secrets.API_USERNAME }}
 
       - name: Check layout at every viewport
         run: pnpm check:layout

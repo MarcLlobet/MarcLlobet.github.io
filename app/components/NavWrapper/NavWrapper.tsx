@@ -37,7 +37,6 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
   };
 
   const handleClick = () => {
-    // Also load here: keyboard and touch users may never trigger a hover
     setShouldLoadBio(true);
     setShowBio(true);
   };
