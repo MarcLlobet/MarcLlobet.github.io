@@ -1,0 +1,118 @@
+[
+  {
+    "viewport": {
+      "name": "phone-xs",
+      "width": 320,
+      "height": 568
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "phone-android",
+      "width": 360,
+      "height": 740
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "phone-iphone",
+      "width": 390,
+      "height": 844
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "phone-landscape",
+      "width": 844,
+      "height": 390
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "phone-se-landscape",
+      "width": 667,
+      "height": 375
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "tablet-landscape",
+      "width": 1024,
+      "height": 768
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "laptop",
+      "width": 1280,
+      "height": 800
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "desktop-fhd",
+      "width": 1920,
+      "height": 1080
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "phone-iphone-rtl",
+      "width": 390,
+      "height": 844,
+      "dir": "rtl"
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "laptop-rtl",
+      "width": 1280,
+      "height": 800,
+      "dir": "rtl"
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "phone-iphone-light",
+      "width": 390,
+      "height": 844,
+      "theme": "light"
+    },
+    "problems": []
+  },
+  {
+    "viewport": {
+      "name": "laptop-light",
+      "width": 1280,
+      "height": 800,
+      "theme": "light"
+    },
+    "problems": []
+  }
+]
