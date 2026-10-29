@@ -32,11 +32,14 @@ export const StyledSectionWrapper = styled.section`
 
   /* The query container is <main>, so this follows the column width */
   @container (min-width: 36rem) {
+    /* Title on top, then text and preview side by side; the preview is as
+       tall as the text and the whole block sits in the middle of the screen */
     grid-template-columns: minmax(0, 36ch) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
     grid-template-areas:
       "title title"
       "text image";
+    align-content: center;
     column-gap: clamp(var(--spacing), 4cqi, calc(var(--spacing) * 3));
   }
 `;
@@ -84,7 +87,7 @@ export const PreviewImage = styled.img`
   }
 
   @container (min-width: 36rem) {
-    object-position: right center;
+    object-position: right top;
   }
 `;
 
