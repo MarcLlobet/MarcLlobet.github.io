@@ -26,12 +26,14 @@ pnpm check:layout # After a build: check the layout at 10 viewports
 - **Logical properties only**: inline/block instead of width/height and left/right, enforced by Stylelint.
 - **Navigation works without JavaScript**: the section rail, the skip link and the scroll-to-top button are plain `#anchor` links; `scroll-behavior: smooth` animates them (except with reduced motion), and the scroll-to-top button fades in with a CSS scroll-driven animation. JavaScript only adds the highlight of the current section.
 
+- **Colour contrast**: every text colour meets WCAG AA (4.5:1) in both themes. Use `--color-accent` for shapes and large letters, and `--color-accent-text` when the accent colours normal-size text.
+
 ### Layout checks
 
 Two tools keep the layout from breaking on other screens:
 
 - **Stylelint** (`.stylelintrc.json`) lints the CSS written in styled-components. Besides catching invalid or duplicated declarations, it only allows logical properties (`inline-size`, `inset-block-start`, `margin-inline-end`, `text-align: start`…) so the layout works in any writing direction, rejects `100vw`/`100dvw` widths (they include the scrollbar and cause sideways scrolling) and `vh` (use `svh`/`dvh`, which account for the mobile browser bars).
-- **Layout check** (`scripts/check-layout.ts`) serves the static build, opens it in Chromium at 10 viewports, from a 320px phone to a 1920px screen, including landscape phones, and fails if the page scrolls sideways, an element sticks out of the screen, a project spills out of its section or is taller than one screen, the name collides with the shape, a touch target is under 24×24px or the About text gets cut. It also checks that the section rail keeps its margin, and renders two of the viewports right-to-left. Screenshots and a report are saved to `layout-report/`.
+- **Layout check** (`scripts/check-layout.ts`) serves the static build, opens it in Chromium at 10 viewports, from a 320px phone to a 1920px screen, including landscape phones, and fails if the page scrolls sideways, an element sticks out of the screen, a project spills out of its section or is taller than one screen, the name collides with the shape, a touch target is under 24×24px or the About text gets cut. It also checks WCAG AA text contrast, that the section rail keeps its margin, and renders some viewports right-to-left and in the light theme. Screenshots and a report are saved to `layout-report/`.
 
 Both run on every pull request and branch in the **Checks** workflow; the screenshots are attached to the run as the `layout-report` artifact.
 
