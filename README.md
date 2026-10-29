@@ -47,7 +47,7 @@ Set `GH_API_TOKEN` (a token that can read public repos) and optionally `GH_API_U
 
 ### When the site rebuilds
 
-The **CI** workflow builds and deploys on every push to `main`, every day at 05:17 UTC, by hand from the Actions tab, and when another repository sends a `refresh-portfolio` event:
+The **CI** workflow builds and deploys on every push to `main`, by hand from the Actions tab, and when another repository sends a `refresh-portfolio` event:
 
 ```bash
 gh api repos/MarcLlobet/MarcLlobet.github.io/dispatches -f event_type=refresh-portfolio
@@ -78,7 +78,7 @@ The site supports both light and dark (default) themes.
 ### Done
 
 - Fluid, breakpoint-light responsive layout and automated layout checks
-- Build-time data fetching; daily and cross-repo rebuilds
+- Build-time data fetching; rebuilds triggered by pushes and other repositories
 - Review accessibility (html-validate added)
 - Migrate from Vite to Next.js (App Router)
 - Component architecture with co-located styles, stories, and tests

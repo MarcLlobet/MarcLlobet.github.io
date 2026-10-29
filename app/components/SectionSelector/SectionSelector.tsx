@@ -44,7 +44,6 @@ export const SectionSelector = ({
 
   return (
     <StyledSectionSelector
-      // A plain anchor: the browser scrolls (smoothly, via CSS) with no JS
       href={`#${repository.name}`}
       role="menuitemradio"
       aria-checked={isSelected}

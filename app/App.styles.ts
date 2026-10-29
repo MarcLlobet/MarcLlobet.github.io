@@ -12,8 +12,6 @@ const AnimationWrapper = styled.span`
   animation-duration: 2s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   animation-fill-mode: forwards;
-  /* inline-block, not inline-flex: flex items would reverse the letters
-     of "Ll·o·bet" in right-to-left */
   display: inline-block;
 `;
 
@@ -28,8 +26,6 @@ export const NameWrapper = styled.h1`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  /* Scales with the screen width, but never taller than ~1/6 of the screen
-     so it also fits on landscape phones */
   font-size: clamp(3rem, min(15vw, 17svh), 6.5rem);
   line-height: 0.875;
 `;
@@ -70,7 +66,6 @@ export const CircularShape = styled.div`
   z-index: 0;
   pointer-events: none;
 
-  /* Portrait phones: no room beside the name, so it rests under it */
   @media (max-width: 599px) and (orientation: portrait) {
     grid-area: hero;
     align-self: end;
@@ -87,8 +82,6 @@ export const CircularShape = styled.div`
 export const CircularShapeWrapper = styled.div`
   display: flex;
 
-  /* The rotation lives inside the SVG, so it never changes the layout box
-     (rotating the box itself made it stick out of the screen). */
   svg {
     overflow: visible;
   }
@@ -99,7 +92,6 @@ export const CircularShapeWrapper = styled.div`
     animation: ${CircularAnimation} 5s linear infinite;
   }
 
-  /* Mirror the orbit for right-to-left: opposite pivot and direction */
   &:dir(rtl) path {
     transform-origin: 50% 30%;
     animation-direction: reverse;
@@ -134,8 +126,6 @@ export const MainWrapper = styled.div`
     "hero"
     "page";
 
-  /* Wider screens: the shape gets its own column and follows the scroll
-     without covering the projects */
   @media (min-width: 600px), (orientation: landscape) {
     grid-template-columns: minmax(0, 1fr) var(--shape-size);
     column-gap: var(--space-gutter);
@@ -149,7 +139,6 @@ export const MainWrapper = styled.div`
 export const WindowWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  /* The rail sits one gutter from the edge and one gutter from the content */
   gap: var(--space-s) var(--space-gutter);
   inline-size: 100%;
   min-inline-size: 0;

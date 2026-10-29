@@ -1,15 +1,3 @@
-/**
- * Portfolio data, fetched from GitHub while `next build` renders the page.
- *
- * GitHub is the single source of truth: public, non-fork repositories with
- * the `demo` topic, plus the profile bio. Nothing is written to disk; the
- * static export simply contains whatever GitHub returned at build time.
- *
- * Without GH_API_TOKEN (local development, pull requests from forks) the
- * build falls back to `fixtures/portfolio.json`, unless
- * PORTFOLIO_REQUIRE_LIVE_DATA=true, which the deploy workflow sets so a
- * fixture snapshot can never be published.
- */
 import { graphql } from "@octokit/graphql";
 import type { Bio, Repository } from "../types";
 import fixtures from "./fixtures/portfolio.json";
@@ -86,7 +74,6 @@ const toRepository = (node: RepositoryNode): Repository => {
     primaryLanguage: node.primaryLanguage ?? { name: "" },
     languages: node.languages?.nodes ?? [],
     topics: node.repositoryTopics?.nodes.map(({ topic }) => topic.name) ?? [],
-    // The OpenGraph social preview is unreliable, so each repo ships its own
     preview: `https://raw.githubusercontent.com/${node.owner.login}/${node.name}/${branch}/.github/preview.png`,
   };
 };

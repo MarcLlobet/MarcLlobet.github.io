@@ -1,26 +1,3 @@
-/**
- * Layout regression check.
- *
- * Serves the static export in `out/`, opens it in Chromium at a set of
- * real-world viewports and reports layout problems that are easy to miss
- * when you only look at the site on your own screen:
- *
- * - horizontal overflow (the page can be scrolled sideways)
- * - elements that stick out of the viewport
- * - project sections whose content spills out of the section
- * - projects that do not fit in one screen
- * - the hero name colliding with the rotating shape
- * - tap targets smaller than 24×24px (WCAG 2.2 AA)
- * - the section rail hugging the edge of the screen
- * - text below WCAG AA contrast, in the dark and the light theme
- * - all of the above in right-to-left too (logical properties)
- *
- * Usage:
- *   pnpm build && pnpm check:layout            # fails on problems
- *   pnpm check:layout --report-only            # just writes the report
- *
- * Screenshots and a report are written to `layout-report/`.
- */
 import { createServer, type Server } from "node:http";
 import { readFile, mkdir, writeFile, stat } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
@@ -34,9 +11,7 @@ type Viewport = {
   name: string;
   width: number;
   height: number;
-  /** Render the page right-to-left to check the logical properties */
   dir?: "rtl";
-  /** Switch to the light theme (the site defaults to dark) */
   theme?: "light";
 };
 
@@ -105,7 +80,6 @@ const serve = (): Promise<{ server: Server; url: string }> =>
 
 type Problem = { check: string; detail: string };
 
-/** Runs in the browser. Keep it self-contained. */
 const inspectPage = () => {
   const problems: { check: string; detail: string }[] = [];
   const doc = document.documentElement;
@@ -213,7 +187,6 @@ const inspectPage = () => {
     }
   }
 
-  // The section rail should never hug the edge of the screen.
   const rail = document.querySelector("aside a");
   if (rail) {
     const rect = rail.getBoundingClientRect();
@@ -227,7 +200,6 @@ const inspectPage = () => {
     }
   }
 
-  // Only touch screens need big targets (WCAG 2.2 AA asks for 24×24px).
   const isTouch = matchMedia("(pointer: coarse)").matches;
   const small: string[] = [];
   const targets = isTouch
@@ -251,11 +223,6 @@ const inspectPage = () => {
   return problems;
 };
 
-/**
- * Runs in the browser: WCAG 2.x contrast of every visible piece of text
- * against the nearest solid background. 4.5:1 for normal text, 3:1 for
- * large text (24px, or 18.66px bold).
- */
 const CONTRAST_SCRIPT = `
 window.__checkContrast = (root) => {
   const parse = (value) => {
@@ -328,8 +295,6 @@ const run = async () => {
       isMobile: isPhone,
       hasTouch: isPhone,
     });
-    // tsx/esbuild may wrap functions with a `__name` helper that does not
-    // exist inside the browser, so provide a no-op one.
     await context.addInitScript("window.__name = (fn) => fn;");
     await context.addInitScript(CONTRAST_SCRIPT);
     const page = await context.newPage();
@@ -344,7 +309,6 @@ const run = async () => {
         document.documentElement.dir = dir;
       }, viewport.dir);
     }
-    // The name animates its weight and the projects fade in after 2s.
     await settle(page, 2600);
 
     const problems = await page.evaluate(inspectPage);

@@ -36,7 +36,6 @@ jobs:
         run: pnpm run lint
 
       - name: Run stylelint
-        # Problems are shown as annotations on the changed lines of a PR
         run: |
           status=0
           pnpm run --silent lint:css --formatter json 2> stylelint.json || status=$?
@@ -82,8 +81,6 @@ jobs:
       - name: Install playwright chromium browser
         run: pnpm exec playwright install --with-deps chromium
 
-      # Live GitHub data when the secret is available (pushes and PRs from
-      # this repo); fixtures for PRs from forks
       - name: Build site
         run: pnpm build
         env:

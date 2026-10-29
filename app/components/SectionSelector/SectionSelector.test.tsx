@@ -34,7 +34,6 @@ describe("SectionSelector", () => {
     const link = screen.getByRole("menuitemradio", {
       name: "Go to repo-1 section",
     });
-    // fireEvent returns false when a handler calls preventDefault()
     expect(fireEvent.click(link)).toBe(true);
     expect(link).toHaveAttribute("href", "#repo-1");
   });

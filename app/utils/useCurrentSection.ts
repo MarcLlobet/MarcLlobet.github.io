@@ -13,8 +13,6 @@ export const useCurrentSection = (repositories: Repository[]) => {
     const sections = document.getElementsByClassName("page-section");
 
     const onScroll = throttle(() => {
-      // Read positions on every check: they change when fonts or images
-      // load, or when the window is resized or the phone is rotated.
       const sectionsBoundary = Array.from(sections).map((section) => ({
         top: (section as HTMLElement).offsetTop,
         name: section.id as Repository["name"],

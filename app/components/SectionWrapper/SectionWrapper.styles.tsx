@@ -2,9 +2,6 @@
 
 import styled from "styled-components";
 
-/* One project = one screen. Title and text keep their size; the preview
-   takes whatever space is left. The section only grows past the screen
-   if the text alone does not fit. */
 export const StyledSectionWrapper = styled.section`
   min-block-size: 100svh;
   inline-size: 100%;
@@ -17,13 +14,10 @@ export const StyledSectionWrapper = styled.section`
     "text";
   align-content: center;
   gap: var(--space-stack);
-  /* Leave room for the sticky nav at the top */
   padding-block-start: var(--nav-block-size);
   padding-block-end: var(--space-section-end);
   scroll-snap-align: start;
 
-  /* Short screens with a single column: no room for the preview, so the
-     title and text are centred on their own */
   @media (max-height: 600px) {
     grid-template-rows: auto auto;
     grid-template-areas:
@@ -31,10 +25,7 @@ export const StyledSectionWrapper = styled.section`
       "text";
   }
 
-  /* The query container is <main>, so this follows the column width */
   @container (min-width: 36rem) {
-    /* Title on top, then text and preview side by side; the preview is as
-       tall as the text and the whole block sits in the middle of the screen */
     grid-template-columns: minmax(0, 36ch) minmax(0, 1fr);
     grid-template-rows: auto auto;
     grid-template-areas:
@@ -45,7 +36,6 @@ export const StyledSectionWrapper = styled.section`
   }
 `;
 
-/* Kept for the markup; the grid lives on the section */
 export const InnerSectionWrapper = styled.div`
   display: contents;
 `;
@@ -56,9 +46,6 @@ export const PreviewFrame = styled.div`
   min-block-size: 0;
   max-inline-size: 650px;
   inline-size: 100%;
-  /* Reports no size of its own: on one column it gets a screenshot-like
-     height that still leaves room for the text; side by side it matches
-     the height of the text */
   contain: size;
   block-size: min(56cqi, 45svh);
 
@@ -67,7 +54,6 @@ export const PreviewFrame = styled.div`
     block-size: auto;
   }
 
-  /* Matches the short single-column layout of the section */
   @media (max-height: 600px) {
     display: none;
   }
@@ -83,7 +69,6 @@ export const PreviewImage = styled.img`
   inline-size: 100%;
   block-size: 100%;
   object-fit: contain;
-  /* object-position has no logical keywords, so flip it for RTL */
   object-position: left center;
 
   &:dir(rtl) {

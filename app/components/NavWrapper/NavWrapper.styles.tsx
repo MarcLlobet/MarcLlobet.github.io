@@ -14,7 +14,6 @@ export const StyledNavWrapper = styled.nav`
   justify-content: flex-end;
   inline-size: 100%;
   min-block-size: var(--nav-block-size);
-  /* Content scrolls underneath, so the bar needs its own background */
   background-color: var(--color-bg);
 `;
 
