@@ -39,7 +39,7 @@ export const HeroWrapper = styled.hgroup`
   min-inline-size: 0;
   min-block-size: calc(100svh - var(--nav-block-size));
   margin: 0;
-  padding-block: var(--spacing);
+  padding-block: var(--space-s);
 `;
 
 const CircularAnimation = keyframes`
@@ -64,7 +64,7 @@ export const CircularShape = styled.div`
   );
   color: var(--color-muted);
   position: sticky;
-  top: calc(50svh - var(--shape-size) / 2);
+  inset-block-start: calc(50svh - var(--shape-size) / 2);
   z-index: 0;
   pointer-events: none;
 
@@ -74,7 +74,7 @@ export const CircularShape = styled.div`
     align-self: end;
     justify-self: end;
     position: static;
-    margin-block: 0 calc(var(--spacing) * 2);
+    margin-block: 0 var(--space-l);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -101,10 +101,10 @@ export const CircularShapeWrapper = styled.div`
 export const AsideWrapper = styled.aside`
   flex-shrink: 0;
   block-size: 100svh;
-  padding-block: var(--spacing);
+  padding-block: var(--space-rail);
   display: flex;
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   justify-content: center;
   align-items: center;
   z-index: 2;
@@ -130,7 +130,7 @@ export const MainWrapper = styled.div`
      without covering the projects */
   @media (min-width: 600px), (orientation: landscape) {
     grid-template-columns: minmax(0, 1fr) var(--shape-size);
-    column-gap: clamp(var(--spacing), 3vw, calc(var(--spacing) * 3));
+    column-gap: var(--space-gutter);
     grid-template-areas:
       "nav nav"
       "hero shape"
@@ -141,7 +141,8 @@ export const MainWrapper = styled.div`
 export const WindowWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: var(--spacing) clamp(0.75rem, 2vw, calc(var(--spacing) * 2));
+  /* The rail sits one gutter from the edge and one gutter from the content */
+  gap: var(--space-s) var(--space-gutter);
   inline-size: 100%;
   min-inline-size: 0;
 `;

@@ -12,11 +12,14 @@ export const SectionsSelectorWrapper = styled.div<{ $sections: number }>`
   /* Shrink the gap so every selector fits, even on a landscape phone */
   gap: clamp(
     2px,
-    (100svh - var(--spacing) * 2 - var(--sections, 1) * var(--selector-size)) /
+    (
+        100svh - var(--space-rail) * 2 - var(--sections, 1) *
+          var(--selector-size)
+      ) /
       max(var(--sections, 1) - 1, 1),
-    var(--spacing)
+    var(--space-s)
   );
   /* Last resort when there are too many projects to fit */
-  overflow-y: auto;
+  overflow: auto;
   scrollbar-width: none;
 `;

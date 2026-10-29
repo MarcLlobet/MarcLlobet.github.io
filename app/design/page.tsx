@@ -8,8 +8,8 @@ import { FirstNameWrapper, SurnameWrapper, NameWrapper } from "../App.styles";
 
 const BackButton = styled.a`
   position: fixed;
-  top: calc(var(--spacing) * 1.5);
-  left: calc(var(--spacing) * 1.5);
+  inset-block-start: var(--space-m);
+  inset-inline-start: var(--space-m);
   background: none;
   border: none;
   cursor: pointer;
@@ -21,8 +21,8 @@ const BackButton = styled.a`
   justify-content: center;
 
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
     transform: rotate(-90deg);
   }
 
@@ -33,14 +33,14 @@ const BackButton = styled.a`
 
 const ThemeToggle = styled.button<{ $isLight: boolean }>`
   position: fixed;
-  top: calc(var(--spacing) * 1.5);
-  right: calc(var(--spacing) * 1.5);
+  inset-block-start: var(--space-m);
+  inset-inline-end: var(--space-m);
   background: var(--color-text);
   color: var(--color-bg);
   border: none;
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  inline-size: 44px;
+  block-size: 44px;
   cursor: pointer;
   font-size: 1.25rem;
   display: flex;
@@ -59,19 +59,20 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: calc(var(--spacing) * 4);
-  padding: calc(var(--spacing) * 2);
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: var(--space-l);
+  max-inline-size: 1200px;
+  margin-block: 0;
+  margin-inline: auto;
 `;
 
 const Header = styled.header`
-  border-bottom: 1px solid var(--color-muted);
-  padding-bottom: calc(var(--spacing) * 2);
+  border-block-end: 1px solid var(--color-muted);
+  padding-block-end: var(--space-l);
 `;
 
 const PageTitle = styled.h1`
   font-size: calc(1rem * var(--golden-ratio) * 2);
-  margin-bottom: var(--spacing);
+  margin-block-end: var(--spacing);
 `;
 
 const PageDescription = styled.p`
@@ -87,20 +88,20 @@ const Section = styled.section`
 const SectionTitle = styled.h2`
   font-size: calc(1rem * var(--golden-ratio) * 1.5);
   padding: 0;
-  border-bottom: 1px solid var(--color-muted);
-  padding-bottom: calc(var(--spacing) / 2);
+  border-block-end: 1px solid var(--color-muted);
+  padding-block-end: var(--space-2xs);
 `;
 
 const ComponentGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: calc(var(--spacing) * 2);
+  gap: var(--space-l);
 `;
 
 const ComponentCard = styled.div`
   background: color-mix(in srgb, var(--color-bg) 90%, var(--color-text) 10%);
   border-radius: 8px;
-  padding: calc(var(--spacing) * 1.5);
+  padding: var(--space-m);
   display: flex;
   flex-direction: column;
   gap: var(--spacing);
@@ -125,7 +126,7 @@ const ComponentPreview = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
+  min-block-size: 100px;
 `;
 
 const Label = styled.span`
@@ -139,7 +140,8 @@ const InteractiveButton = styled.button`
   background: var(--color-accent);
   color: white;
   border: none;
-  padding: calc(var(--spacing) / 2) var(--spacing);
+  padding-block: var(--space-2xs);
+  padding-inline: var(--spacing);
   border-radius: 4px;
   cursor: pointer;
   font-family: inherit;
@@ -154,8 +156,8 @@ const InteractiveButton = styled.button`
 `;
 
 const ColorSwatch = styled.div<{ $color: string }>`
-  width: 120px;
-  height: 120px;
+  inline-size: 120px;
+  block-size: 120px;
   border-radius: 8px;
   background: var(${(props) => props.$color});
   ${({ $color }) =>
@@ -167,7 +169,7 @@ const ColorSwatch = styled.div<{ $color: string }>`
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 4px;
+  padding-block-end: 4px;
 `;
 
 const ColorsGrid = styled.div`
@@ -179,7 +181,7 @@ const ColorsGrid = styled.div`
 const PreviewGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 400px;
-  gap: calc(var(--spacing) * 2);
+  gap: var(--space-l);
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -189,7 +191,7 @@ const PreviewGrid = styled.div`
 const PreviewCard = styled.div`
   background: color-mix(in srgb, var(--color-bg) 90%, var(--color-text) 10%);
   border-radius: 8px;
-  padding: calc(var(--spacing) * 1.5);
+  padding: var(--space-m);
   display: flex;
   flex-direction: column;
   gap: var(--spacing);
@@ -219,7 +221,7 @@ const DeviceFrame = styled.div<{
   $height: number;
   $maxHeight?: string;
 }>`
-  width: 100%;
+  inline-size: 100%;
   aspect-ratio: ${(props) => props.$width / props.$height};
   ${(props) => props.$maxHeight && `max-height: ${props.$maxHeight};`}
   background: var(--color-bg);
@@ -232,7 +234,7 @@ const DeviceFrame = styled.div<{
 const LayoutRowGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: calc(var(--spacing) * 2);
+  gap: var(--space-l);
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
@@ -245,8 +247,8 @@ const LayoutRowGrid = styled.div`
 
 // Simulated layout previews
 const LayoutPreview = styled.div<{ $direction: "row" | "column" }>`
-  width: 100%;
-  height: 100%;
+  inline-size: 100%;
+  block-size: 100%;
   display: flex;
   flex-direction: ${(props) => props.$direction};
   padding: 8px;
@@ -263,14 +265,14 @@ const PreviewAside = styled.div<{ $isTop?: boolean }>`
   ${(props) =>
     props.$isTop
       ? `
-    width: 100%;
-    height: 28px;
+    inline-size: 100%;
+    block-size: 28px;
     flex-shrink: 0;
     flex-direction: row;
   `
       : `
-    width: 28px;
-    height: 100%;
+    inline-size: 28px;
+    block-size: 100%;
     flex-shrink: 0;
     flex-direction: column;
   `}
@@ -316,14 +318,14 @@ const PreviewShape = styled.div<{ $animated?: boolean; $size: number }>`
 `;
 
 const PreviewNav = styled.div`
-  height: 16px;
+  block-size: 16px;
   background: color-mix(in srgb, var(--color-muted) 15%, transparent);
   border-radius: 2px;
   position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  width: calc(100% - 16px);
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  inset-inline-end: 8px;
+  inline-size: calc(100% - 16px);
 `;
 
 const MiniCircle = styled.div<{ $size?: number }>`
@@ -334,8 +336,8 @@ const MiniCircle = styled.div<{ $size?: number }>`
 `;
 
 const MiniTriangle = styled.div<{ $size?: number }>`
-  width: 0;
-  height: 0;
+  inline-size: 0;
+  block-size: 0;
   border-left: ${(props) => (props.$size || 8) / 2}px solid transparent;
   border-right: ${(props) => (props.$size || 8) / 2}px solid transparent;
   border-bottom: ${(props) => props.$size || 8}px solid var(--color-accent);
@@ -346,8 +348,8 @@ const SectionPreviewWrapper = styled.div<{
   $direction: "row" | "column";
   $centerVertical?: boolean;
 }>`
-  width: 100%;
-  height: 100%;
+  inline-size: 100%;
+  block-size: 100%;
   display: flex;
   flex-direction: ${(props) => props.$direction};
   padding: 12px;
@@ -371,7 +373,7 @@ const SectionPreviewTitle = styled.div<{ $fontSize: number }>`
   font-family: var(--stardom-stack);
   color: var(--color-heading);
   font-size: ${(props) => props.$fontSize}px;
-  width: 100%;
+  inline-size: 100%;
 `;
 
 const SectionImage = styled.div<{ $width: string; $order: number }>`
@@ -395,7 +397,7 @@ const SectionText = styled.div<{ $width: string; $gap: number }>`
 `;
 
 const TextLine = styled.div<{ $width: string }>`
-  height: 6px;
+  block-size: 6px;
   background: var(--color-text);
   border-radius: 2px;
   width: ${(props) => props.$width};
@@ -410,12 +412,12 @@ const TextLineAccent = styled(TextLine)`
 const SectionLinks = styled.div`
   display: flex;
   gap: 8px;
-  margin-top: 4px;
+  margin-block-start: 4px;
 `;
 
 const LinkPlaceholder = styled.div`
-  height: 6px;
-  width: 24px;
+  block-size: 6px;
+  inline-size: 24px;
   background: var(--color-muted);
   border-radius: 2px;
 `;
@@ -500,7 +502,7 @@ export default function DesignPage() {
           <ComponentPreview
             style={{
               justifyContent: "flex-start",
-              padding: "calc(var(--spacing) * 2)",
+              padding: "var(--space-l)",
             }}
           >
             <NameWrapper style={{ fontSize: "3.5rem", lineHeight: "3.5rem" }}>
@@ -524,7 +526,7 @@ export default function DesignPage() {
               gap: "2rem",
               flexWrap: "wrap",
               justifyContent: "flex-start",
-              padding: "calc(var(--spacing) * 2)",
+              padding: "var(--space-l)",
             }}
           >
             <Title title="fluency-report" />
@@ -543,7 +545,7 @@ export default function DesignPage() {
               flexDirection: "column",
               gap: "1rem",
               alignItems: "flex-start",
-              padding: "calc(var(--spacing) * 2)",
+              padding: "var(--space-l)",
             }}
           >
             <p style={{ margin: 0 }}>

@@ -16,9 +16,10 @@ export const StyledSectionWrapper = styled.section`
     "image"
     "text";
   align-content: center;
-  gap: clamp(0.75rem, 2svh, calc(var(--spacing) * 1.5));
+  gap: var(--space-stack);
   /* Leave room for the sticky nav at the top */
-  padding-block: var(--nav-block-size) clamp(1rem, 4svh, 3rem);
+  padding-block-start: var(--nav-block-size);
+  padding-block-end: var(--space-section-end);
   scroll-snap-align: start;
 
   /* Short screens with a single column: no room for the preview, so the
@@ -40,7 +41,7 @@ export const StyledSectionWrapper = styled.section`
       "title title"
       "text image";
     align-content: center;
-    column-gap: clamp(var(--spacing), 4cqi, calc(var(--spacing) * 3));
+    column-gap: var(--space-gutter);
   }
 `;
 
@@ -82,7 +83,12 @@ export const PreviewImage = styled.img`
   inline-size: 100%;
   block-size: 100%;
   object-fit: contain;
+  /* object-position has no logical keywords, so flip it for RTL */
   object-position: left center;
+
+  &:dir(rtl) {
+    object-position: right center;
+  }
   filter: grayscale(1);
   mix-blend-mode: plus-lighter;
 
@@ -92,6 +98,10 @@ export const PreviewImage = styled.img`
 
   @container (min-width: 36rem) {
     object-position: right top;
+
+    &:dir(rtl) {
+      object-position: left top;
+    }
   }
 `;
 
@@ -100,6 +110,6 @@ export const TextWrapper = styled.div`
   align-self: center;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.75rem, 2.5svh, calc(var(--spacing) * 2));
+  gap: var(--space-stack);
   max-inline-size: 60ch;
 `;

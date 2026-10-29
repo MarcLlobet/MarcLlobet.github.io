@@ -10,10 +10,10 @@ export const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-inline: max(var(--page-gutter), env(safe-area-inset-left))
-    max(var(--page-gutter), env(safe-area-inset-right));
+  padding-inline: max(var(--space-gutter), env(safe-area-inset-left))
+    max(var(--space-gutter), env(safe-area-inset-right));
   /* Long bios scroll instead of being cut on small screens */
-  overflow-y: auto;
+  overflow: auto;
   overscroll-behavior: contain;
   background-color: var(--color-bg);
   color: var(--color-accent);
@@ -26,8 +26,8 @@ export const CloseButton = styled.button<{ $showBio: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-inline-size: 2.75rem;
-  min-block-size: 2.75rem;
+  min-inline-size: var(--tap-target);
+  min-block-size: var(--tap-target);
   background: none;
   border: none;
   cursor: pointer;
@@ -42,7 +42,7 @@ export const TextWrapper = styled.div`
   gap: 1em;
   flex-shrink: 0;
   min-block-size: calc(100svh - var(--nav-block-size));
-  padding-block: var(--spacing) calc(var(--spacing) * 3);
+  padding-block: var(--space-s) var(--space-xl);
   font-size: clamp(1.25rem, 0.9rem + 2vmin, 2rem);
 
   p {

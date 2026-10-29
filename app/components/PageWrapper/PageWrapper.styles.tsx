@@ -32,40 +32,52 @@ export const MainWrapper = styled.main`
 `;
 
 export const Footer = styled.footer`
-  padding-block-end: var(--spacing);
-  padding-block-start: calc(var(--spacing) / 4);
+  padding-block-end: var(--space-s);
+  padding-block-start: var(--space-3xs);
   position: sticky;
-  bottom: 0;
+  inset-block-end: 0;
   display: flex;
-  gap: var(--spacing);
+  gap: var(--space-s);
   align-items: center;
   justify-content: flex-end;
   z-index: 1;
   inline-size: 100%;
 `;
 
-export const ScrollToTopButton = styled.button<{ $shouldShow: boolean }>`
-  background: none;
-  border: none;
-  font-size: var(--spacing);
-  line-height: var(--spacing);
-  font-weight: 500;
-  transition: opacity 300ms ease-in;
-  cursor: pointer;
-  pointer-events: ${(props) => (props.$shouldShow ? "auto" : "none")};
-  opacity: ${(props) => (props.$shouldShow ? 1 : 0)};
-  color: var(--color-muted);
-  &:hover {
-    color: var(--color-accent);
+const revealOnScroll = keyframes`
+  from {
+    opacity: 0;
+    visibility: hidden;
   }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+`;
+
+/* A link to #top. It fades in once you are halfway down the page, driven by
+   the scroll position in CSS; browsers without scroll-driven animations
+   simply always show it. */
+export const ScrollToTopButton = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-inline-size: 2.75rem;
-  min-block-size: 2.75rem;
+  min-inline-size: var(--tap-target);
+  min-block-size: var(--tap-target);
+  color: var(--color-muted);
+
+  &:hover {
+    color: var(--color-accent);
+  }
 
   svg {
     inline-size: 1.5rem;
     block-size: 1.5rem;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    animation: ${revealOnScroll} linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 40% 55%;
   }
 `;

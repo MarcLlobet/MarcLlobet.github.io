@@ -18,22 +18,6 @@ export const SectionSelector = ({
     reset: () => void;
   }>(null);
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    const targetId = event.currentTarget.getAttribute("href")?.substring(1);
-    if (targetId) {
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.getBoundingClientRect().top + window.scrollY,
-          behavior: "smooth",
-        });
-      }
-    }
-  };
-
   const isSelected = useMemo(
     () => repository.name === currentSection,
     [repository.name, currentSection],
@@ -60,8 +44,8 @@ export const SectionSelector = ({
 
   return (
     <StyledSectionSelector
+      // A plain anchor: the browser scrolls (smoothly, via CSS) with no JS
       href={`#${repository.name}`}
-      onClick={handleClick}
       role="menuitemradio"
       aria-checked={isSelected}
       aria-label={`Go to ${repository.name} section`}

@@ -11,6 +11,8 @@
  * - projects that do not fit in one screen
  * - the hero name colliding with the rotating shape
  * - tap targets smaller than 24×24px (WCAG 2.2 AA)
+ * - the section rail hugging the edge of the screen
+ * - all of the above in right-to-left too (logical properties)
  *
  * Usage:
  *   pnpm build && pnpm check:layout            # fails on problems
@@ -27,7 +29,13 @@ const OUT_DIR = "out";
 const REPORT_DIR = "layout-report";
 const REPORT_ONLY = process.argv.includes("--report-only");
 
-type Viewport = { name: string; width: number; height: number };
+type Viewport = {
+  name: string;
+  width: number;
+  height: number;
+  /** Render the page right-to-left to check the logical properties */
+  dir?: "rtl";
+};
 
 const VIEWPORTS: Viewport[] = [
   { name: "phone-xs", width: 320, height: 568 },
@@ -40,6 +48,8 @@ const VIEWPORTS: Viewport[] = [
   { name: "laptop", width: 1280, height: 800 },
   { name: "desktop", width: 1440, height: 900 },
   { name: "desktop-fhd", width: 1920, height: 1080 },
+  { name: "phone-iphone-rtl", width: 390, height: 844, dir: "rtl" },
+  { name: "laptop-rtl", width: 1280, height: 800, dir: "rtl" },
 ];
 
 const MIME: Record<string, string> = {
@@ -198,6 +208,20 @@ const inspectPage = () => {
     }
   }
 
+  // The section rail should never hug the edge of the screen.
+  const rail = document.querySelector("aside a");
+  if (rail) {
+    const rect = rail.getBoundingClientRect();
+    const isRtl = getComputedStyle(doc).direction === "rtl";
+    const edgeGap = isRtl ? viewportWidth - rect.right : rect.left;
+    if (edgeGap < 12) {
+      problems.push({
+        check: "rail-margin",
+        detail: `the section rail is only ${Math.round(edgeGap)}px from the edge`,
+      });
+    }
+  }
+
   // Only touch screens need big targets (WCAG 2.2 AA asks for 24×24px).
   const isTouch = matchMedia("(pointer: coarse)").matches;
   const small: string[] = [];
@@ -244,6 +268,11 @@ const run = async () => {
     await context.addInitScript("window.__name = (fn) => fn;");
     const page = await context.newPage();
     await page.goto(url, { waitUntil: "networkidle" });
+    if (viewport.dir) {
+      await page.evaluate((dir) => {
+        document.documentElement.dir = dir;
+      }, viewport.dir);
+    }
     // The name animates its weight and the projects fade in after 2s.
     await settle(page, 2600);
 

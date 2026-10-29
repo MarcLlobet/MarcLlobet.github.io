@@ -6,10 +6,10 @@ const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
   padding-inline-start: 5dvw;
   padding-inline-end: 5dvw;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  inset-block-end: 0;
   background-color: var(--color-bg);
   color: var(--color-accent);
   display: flex;
@@ -41,7 +41,7 @@ const TextWrapper = styled.div`
   block-size: calc(100dvh - 66px);
 
   p {
-    max-width: 32ch;
+    max-inline-size: 32ch;
   }
 `;
 

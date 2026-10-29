@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SectionSelector } from "./SectionSelector";
 
@@ -27,20 +27,15 @@ describe("SectionSelector", () => {
     expect(link).toHaveAttribute("aria-checked", "true");
   });
 
-  it("scrolls to section on click", () => {
-    window.scrollTo = vi.fn();
-
-    const dummy = document.createElement("div");
-    dummy.id = "repo-1";
-    document.body.appendChild(dummy);
+  it("is a native anchor, so navigation works without JavaScript", () => {
     render(
       <SectionSelector repository={mockRepository} currentSection={null} />,
     );
     const link = screen.getByRole("menuitemradio", {
       name: "Go to repo-1 section",
     });
-    fireEvent.click(link);
-    expect(window.scrollTo).toHaveBeenCalled();
-    document.body.removeChild(dummy);
+    // fireEvent returns false when a handler calls preventDefault()
+    expect(fireEvent.click(link)).toBe(true);
+    expect(link).toHaveAttribute("href", "#repo-1");
   });
 });

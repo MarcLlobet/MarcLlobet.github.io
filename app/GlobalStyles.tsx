@@ -39,12 +39,28 @@ const Stardom = `
 const GenericStyles = `
 :root {
   --golden-ratio: 1.61803398875;
-  --spacing: 1rem;
 
-  /* Layout tokens: every size below is fluid, so there are no breakpoints
-     for "small phone", "landscape phone", etc. */
-  --page-gutter: clamp(0.75rem, 0.25rem + 2.5vw, 2rem);
+  /* Spacing scale. Use these instead of multiplying --spacing. */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  /* Legacy alias, kept for the design page and stories */
+  --spacing: var(--space-s);
+
+  /* Fluid layout spacing: grows with the screen, no breakpoints needed */
+  --space-gutter: clamp(var(--space-s), 0.5rem + 2.5vw, var(--space-xl));
+  --space-stack: clamp(var(--space-xs), 2svh, var(--space-m));
+  --space-section-end: clamp(var(--space-s), 4svh, var(--space-xl));
+  --space-rail: clamp(var(--space-2xs), 4svh, var(--nav-block-size));
+
+  /* Component sizes */
   --nav-block-size: 3.5rem;
+  --tap-target: var(--tap-target);
   --shape-size: clamp(64px, 10vmin + 2rem, 180px);
   --selector-size: 20px;
   font-family: var(--satoshi-stack);
@@ -82,14 +98,22 @@ html.light-theme {
   scroll-snap-align: start;
   inline-size: 100%;
   min-block-size: 100svh;
-  padding-inline: max(var(--page-gutter), env(safe-area-inset-left))
-    max(var(--page-gutter), env(safe-area-inset-right));
+  /* Same gutter on both sides; safe-area-inset-* are physical by spec */
+  padding-inline: max(var(--space-gutter), env(safe-area-inset-left))
+    max(var(--space-gutter), env(safe-area-inset-right));
 }
 
 /* Touch screens get bigger targets for the section selectors */
 @media (pointer: coarse) {
   :root {
     --selector-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    /* Native smooth scrolling for every #anchor link: no JS needed */
+    scroll-behavior: smooth;
   }
 }
 
@@ -137,10 +161,12 @@ button:focus-visible {
 /* Skip to content link */
 .skip-to-content {
   position: absolute;
-  top: -100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.5rem 1rem;
+  inset-block-start: -100%;
+  inset-inline: 0;
+  margin-inline: auto;
+  inline-size: fit-content;
+  padding-block: var(--space-2xs);
+  padding-inline: var(--space-s);
   background: var(--color-accent);
   color: var(--color-bg);
   text-decoration: none;
@@ -150,7 +176,7 @@ button:focus-visible {
 }
 
 .skip-to-content:focus {
-  top: 0;
+  inset-block-start: 0;
 }
 
 /* Reduced motion support */

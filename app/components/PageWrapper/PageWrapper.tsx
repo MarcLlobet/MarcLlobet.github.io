@@ -1,8 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
 import { SectionWrapper } from "../SectionWrapper";
-import { useCurrentSection } from "../../utils/useCurrentSection";
 import {
   ScreenWrapper,
   ColumnWrapper,
@@ -17,27 +15,6 @@ export type PageWrapperProps = {
 };
 
 export const PageWrapper = ({ repositories }: PageWrapperProps) => {
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const isLastSectionsByName = useMemo(
-    () =>
-      repositories.reduce(
-        (prev, repository, repositoryIndex) => ({
-          ...prev,
-          [repository.name]: repositoryIndex >= repositories.length / 2,
-        }),
-        {} as Record<Repository["name"], boolean>,
-      ),
-    [repositories],
-  );
-
-  const currentSection = useCurrentSection(repositories);
-
-  const isLastSections =
-    isLastSectionsByName[currentSection as string] ?? false;
-
   return (
     <ScreenWrapper>
       <ColumnWrapper>
@@ -46,12 +23,7 @@ export const PageWrapper = ({ repositories }: PageWrapperProps) => {
             <SectionWrapper key={repository.id} repository={repository} />
           ))}
           <Footer>
-            <ScrollToTopButton
-              type="button"
-              onClick={handleScrollTop}
-              $shouldShow={isLastSections}
-              aria-label="Scroll to top"
-            >
+            <ScrollToTopButton href="#top" aria-label="Scroll to top">
               <svg
                 stroke="currentColor"
                 strokeWidth={4}

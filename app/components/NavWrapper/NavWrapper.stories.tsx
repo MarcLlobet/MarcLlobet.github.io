@@ -4,7 +4,7 @@ import styled from "styled-components";
 const StyledNavWrapper = styled.nav`
   padding-block: var(--spacing);
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   display: flex;
   gap: var(--spacing);
   align-items: center;

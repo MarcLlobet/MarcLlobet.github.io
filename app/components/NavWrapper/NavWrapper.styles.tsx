@@ -5,11 +5,11 @@ import styled from "styled-components";
 export const StyledNavWrapper = styled.nav`
   grid-area: nav;
   position: sticky;
-  top: 0;
+  inset-block-start: 0;
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 0 var(--spacing);
+  gap: 0 var(--space-s);
   align-items: center;
   justify-content: flex-end;
   inline-size: 100%;
@@ -21,7 +21,7 @@ export const StyledNavWrapper = styled.nav`
 export const Button = styled.button`
   display: inline-flex;
   align-items: center;
-  min-block-size: 2.75rem;
+  min-block-size: var(--tap-target);
   background: none;
   border: none;
   font-size: 1rem;
