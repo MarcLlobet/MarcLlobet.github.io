@@ -27,6 +27,8 @@ export const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  /* Sections lay themselves out against this column's width */
+  container-type: inline-size;
 `;
 
 export const Footer = styled.footer`

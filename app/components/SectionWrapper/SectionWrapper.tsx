@@ -6,6 +6,7 @@ import { getSentenceList } from "../../utils/getSentenceList";
 import {
   StyledSectionWrapper,
   InnerSectionWrapper,
+  PreviewFrame,
   PreviewImage,
   TextWrapper,
 } from "./SectionWrapper.styles";
@@ -52,12 +53,14 @@ export const SectionWrapper = ({ repository }: SectionWrapperProps) => {
     >
       <InnerSectionWrapper>
         <Title title={repository.name} id={titleId} />
-        <PreviewImage
-          src={repository.preview}
-          alt={`Preview of ${repository.name} repository`}
-          loading="lazy"
-          decoding="async"
-        />
+        <PreviewFrame>
+          <PreviewImage
+            src={repository.preview}
+            alt={`Preview of ${repository.name} repository`}
+            loading="lazy"
+            decoding="async"
+          />
+        </PreviewFrame>
         <TextWrapper>
           <p>{repository.description}</p>
           <Languages

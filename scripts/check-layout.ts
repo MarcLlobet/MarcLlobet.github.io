@@ -8,6 +8,7 @@
  * - horizontal overflow (the page can be scrolled sideways)
  * - elements that stick out of the viewport
  * - project sections whose content spills out of the section
+ * - projects that do not fit in one screen
  * - the hero name colliding with the rotating shape
  * - tap targets smaller than 24×24px (WCAG 2.2 AA)
  *
@@ -133,6 +134,19 @@ const inspectPage = () => {
     problems.push({
       check: "outside-viewport",
       detail: [...outside].slice(0, 6).join(", "),
+    });
+  }
+
+  const viewportHeight = window.innerHeight;
+  const tooTall = [...document.querySelectorAll(".page-section")]
+    .filter(
+      (section) => section.getBoundingClientRect().height > viewportHeight + 1,
+    )
+    .map((section) => `#${section.id}`);
+  if (tooTall.length) {
+    problems.push({
+      check: "one-screen",
+      detail: `${tooTall.length} project(s) taller than the screen: ${tooTall.slice(0, 4).join(", ")}`,
     });
   }
 

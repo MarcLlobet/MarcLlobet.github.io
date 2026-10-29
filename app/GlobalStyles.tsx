@@ -96,8 +96,8 @@ html.light-theme {
 html {
   /* 16px on phones, growing to 20px on large screens */
   font-size: clamp(1rem, 0.85rem + 0.7vmin, 1.25rem);
-  /* proximity: sections can be taller than the screen without trapping scroll */
-  scroll-snap-type: y proximity;
+  /* Every project fits one screen, so each scroll lands on one project */
+  scroll-snap-type: y mandatory;
   background-color: var(--color-bg);
   color: var(--color-text);
   -webkit-text-size-adjust: 100%;
