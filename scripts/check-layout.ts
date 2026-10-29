@@ -318,6 +318,8 @@ const run = async () => {
 
   const results: { viewport: Viewport; problems: Problem[] }[] = [];
 
+  let projects: string[] = [];
+
   for (const viewport of VIEWPORTS) {
     const isPhone = Math.min(viewport.width, viewport.height) < 600;
     const context = await browser.newContext({
@@ -356,6 +358,9 @@ const run = async () => {
       path: `${REPORT_DIR}/${viewport.name}-1-home.png`,
     });
 
+    projects = await page.$$eval(".page-section", (sections) =>
+      sections.map((s) => s.id),
+    );
     const sectionTops = await page.$$eval(".page-section", (sections) =>
       sections.map((s) => (s as HTMLElement).offsetTop),
     );
@@ -404,7 +409,12 @@ const run = async () => {
   await browser.close();
   server.close();
 
-  const lines = ["# Layout report", ""];
+  const lines = [
+    "# Layout report",
+    "",
+    `${projects.length} projects on the page: ${projects.join(", ")}`,
+    "",
+  ];
   for (const { viewport, problems } of results) {
     const size = `${viewport.width}×${viewport.height}`;
     lines.push(
