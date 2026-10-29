@@ -25,7 +25,7 @@ pnpm check:layout # After a build: check the layout at 10 viewports
 Two tools keep the layout from breaking on other screens:
 
 - **Stylelint** (`.stylelintrc.json`) lints the CSS written in styled-components. Besides catching invalid or duplicated declarations, it rejects `100vw`/`100dvw` widths (they include the scrollbar and cause sideways scrolling) and `vh` (use `svh`/`dvh`, which account for the mobile browser bars).
-- **Layout check** (`scripts/check-layout.ts`) serves the static build, opens it in Chromium at 10 viewports, from a 320px phone to a 1920px screen, including landscape phones, and fails if the page scrolls sideways, an element sticks out of the screen, a project spills out of its section, the name collides with the shape, a touch target is under 24×24px or the About text gets cut. Screenshots and a report are saved to `layout-report/`.
+- **Layout check** (`scripts/check-layout.ts`) serves the static build, opens it in Chromium at 10 viewports, from a 320px phone to a 1920px screen, including landscape phones, and fails if the page scrolls sideways, an element sticks out of the screen, a project spills out of its section or is taller than one screen, the name collides with the shape, a touch target is under 24×24px or the About text gets cut. Screenshots and a report are saved to `layout-report/`.
 
 Both run on every pull request and branch in the **Checks** workflow; the screenshots are attached to the run as the `layout-report` artifact.
 
