@@ -39,7 +39,24 @@ jobs:
         run: pnpm run lint
 
       - name: Run stylelint
-        run: pnpm run lint:css --formatter github
+        # Problems are shown as annotations on the changed lines of a PR
+        run: |
+          status=0
+          pnpm run --silent lint:css --formatter json 2> stylelint.json || status=$?
+          node -e '
+            const fs = require("fs");
+            const raw = fs.readFileSync("stylelint.json", "utf8");
+            const start = raw.indexOf("[");
+            if (start === -1) { console.log(raw); process.exit(0); }
+            for (const file of JSON.parse(raw.slice(start))) {
+              const path = file.source.replace(process.cwd() + "/", "");
+              for (const w of file.warnings) {
+                const level = w.severity === "error" ? "error" : "warning";
+                console.log(`::${level} file=${path},line=${w.line},col=${w.column}::${w.text}`);
+              }
+            }
+          '
+          exit $status
 
       - name: Run unit tests
         run: pnpm exec vitest run
