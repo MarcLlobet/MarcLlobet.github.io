@@ -20,6 +20,16 @@ export const StyledSectionWrapper = styled.section`
   padding-block: var(--nav-block-size) clamp(1rem, 4svh, 3rem);
   scroll-snap-align: start;
 
+  /* Short screens with a single column: no room for the preview, so the
+     title and text are centred on their own */
+  @media (max-height: 600px) {
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "title"
+      "text";
+    align-content: center;
+  }
+
   /* The query container is <main>, so this follows the column width */
   @container (min-width: 36rem) {
     grid-template-columns: minmax(0, 36ch) minmax(0, 1fr);
@@ -49,9 +59,13 @@ export const PreviewFrame = styled.div`
     justify-self: end;
   }
 
-  /* Short portrait phones: too little room left to show a useful preview */
-  @media (orientation: portrait) and (max-height: 600px) {
+  /* Matches the short single-column layout of the section */
+  @media (max-height: 600px) {
     display: none;
+  }
+
+  @container (min-width: 36rem) {
+    display: block;
   }
 `;
 
@@ -80,5 +94,5 @@ export const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: clamp(0.75rem, 2.5svh, calc(var(--spacing) * 2));
-  max-inline-size: 36ch;
+  max-inline-size: 60ch;
 `;

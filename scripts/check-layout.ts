@@ -154,6 +154,7 @@ const inspectPage = () => {
     const sectionRect = section.getBoundingClientRect();
     for (const child of section.querySelectorAll("h2, img, p")) {
       const rect = child.getBoundingClientRect();
+      if (!rect.width || !rect.height) continue;
       if (
         rect.bottom > sectionRect.bottom + 1 ||
         rect.top < sectionRect.top - 1
