@@ -36,6 +36,9 @@ jobs:
       - name: Run eslint
         run: pnpm run lint
 
+      - name: Run stylelint
+        run: pnpm run lint:css
+
       - name: Run tests
         run: pnpm exec vitest run
 
