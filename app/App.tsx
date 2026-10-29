@@ -29,7 +29,7 @@ const HeroSection = () => (
         </SurnameWrapper>
       </NameWrapper>
     </HeroWrapper>
-    <CircularShape>
+    <CircularShape data-testid="hero-shape">
       <CircularShapeWrapper>
         <MorphShape size="big" infiniteAnimation stroke="var(--color-accent)" />
       </CircularShapeWrapper>

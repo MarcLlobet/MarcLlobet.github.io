@@ -1,0 +1,46 @@
+name: Layout
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install playwright chromium browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build site (with committed data)
+        run: pnpm exec next build
+
+      - name: Check layout at every viewport
+        run: pnpm check:layout
+
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-report
+          path: layout-report
+          retention-days: 14

@@ -21,7 +21,8 @@
     "test": "vitest",
     "preinstall": "husky || true",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "check:layout": "tsx scripts/check-layout.ts"
   },
   "dependencies": {
     "@octokit/graphql": "^9.0.3",

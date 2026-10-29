@@ -41,3 +41,5 @@ tsconfig.tsbuildinfo
 # Generated data files
 app/public/data/**
 !app/public/data/.gitkeep
+# Layout check output
+layout-report
