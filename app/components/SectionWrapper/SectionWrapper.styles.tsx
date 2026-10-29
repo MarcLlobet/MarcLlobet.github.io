@@ -10,11 +10,12 @@ export const StyledSectionWrapper = styled.section`
   inline-size: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto;
   grid-template-areas:
     "title"
     "image"
     "text";
+  align-content: center;
   gap: clamp(0.75rem, 2svh, calc(var(--spacing) * 1.5));
   /* Leave room for the sticky nav at the top */
   padding-block: var(--nav-block-size) clamp(1rem, 4svh, 3rem);
@@ -27,7 +28,6 @@ export const StyledSectionWrapper = styled.section`
     grid-template-areas:
       "title"
       "text";
-    align-content: center;
   }
 
   /* The query container is <main>, so this follows the column width */
@@ -55,11 +55,15 @@ export const PreviewFrame = styled.div`
   min-block-size: 0;
   max-inline-size: 650px;
   inline-size: 100%;
-  /* Reports no size of its own, so it only gets the space that is left */
+  /* Reports no size of its own: on one column it gets a screenshot-like
+     height that still leaves room for the text; side by side it matches
+     the height of the text */
   contain: size;
+  block-size: min(56cqi, 45svh);
 
   @container (min-width: 36rem) {
     justify-self: end;
+    block-size: auto;
   }
 
   /* Matches the short single-column layout of the section */
