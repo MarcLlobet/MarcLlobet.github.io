@@ -12,8 +12,6 @@ const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
   bottom: 0;
   background-color: var(--color-bg);
   color: var(--color-accent);
-  width: 100dvw;
-  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;

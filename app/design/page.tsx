@@ -316,7 +316,6 @@ const PreviewShape = styled.div<{ $animated?: boolean; $size: number }>`
 `;
 
 const PreviewNav = styled.div`
-  width: 100%;
   height: 16px;
   background: color-mix(in srgb, var(--color-muted) 15%, transparent);
   border-radius: 2px;

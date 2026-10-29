@@ -2,6 +2,7 @@
   "extends": ["stylelint-config-recommended"],
   "customSyntax": "postcss-styled-syntax",
   "rules": {
+    "no-empty-source": null,
     "no-descending-specificity": null,
     "declaration-property-value-disallowed-list": [
       {
