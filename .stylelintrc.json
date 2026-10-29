@@ -1,0 +1,51 @@
+{
+  "extends": ["stylelint-config-recommended"],
+  "customSyntax": "postcss-styled-syntax",
+  "rules": {
+    "no-empty-source": null,
+    "no-descending-specificity": null,
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^(width|inline-size|min-width|min-inline-size|max-width|max-inline-size)$/": [
+          "/^100d?vw$/"
+        ],
+        "/^(text-align|float|clear)$/": ["left", "right"],
+        "/^(margin|padding|inset|scroll-margin|scroll-padding)$/": [
+          "/^[^()\\s]+\\s+[^()\\s]+\\s+[^()\\s]+/"
+        ]
+      },
+      {
+        "message": "Not direction-safe: use 100% instead of 100vw/100dvw, start/end instead of left/right, and margin-block/margin-inline instead of 3-4 value shorthands."
+      }
+    ],
+    "unit-disallowed-list": [
+      ["vh"],
+      {
+        "message": "Use svh, lvh or dvh instead of vh: vh ignores the mobile browser bars."
+      }
+    ],
+    "property-disallowed-list": [
+      [
+        "width",
+        "height",
+        "min-width",
+        "min-height",
+        "max-width",
+        "max-height",
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "/^margin-(top|right|bottom|left)$/",
+        "/^padding-(top|right|bottom|left)$/",
+        "/^border-(top|right|bottom|left)(-.+)?$/",
+        "/^border-(top|bottom)-(left|right)-radius$/",
+        "/^scroll-(margin|padding)-(top|right|bottom|left)$/",
+        "/^overflow-[xy]$/"
+      ],
+      {
+        "message": "Use the logical property (inline-size, block-size, inset-inline-start, margin-block-end, overflow-inline\u2026) so the layout works in any writing direction."
+      }
+    ]
+  }
+}

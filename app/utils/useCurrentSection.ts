@@ -11,14 +11,14 @@ export const useCurrentSection = (repositories: Repository[]) => {
 
   useEffect(() => {
     const sections = document.getElementsByClassName("page-section");
-    const sectionsBoundary = Array.from(sections).map((section) => {
-      return {
-        top: (section as HTMLElement).offsetTop,
-        name: section.id as Repository["name"],
-      };
-    });
 
     const onScroll = throttle(() => {
+      // Read positions on every check: they change when fonts or images
+      // load, or when the window is resized or the phone is rotated.
+      const sectionsBoundary = Array.from(sections).map((section) => ({
+        top: (section as HTMLElement).offsetTop,
+        name: section.id as Repository["name"],
+      }));
       const currentPosition = window.scrollY;
       const halfWindowHeight = window.innerHeight / 2;
 
@@ -27,14 +27,16 @@ export const useCurrentSection = (repositories: Repository[]) => {
       );
 
       setCurrentSection(currentSectionInViewport?.name ?? null);
-    }, 500);
+    }, 100);
 
     onScroll(); // onMount
     window.addEventListener("scroll", onScroll);
     window.addEventListener("touchmove", onScroll);
+    window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("touchmove", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [repositories]);
 

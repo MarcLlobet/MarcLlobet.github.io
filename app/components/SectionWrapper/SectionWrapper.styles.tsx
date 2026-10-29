@@ -2,63 +2,114 @@
 
 import styled from "styled-components";
 
+/* One project = one screen. Title and text keep their size; the preview
+   takes whatever space is left. The section only grows past the screen
+   if the text alone does not fit. */
 export const StyledSectionWrapper = styled.section`
-  block-size: 100dvh;
+  min-block-size: 100svh;
   inline-size: 100%;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "title"
+    "image"
+    "text";
+  align-content: center;
+  gap: var(--space-stack);
+  /* Leave room for the sticky nav at the top */
+  padding-block-start: var(--nav-block-size);
+  padding-block-end: var(--space-section-end);
   scroll-snap-align: start;
+
+  /* Short screens with a single column: no room for the preview, so the
+     title and text are centred on their own */
+  @media (max-height: 600px) {
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "title"
+      "text";
+  }
+
+  /* The query container is <main>, so this follows the column width */
+  @container (min-width: 36rem) {
+    /* Title on top, then text and preview side by side; the preview is as
+       tall as the text and the whole block sits in the middle of the screen */
+    grid-template-columns: minmax(0, 36ch) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "title title"
+      "text image";
+    align-content: center;
+    column-gap: var(--space-gutter);
+  }
 `;
 
+/* Kept for the markup; the grid lives on the section */
 export const InnerSectionWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  @media (orientation: landscape) and (max-height: 400px) {
-    padding-block-start: 4dvw;
+  display: contents;
+`;
+
+export const PreviewFrame = styled.div`
+  grid-area: image;
+  position: relative;
+  min-block-size: 0;
+  max-inline-size: 650px;
+  inline-size: 100%;
+  /* Reports no size of its own: on one column it gets a screenshot-like
+     height that still leaves room for the text; side by side it matches
+     the height of the text */
+  contain: size;
+  block-size: min(56cqi, 45svh);
+
+  @container (min-width: 36rem) {
+    justify-self: end;
+    block-size: auto;
+  }
+
+  /* Matches the short single-column layout of the section */
+  @media (max-height: 600px) {
+    display: none;
+  }
+
+  @container (min-width: 36rem) {
+    display: block;
   }
 `;
 
 export const PreviewImage = styled.img`
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+  /* object-position has no logical keywords, so flip it for RTL */
+  object-position: left center;
+
+  &:dir(rtl) {
+    object-position: right center;
+  }
   filter: grayscale(1);
-  inline-size: calc(100% - 30ch - 4dvw);
-  max-inline-size: 650px;
-  object-fit: cover;
-  object-position: center;
-  padding-block-end: 3dvh;
   mix-blend-mode: plus-lighter;
-  order: 1;
-  padding-block-end: 0;
 
   html.light-theme & {
     mix-blend-mode: darken;
   }
 
-  @media (max-width: 900px) {
-    order: 0;
-    inline-size: 100%;
-    padding-block-end: 0;
-    max-inline-size: 450px;
-  }
+  @container (min-width: 36rem) {
+    object-position: right top;
 
-  @media (orientation: landscape) and (max-height: 400px) {
-    max-inline-size: 250px;
-    order: 1;
+    &:dir(rtl) {
+      object-position: left top;
+    }
   }
 `;
 
 export const TextWrapper = styled.div`
+  grid-area: text;
+  align-self: center;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  inline-size: 30ch;
-
-  @media (max-width: 900px) {
-    gap: 1rem;
-    inline-size: 100%;
-    max-inline-size: 32ch;
-  }
+  gap: var(--space-stack);
+  max-inline-size: 60ch;
 `;

@@ -13,7 +13,7 @@ export const SectionsSelector = ({ repositories }: SectionsSelectorProps) => {
   const currentSection = useCurrentSection(repositories);
 
   return (
-    <SectionsSelectorWrapper role="menu">
+    <SectionsSelectorWrapper role="menu" $sections={repositories.length}>
       {repositories.map((repository) => (
         <SectionSelector
           key={repository.id}

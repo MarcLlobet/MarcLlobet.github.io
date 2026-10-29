@@ -2,18 +2,24 @@
 
 import styled from "styled-components";
 
-export const SectionsSelectorWrapper = styled.div`
+export const SectionsSelectorWrapper = styled.div<{ $sections: number }>`
+  --sections: ${({ $sections }) => $sections};
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--spacing);
-  min-inline-size: 20px;
-
-  @media (max-width: 600px) {
-    min-inline-size: 30px;
-  }
-
-  @media (orientation: landscape) and (max-height: 400px) {
-    flex-direction: row;
-  }
+  min-inline-size: var(--selector-size);
+  max-block-size: 100%;
+  /* Shrink the gap so every selector fits, even on a landscape phone */
+  gap: clamp(
+    2px,
+    (
+        100svh - var(--space-rail) * 2 - var(--sections, 1) *
+          var(--selector-size)
+      ) /
+      max(var(--sections, 1) - 1, 1),
+    var(--space-s)
+  );
+  /* Last resort when there are too many projects to fit */
+  overflow: auto;
+  scrollbar-width: none;
 `;

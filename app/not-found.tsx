@@ -16,15 +16,14 @@ const fadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  width: 100%;
+  inline-size: 100%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100dvh;
+  min-block-size: 100dvh;
   padding: var(--spacing);
-  gap: calc(var(--spacing) * 2);
+  gap: var(--space-l);
   animation: ${fadeIn} 0.6s ease-out;
 `;
 
@@ -55,17 +54,18 @@ const HighlightZero = styled.span`
 const Message = styled.p`
   font-size: calc(1rem * var(--golden-ratio));
   color: var(--color-muted);
-  max-width: 400px;
+  max-inline-size: 400px;
 `;
 
 const HomeLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: calc(var(--spacing) / 2);
+  gap: var(--space-2xs);
   font-size: 1rem;
   color: var(--color-text);
   text-decoration: none;
-  padding: calc(var(--spacing) / 2) var(--spacing);
+  padding-block: var(--space-2xs);
+  padding-inline: var(--spacing);
   border: 1px solid var(--color-muted);
   border-radius: 4px;
   transition: all 0.2s ease;

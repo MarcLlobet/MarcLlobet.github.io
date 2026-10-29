@@ -39,7 +39,30 @@ const Stardom = `
 const GenericStyles = `
 :root {
   --golden-ratio: 1.61803398875;
-  --spacing: 1rem;
+
+  /* Spacing scale. Use these instead of multiplying --spacing. */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  /* Legacy alias, kept for the design page and stories */
+  --spacing: var(--space-s);
+
+  /* Fluid layout spacing: grows with the screen, no breakpoints needed */
+  --space-gutter: clamp(var(--space-s), 0.5rem + 2.5vw, var(--space-xl));
+  --space-stack: clamp(var(--space-xs), 2svh, var(--space-m));
+  --space-section-end: clamp(var(--space-s), 4svh, var(--space-xl));
+  --space-rail: clamp(var(--space-2xs), 4svh, var(--nav-block-size));
+
+  /* Component sizes */
+  --nav-block-size: 3.5rem;
+  --tap-target: 2.75rem;
+  --shape-size: clamp(64px, 10vmin + 2rem, 180px);
+  --selector-size: 20px;
   font-family: var(--satoshi-stack);
   line-height: 1.5;
   font-weight: 400;
@@ -73,33 +96,36 @@ html.light-theme {
 #root {
   display: flex;
   scroll-snap-align: start;
-  inline-size: 100dvw;
-  padding-inline: var(--spacing) calc(var(--spacing) * 2);
+  inline-size: 100%;
+  min-block-size: 100svh;
+  /* Same gutter on both sides; safe-area-inset-* are physical by spec */
+  padding-inline: max(var(--space-gutter), env(safe-area-inset-left))
+    max(var(--space-gutter), env(safe-area-inset-right));
 }
 
-@media (orientation: landscape) and (max-height: 400px){
-  #root {
-    padding-inline: calc(var(--spacing) * 4);
+/* Touch screens get bigger targets for the section selectors */
+@media (pointer: coarse) {
+  :root {
+    --selector-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    /* Native smooth scrolling for every #anchor link: no JS needed */
+    scroll-behavior: smooth;
   }
 }
 
 html {
-  font-size: 20px;
+  /* 16px on phones, growing to 20px on large screens */
+  font-size: clamp(1rem, 0.85rem + 0.7vmin, 1.25rem);
+  /* Every project fits one screen, so each scroll lands on one project */
   scroll-snap-type: y mandatory;
   background-color: var(--color-bg);
   color: var(--color-text);
-}
-
-@media (max-width: 600px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 400px){
-  html {
-    font-size: 14px;
-  }
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 a {
@@ -135,10 +161,12 @@ button:focus-visible {
 /* Skip to content link */
 .skip-to-content {
   position: absolute;
-  top: -100%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.5rem 1rem;
+  inset-block-start: -100%;
+  inset-inline: 0;
+  margin-inline: auto;
+  inline-size: fit-content;
+  padding-block: var(--space-2xs);
+  padding-inline: var(--space-s);
   background: var(--color-accent);
   color: var(--color-bg);
   text-decoration: none;
@@ -148,7 +176,7 @@ button:focus-visible {
 }
 
 .skip-to-content:focus {
-  top: 0;
+  inset-block-start: 0;
 }
 
 /* Reduced motion support */

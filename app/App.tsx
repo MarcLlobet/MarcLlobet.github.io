@@ -29,7 +29,7 @@ const HeroSection = () => (
         </SurnameWrapper>
       </NameWrapper>
     </HeroWrapper>
-    <CircularShape>
+    <CircularShape data-testid="hero-shape">
       <CircularShapeWrapper>
         <MorphShape size="big" infiniteAnimation stroke="var(--color-accent)" />
       </CircularShapeWrapper>
@@ -44,7 +44,10 @@ type AppProps = {
 
 export const App = ({ repositories, bio }: AppProps) => {
   return (
-    <WindowWrapper data-testid="app-root">
+    <WindowWrapper data-testid="app-root" id="top">
+      <a className="skip-to-content" href="#main-content">
+        Skip to projects
+      </a>
       <AsideWrapper>
         <AsideLeftWrapper>
           <SectionsSelector repositories={repositories} />

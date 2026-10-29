@@ -2,19 +2,19 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  padding: calc(var(--spacing) * 2);
-  width: 100%;
+  padding: var(--space-l);
+  inline-size: 100%;
 `;
 
 const Title = styled.h1`
   font-size: calc(1rem * var(--golden-ratio) * 2);
-  margin-bottom: var(--spacing);
+  margin-block-end: var(--spacing);
   color: var(--color-heading);
 `;
 
 const Description = styled.p`
   color: var(--color-text);
-  margin-bottom: var(--spacing);
+  margin-block-end: var(--spacing);
 `;
 
 const NavList = styled.ul`
@@ -26,7 +26,7 @@ const NavList = styled.ul`
 `;
 
 const NavItem = styled.li`
-  margin-bottom: var(--spacing);
+  margin-block-end: var(--spacing);
 `;
 
 const NavLink = styled.a`
@@ -40,13 +40,13 @@ const NavLink = styled.a`
 `;
 
 const Section = styled.section`
-  margin-top: calc(var(--spacing) * 2);
+  margin-block-start: var(--space-l);
 `;
 
 const SectionTitle = styled.h2`
   font-size: calc(1rem * var(--golden-ratio));
   color: var(--color-heading);
-  margin-bottom: var(--spacing);
+  margin-block-end: var(--spacing);
   padding-block: 1.5rem 1rem;
   line-height: 1rem;
 `;

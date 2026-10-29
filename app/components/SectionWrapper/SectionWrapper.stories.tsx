@@ -4,7 +4,7 @@ import { Title } from "../Title";
 
 const StyledSectionWrapper = styled.section`
   block-size: auto;
-  min-height: 400px;
+  min-block-size: 400px;
   inline-size: 100%;
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@ const InnerSectionWrapper = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  width: 100%;
+  inline-size: 100%;
 `;
 
 const PreviewImage = styled.img`

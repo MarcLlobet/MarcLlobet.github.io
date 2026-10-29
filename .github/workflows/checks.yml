@@ -1,0 +1,97 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+jobs:
+  static:
+    name: Format, lint and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run prettier
+        run: pnpm exec prettier --check .
+
+      - name: Run eslint
+        run: pnpm run lint
+
+      - name: Run stylelint
+        # Problems are shown as annotations on the changed lines of a PR
+        run: |
+          status=0
+          pnpm run --silent lint:css --formatter json 2> stylelint.json || status=$?
+          node -e '
+            const fs = require("fs");
+            const raw = fs.readFileSync("stylelint.json", "utf8");
+            const start = raw.indexOf("[");
+            if (start === -1) { console.log(raw); process.exit(0); }
+            for (const file of JSON.parse(raw.slice(start))) {
+              const path = file.source.replace(process.cwd() + "/", "");
+              for (const w of file.warnings) {
+                const level = w.severity === "error" ? "error" : "warning";
+                console.log(`::${level} file=${path},line=${w.line},col=${w.column}::${w.text}`);
+              }
+            }
+          '
+          exit $status
+
+      - name: Run unit tests
+        run: pnpm exec vitest run
+
+  layout:
+    name: Layout at every viewport
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install playwright chromium browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build site (with committed data)
+        run: pnpm exec next build
+
+      - name: Check layout at every viewport
+        run: pnpm check:layout
+
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-report
+          path: layout-report
+          retention-days: 14

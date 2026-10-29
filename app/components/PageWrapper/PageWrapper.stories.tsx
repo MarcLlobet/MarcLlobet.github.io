@@ -5,7 +5,7 @@ const ScreenWrapper = styled.div`
   opacity: 1;
   display: flex;
   flex-direction: row;
-  top: 0;
+  inset-block-start: 0;
   inline-size: 100%;
 `;
 
@@ -24,9 +24,9 @@ const MainWrapper = styled.main`
 
 const Footer = styled.footer`
   padding-block-end: var(--spacing);
-  padding-block-start: calc(var(--spacing) / 4);
+  padding-block-start: var(--space-3xs);
   position: sticky;
-  bottom: 0;
+  inset-block-end: 0;
   display: flex;
   gap: var(--spacing);
   align-items: center;
@@ -50,13 +50,13 @@ const ScrollToTopButton = styled.button<{ $shouldShow: boolean }>`
     color: var(--color-accent);
   }
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
   }
 `;
 
 const ContentPlaceholder = styled.div`
-  min-height: 200px;
+  min-block-size: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
