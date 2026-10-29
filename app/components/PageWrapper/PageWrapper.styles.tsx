@@ -10,10 +10,11 @@ const toVisible = keyframes`
 export const ScreenWrapper = styled.div`
   opacity: 0;
   animation: ${toVisible} 300ms ease-in forwards 2s;
+  grid-area: page;
   display: flex;
   flex-direction: row;
-  top: 0;
   inline-size: 100%;
+  min-inline-size: 0;
 `;
 
 export const ColumnWrapper = styled.div`
@@ -26,7 +27,6 @@ export const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  padding-block-start: 60px;
 `;
 
 export const Footer = styled.footer`
@@ -56,8 +56,14 @@ export const ScrollToTopButton = styled.button<{ $shouldShow: boolean }>`
   &:hover {
     color: var(--color-accent);
   }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
   }
 `;

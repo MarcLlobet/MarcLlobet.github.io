@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { HighlightLetter } from "../../App.styles";
 import { StyledTitle } from "./Title.styles";
 
@@ -32,7 +32,18 @@ const getStylizedTitle = (title: string) => {
   return letters;
 };
 
+const getLongestWordLength = (title: string) =>
+  Math.max(...title.split(/[\s-]+/).map((word) => word.length), 1);
+
 export const Title = ({ title, id }: TitleProps) => {
   const stylizedTitle = getStylizedTitle(title);
-  return <StyledTitle id={id}>{stylizedTitle}</StyledTitle>;
+  const style = {
+    "--longest-word": getLongestWordLength(title),
+  } as CSSProperties;
+
+  return (
+    <StyledTitle id={id} style={style}>
+      {stylizedTitle}
+    </StyledTitle>
+  );
 };

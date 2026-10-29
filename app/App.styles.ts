@@ -26,26 +26,20 @@ export const NameWrapper = styled.h1`
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  font-size: calc(1rem * var(--golden-ratio) * 4);
-  line-height: calc(1rem * var(--golden-ratio) * 3.5);
-
-  @media (max-width: 600px) {
-    font-size: calc(1rem * var(--golden-ratio) * 2.5);
-    line-height: calc(1rem * var(--golden-ratio) * 2.25);
-  }
+  /* Scales with the screen width, but never taller than ~1/6 of the screen
+     so it also fits on landscape phones */
+  font-size: clamp(3rem, min(15vw, 17svh), 6.5rem);
+  line-height: 0.875;
 `;
 
 export const HeroWrapper = styled.hgroup`
-  display: flex;
-  inline-size: 50dvw;
-  block-size: calc(100dvh - 120px);
+  grid-area: hero;
   display: flex;
   align-items: center;
+  min-inline-size: 0;
+  min-block-size: calc(100svh - var(--nav-block-size));
+  margin: 0;
   padding-block: var(--spacing);
-
-  @media (orientation: landscape) and (max-height: 400px) {
-    inline-size: 43dvw;
-  }
 `;
 
 const CircularAnimation = keyframes`
@@ -58,76 +52,98 @@ const CircularAnimation = keyframes`
 `;
 
 export const CircularShape = styled.div`
-  margin-block: calc((100dvh - 120px - 150px) / 2);
-  inline-size: calc(50dvw - 30px - 5rem);
-  block-size: 150px;
+  grid-area: shape;
+  align-self: start;
   display: flex;
   align-items: center;
   justify-content: center;
+  inline-size: var(--shape-size);
+  block-size: var(--shape-size);
+  margin-block-start: calc(
+    (100svh - var(--nav-block-size) - var(--shape-size)) / 2
+  );
   color: var(--color-muted);
-  border-radius: 50%;
   position: sticky;
-  top: 40dvh;
-  z-index: 1;
+  top: calc(50svh - var(--shape-size) / 2);
+  z-index: 0;
+  pointer-events: none;
 
-  @media (orientation: landscape) and (max-height: 400px) {
-    top: 30dvh;
+  /* Portrait phones: no room beside the name, so it rests under it */
+  @media (max-width: 599px) and (orientation: portrait) {
+    grid-area: hero;
+    align-self: end;
+    justify-self: end;
+    position: static;
+    margin-block: 0 calc(var(--spacing) * 2);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    animation: none;
     position: static;
   }
 `;
 
 export const CircularShapeWrapper = styled.div`
-  animation: ${CircularAnimation} 5s linear infinite;
-  transform-origin: 30% 50%;
+  display: flex;
+
+  /* The rotation lives inside the SVG, so it never changes the layout box
+     (rotating the box itself made it stick out of the screen). */
+  svg {
+    overflow: visible;
+  }
+
+  path {
+    transform-box: view-box;
+    transform-origin: 50% 70%;
+    animation: ${CircularAnimation} 5s linear infinite;
+  }
 `;
 
 export const AsideWrapper = styled.aside`
-  block-size: 100dvh;
+  flex-shrink: 0;
+  block-size: 100svh;
   padding-block: var(--spacing);
   display: flex;
   position: sticky;
   top: 0;
   justify-content: center;
   align-items: center;
-
-  @media (orientation: landscape) and (max-height: 400px) {
-    flex-direction: row;
-    block-size: auto;
-    inline-size: 50dvw;
-    margin-inline: auto;
-    z-index: 2;
-  }
+  z-index: 2;
 `;
 
 export const AsideLeftWrapper = styled.div`
   display: flex;
+  max-block-size: 100%;
 `;
 
 export const MainWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex: 1;
+  min-inline-size: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "nav"
+    "hero"
+    "page";
 
-  @media (orientation: landscape) and (max-height: 400px) {
-    margin-top: -60px;
+  /* Wider screens: the shape gets its own column and follows the scroll
+     without covering the projects */
+  @media (min-width: 600px), (orientation: landscape) {
+    grid-template-columns: minmax(0, 1fr) var(--shape-size);
+    column-gap: clamp(var(--spacing), 3vw, calc(var(--spacing) * 3));
+    grid-template-areas:
+      "nav nav"
+      "hero shape"
+      "page shape";
   }
 `;
 
 export const WindowWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: var(--spacing) calc(var(--spacing) * 2);
+  gap: var(--spacing) clamp(0.75rem, 2vw, calc(var(--spacing) * 2));
   inline-size: 100%;
-
-  @media (orientation: landscape) and (max-height: 400px) {
-    flex-direction: column;
-  }
+  min-inline-size: 0;
 `;
 
 export const HighlightLetter = styled.span`

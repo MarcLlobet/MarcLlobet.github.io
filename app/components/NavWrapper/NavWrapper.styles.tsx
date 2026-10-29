@@ -3,35 +3,34 @@
 import styled from "styled-components";
 
 export const StyledNavWrapper = styled.nav`
-  padding-block: var(--spacing);
+  grid-area: nav;
   position: sticky;
   top: 0;
+  z-index: 2;
   display: flex;
-  gap: var(--spacing);
+  flex-wrap: wrap;
+  gap: 0 var(--spacing);
   align-items: center;
   justify-content: flex-end;
-  z-index: 1;
   inline-size: 100%;
-
-  @media (orientation: landscape) and (max-height: 400px) {
-    margin-block-end: 30px;
-  }
+  min-block-size: var(--nav-block-size);
+  /* Content scrolls underneath, so the bar needs its own background */
+  background-color: var(--color-bg);
 `;
 
 export const Button = styled.button`
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
   background: none;
   border: none;
   font-size: 1rem;
-  line-height: var(--spacing);
+  line-height: 1;
   padding: 0;
   appearance: none;
   font-family: inherit;
   cursor: pointer;
   font-weight: 500;
-
-  @media (max-width: 600px) {
-    font-size: 1.5rem;
-  }
 `;
 
 export const LinkButton = styled(Button).attrs({ as: "a" })``;

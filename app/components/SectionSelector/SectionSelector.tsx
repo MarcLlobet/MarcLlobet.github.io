@@ -27,7 +27,7 @@ export const SectionSelector = ({
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
         window.scrollTo({
-          top: targetElement.offsetTop,
+          top: targetElement.getBoundingClientRect().top + window.scrollY,
           behavior: "smooth",
         });
       }

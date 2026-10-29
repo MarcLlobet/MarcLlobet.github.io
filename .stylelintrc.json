@@ -1,0 +1,23 @@
+{
+  "extends": ["stylelint-config-recommended"],
+  "customSyntax": "postcss-styled-syntax",
+  "rules": {
+    "no-descending-specificity": null,
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^(width|inline-size|min-width|min-inline-size|max-width|max-inline-size)$/": [
+          "/^100d?vw$/"
+        ]
+      },
+      {
+        "message": "Avoid 100vw/100dvw widths: they include the scrollbar and cause horizontal scroll. Use 100% instead."
+      }
+    ],
+    "unit-disallowed-list": [
+      ["vh"],
+      {
+        "message": "Use svh, lvh or dvh instead of vh: vh ignores the mobile browser bars."
+      }
+    ]
+  }
+}

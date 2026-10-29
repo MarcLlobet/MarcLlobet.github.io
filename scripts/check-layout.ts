@@ -183,8 +183,13 @@ const inspectPage = () => {
     }
   }
 
+  // Only touch screens need big targets (WCAG 2.2 AA asks for 24×24px).
+  const isTouch = matchMedia("(pointer: coarse)").matches;
   const small: string[] = [];
-  for (const el of document.querySelectorAll("nav a, nav button, aside a")) {
+  const targets = isTouch
+    ? document.querySelectorAll("nav a, nav button, aside a")
+    : [];
+  for (const el of targets) {
     const rect = el.getBoundingClientRect();
     if (rect.width < 24 || rect.height < 24) {
       small.push(

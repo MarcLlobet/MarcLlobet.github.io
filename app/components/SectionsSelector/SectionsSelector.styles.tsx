@@ -6,14 +6,16 @@ export const SectionsSelectorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--spacing);
-  min-inline-size: 20px;
-
-  @media (max-width: 600px) {
-    min-inline-size: 30px;
-  }
-
-  @media (orientation: landscape) and (max-height: 400px) {
-    flex-direction: row;
-  }
+  min-inline-size: var(--selector-size);
+  max-block-size: 100%;
+  /* Shrink the gap so every selector fits, even on a landscape phone */
+  gap: clamp(
+    2px,
+    (100svh - var(--spacing) * 2 - var(--sections, 1) * var(--selector-size)) /
+      max(var(--sections, 1) - 1, 1),
+    var(--spacing)
+  );
+  /* Last resort when there are too many projects to fit */
+  overflow-y: auto;
+  scrollbar-width: none;
 `;

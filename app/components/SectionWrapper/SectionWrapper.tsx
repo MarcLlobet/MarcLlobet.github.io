@@ -55,6 +55,8 @@ export const SectionWrapper = ({ repository }: SectionWrapperProps) => {
         <PreviewImage
           src={repository.preview}
           alt={`Preview of ${repository.name} repository`}
+          loading="lazy"
+          decoding="async"
         />
         <TextWrapper>
           <p>{repository.description}</p>

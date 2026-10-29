@@ -40,6 +40,13 @@ const GenericStyles = `
 :root {
   --golden-ratio: 1.61803398875;
   --spacing: 1rem;
+
+  /* Layout tokens: every size below is fluid, so there are no breakpoints
+     for "small phone", "landscape phone", etc. */
+  --page-gutter: clamp(0.75rem, 0.25rem + 2.5vw, 2rem);
+  --nav-block-size: 3.5rem;
+  --shape-size: clamp(64px, 10vmin + 2rem, 180px);
+  --selector-size: 20px;
   font-family: var(--satoshi-stack);
   line-height: 1.5;
   font-weight: 400;
@@ -73,33 +80,28 @@ html.light-theme {
 #root {
   display: flex;
   scroll-snap-align: start;
-  inline-size: 100dvw;
-  padding-inline: var(--spacing) calc(var(--spacing) * 2);
+  inline-size: 100%;
+  min-block-size: 100svh;
+  padding-inline: max(var(--page-gutter), env(safe-area-inset-left))
+    max(var(--page-gutter), env(safe-area-inset-right));
 }
 
-@media (orientation: landscape) and (max-height: 400px){
-  #root {
-    padding-inline: calc(var(--spacing) * 4);
+/* Touch screens get bigger targets for the section selectors */
+@media (pointer: coarse) {
+  :root {
+    --selector-size: 24px;
   }
 }
 
 html {
-  font-size: 20px;
-  scroll-snap-type: y mandatory;
+  /* 16px on phones, growing to 20px on large screens */
+  font-size: clamp(1rem, 0.85rem + 0.7vmin, 1.25rem);
+  /* proximity: sections can be taller than the screen without trapping scroll */
+  scroll-snap-type: y proximity;
   background-color: var(--color-bg);
   color: var(--color-text);
-}
-
-@media (max-width: 600px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 400px){
-  html {
-    font-size: 14px;
-  }
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 a {

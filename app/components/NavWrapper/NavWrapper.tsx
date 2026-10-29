@@ -36,7 +36,11 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
     }
   };
 
-  const handleClick = () => setShowBio(true);
+  const handleClick = () => {
+    // Also load here: keyboard and touch users may never trigger a hover
+    setShouldLoadBio(true);
+    setShowBio(true);
+  };
 
   const handleTheme = () => {
     document.documentElement.classList.toggle("light-theme");
@@ -44,7 +48,10 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
   };
 
   return (
-    <StyledNavWrapper onMouseEnter={handleMouseEnter}>
+    <StyledNavWrapper
+      onMouseEnter={handleMouseEnter}
+      onFocus={handleMouseEnter}
+    >
       <LinkButton href="design">Design</LinkButton>
       <Button type="button" onClick={handleTheme}>
         Theme

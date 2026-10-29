@@ -6,7 +6,8 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "stylelint --fix --allow-empty-input"
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write"
@@ -22,7 +23,8 @@
     "preinstall": "husky || true",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "check:layout": "tsx scripts/check-layout.ts"
+    "check:layout": "tsx scripts/check-layout.ts",
+    "lint:css": "stylelint --allow-empty-input \"app/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@octokit/graphql": "^9.0.3",
