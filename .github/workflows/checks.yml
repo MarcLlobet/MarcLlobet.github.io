@@ -61,8 +61,6 @@ jobs:
   layout:
     name: Layout at every viewport
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -98,14 +96,3 @@ jobs:
           path: layout-report
           retention-days: 14
 
-      # Temporary: lets a reviewer without artifact access fetch the report via git.
-      - name: Publish report to a snapshot branch
-        if: always() && github.event_name == 'push' && contains(github.event.head_commit.message, '[layout-snapshots]')
-        run: |
-          cd layout-report
-          git init -q -b snapshots
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git add -A
-          git commit -qm "Layout report for ${GITHUB_SHA}"
-          git push -qf "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" "snapshots:refs/heads/layout-snapshots"

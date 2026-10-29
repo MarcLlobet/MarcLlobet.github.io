@@ -12,7 +12,9 @@ const AnimationWrapper = styled.span`
   animation-duration: 2s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   animation-fill-mode: forwards;
-  display: inline-flex;
+  /* inline-block, not inline-flex: flex items would reverse the letters
+     of "Ll·o·bet" in right-to-left */
+  display: inline-block;
 `;
 
 export const FirstNameWrapper = styled(AnimationWrapper)`
