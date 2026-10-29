@@ -252,14 +252,19 @@ const run = async () => {
     await about.hover().catch(() => undefined);
     await about.click();
     await settle(page, 600);
-    const aboutOverflow = await page.evaluate(() => {
+    const aboutCut = await page.evaluate(() => {
       const dialog = document.querySelector("[role='dialog']");
-      return dialog ? dialog.scrollHeight > dialog.clientHeight + 1 : false;
+      if (!dialog) return false;
+      const overflows = dialog.scrollHeight > dialog.clientHeight + 1;
+      const scrolls = ["auto", "scroll"].includes(
+        getComputedStyle(dialog).overflowY,
+      );
+      return overflows && !scrolls;
     });
-    if (aboutOverflow) {
+    if (aboutCut) {
       problems.push({
         check: "about-overflow",
-        detail: "the About text is taller than the screen and gets cut",
+        detail: "the About text is taller than the screen and cannot scroll",
       });
     }
     await page.screenshot({
