@@ -14,10 +14,9 @@
     ]
   },
   "scripts": {
-    "dev": "npm run fetch-data && next dev",
-    "build": "npm run fetch-data && next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "fetch-data": "tsx scripts/fetch-all-data.ts",
     "lint": "next lint",
     "test": "vitest",
     "preinstall": "husky || true",

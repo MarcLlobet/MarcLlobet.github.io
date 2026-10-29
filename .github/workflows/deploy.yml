@@ -1,10 +1,26 @@
 name: CI
 
+# The site fetches its data from GitHub while it builds, so every run
+# publishes the current repositories and bio.
 on:
+  # Every push to main
   push:
     branches:
       - main
+  # Daily, so new or updated "demo" repositories show up without a push
+  schedule:
+    - cron: "17 5 * * *"
+  # By hand, from the Actions tab
   workflow_dispatch:
+  # From another repository, e.g. after it deploys its own demo:
+  #   gh api repos/MarcLlobet/MarcLlobet.github.io/dispatches -f event_type=refresh-portfolio
+  repository_dispatch:
+    types: [refresh-portfolio]
+
+# Never deploy two builds at the same time
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -45,9 +61,10 @@ jobs:
       - name: Build project
         run: pnpm run build
         env:
-          CODEPEN_USERNAME: ${{ secrets.CODEPEN_USERNAME }}
           GH_API_TOKEN: ${{ secrets.API_TOKEN }}
           GH_API_USERNAME: ${{ secrets.API_USERNAME }}
+          # Fail instead of publishing the fixture snapshot
+          PORTFOLIO_REQUIRE_LIVE_DATA: "true"
 
       - name: Build Storybook
         run: pnpm build-storybook --output-dir ./out/storybook
