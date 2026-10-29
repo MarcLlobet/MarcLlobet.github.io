@@ -60,7 +60,7 @@ const GenericStyles = `
 
   /* Component sizes */
   --nav-block-size: 3.5rem;
-  --tap-target: var(--tap-target);
+  --tap-target: 2.75rem;
   --shape-size: clamp(64px, 10vmin + 2rem, 180px);
   --selector-size: 20px;
   font-family: var(--satoshi-stack);

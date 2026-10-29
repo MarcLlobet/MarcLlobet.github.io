@@ -96,6 +96,12 @@ export const CircularShapeWrapper = styled.div`
     transform-origin: 50% 70%;
     animation: ${CircularAnimation} 5s linear infinite;
   }
+
+  /* Mirror the orbit for right-to-left: opposite pivot and direction */
+  &:dir(rtl) path {
+    transform-origin: 50% 30%;
+    animation-direction: reverse;
+  }
 `;
 
 export const AsideWrapper = styled.aside`

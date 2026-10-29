@@ -302,8 +302,8 @@ const PreviewAccent = styled.span`
 `;
 
 const PreviewShape = styled.div<{ $animated?: boolean; $size: number }>`
-  width: ${(props) => props.$size}px;
-  height: ${(props) => props.$size}px;
+  inline-size: ${(props) => props.$size}px;
+  block-size: ${(props) => props.$size}px;
   border: 2px solid var(--color-accent);
   border-radius: 50%;
   ${(props) =>
@@ -329,8 +329,8 @@ const PreviewNav = styled.div`
 `;
 
 const MiniCircle = styled.div<{ $size?: number }>`
-  width: ${(props) => props.$size || 8}px;
-  height: ${(props) => props.$size || 8}px;
+  inline-size: ${(props) => props.$size || 8}px;
+  block-size: ${(props) => props.$size || 8}px;
   border: 1.5px solid var(--color-muted);
   border-radius: 50%;
 `;
@@ -338,9 +338,9 @@ const MiniCircle = styled.div<{ $size?: number }>`
 const MiniTriangle = styled.div<{ $size?: number }>`
   inline-size: 0;
   block-size: 0;
-  border-left: ${(props) => (props.$size || 8) / 2}px solid transparent;
-  border-right: ${(props) => (props.$size || 8) / 2}px solid transparent;
-  border-bottom: ${(props) => props.$size || 8}px solid var(--color-accent);
+  border-inline-start: ${(props) => (props.$size || 8) / 2}px solid transparent;
+  border-inline-end: ${(props) => (props.$size || 8) / 2}px solid transparent;
+  border-block-end: ${(props) => props.$size || 8}px solid var(--color-accent);
 `;
 
 // Section preview components
@@ -383,7 +383,7 @@ const SectionImage = styled.div<{ $width: string; $order: number }>`
     color-mix(in srgb, var(--color-muted) 50%, transparent) 100%
   );
   border-radius: 4px;
-  width: ${(props) => props.$width};
+  inline-size: ${(props) => props.$width};
   aspect-ratio: 16/10;
   order: ${(props) => props.$order};
   flex-shrink: 0;
@@ -393,14 +393,14 @@ const SectionText = styled.div<{ $width: string; $gap: number }>`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.$gap}px;
-  width: ${(props) => props.$width};
+  inline-size: ${(props) => props.$width};
 `;
 
 const TextLine = styled.div<{ $width: string }>`
   block-size: 6px;
   background: var(--color-text);
   border-radius: 2px;
-  width: ${(props) => props.$width};
+  inline-size: ${(props) => props.$width};
   opacity: 0.6;
 `;
 
