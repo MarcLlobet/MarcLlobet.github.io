@@ -79,14 +79,19 @@ const GenericStyles = `
   --color-heading: #E9CFA4;
   --color-muted: #8E8A80;
   --color-accent: #B0483A;
+  /* Accent for normal-size text: brand red is only 3.3:1 on the dark
+     background, this lighter shade is 4.9:1 (WCAG AA) */
+  --color-accent-text: #C9685B;
 }
 
 html.light-theme {
   --color-bg: #F4F1EB;
   --color-heading: #2E2A25;
   --color-text: #3F3B36;
-  --color-muted: #7A736B;
+  /* 5.3:1, same contrast as muted in dark mode (was 4.15:1, below AA) */
+  --color-muted: #69635C;
   --color-accent: #B0483A;
+  --color-accent-text: #B0483A;
 }
 
 * {
@@ -134,7 +139,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 button {
@@ -142,7 +147,7 @@ button {
 }
 
 button:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 /* Focus styles for accessibility */
@@ -167,7 +172,7 @@ button:focus-visible {
   inline-size: fit-content;
   padding-block: var(--space-2xs);
   padding-inline: var(--space-s);
-  background: var(--color-accent);
+  background: var(--color-accent-text);
   color: var(--color-bg);
   text-decoration: none;
   font-weight: 600;

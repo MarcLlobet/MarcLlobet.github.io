@@ -72,7 +72,7 @@ const HomeLink = styled(Link)`
 
   &:hover {
     border-color: var(--color-accent);
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 `;
 

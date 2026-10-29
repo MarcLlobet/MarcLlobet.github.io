@@ -16,7 +16,7 @@ export const BioPortalWrapper = styled.div<{ $showBio: boolean }>`
   overflow: auto;
   overscroll-behavior: contain;
   background-color: var(--color-bg);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   opacity: ${(props) => (props.$showBio ? 1 : 0)};
   pointer-events: ${(props) => (props.$showBio ? "auto" : "none")};
   transition: opacity 150ms ease-in-out;

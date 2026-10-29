@@ -12,6 +12,7 @@
  * - the hero name colliding with the rotating shape
  * - tap targets smaller than 24×24px (WCAG 2.2 AA)
  * - the section rail hugging the edge of the screen
+ * - text below WCAG AA contrast, in the dark and the light theme
  * - all of the above in right-to-left too (logical properties)
  *
  * Usage:
@@ -35,6 +36,8 @@ type Viewport = {
   height: number;
   /** Render the page right-to-left to check the logical properties */
   dir?: "rtl";
+  /** Switch to the light theme (the site defaults to dark) */
+  theme?: "light";
 };
 
 const VIEWPORTS: Viewport[] = [
@@ -50,6 +53,8 @@ const VIEWPORTS: Viewport[] = [
   { name: "desktop-fhd", width: 1920, height: 1080 },
   { name: "phone-iphone-rtl", width: 390, height: 844, dir: "rtl" },
   { name: "laptop-rtl", width: 1280, height: 800, dir: "rtl" },
+  { name: "phone-iphone-light", width: 390, height: 844, theme: "light" },
+  { name: "laptop-light", width: 1280, height: 800, theme: "light" },
 ];
 
 const MIME: Record<string, string> = {
@@ -246,6 +251,64 @@ const inspectPage = () => {
   return problems;
 };
 
+/**
+ * Runs in the browser: WCAG 2.x contrast of every visible piece of text
+ * against the nearest solid background. 4.5:1 for normal text, 3:1 for
+ * large text (24px, or 18.66px bold).
+ */
+const CONTRAST_SCRIPT = `
+window.__checkContrast = (root) => {
+  const parse = (value) => {
+    const m = value.match(/rgba?\\(([^)]+)\\)/);
+    if (!m) return null;
+    const [r, g, b, a = "1"] = m[1].split(/[ ,\\/]+/).filter(Boolean);
+    return { r: +r, g: +g, b: +b, a: +a };
+  };
+  const luminance = ({ r, g, b }) => {
+    const [R, G, B] = [r, g, b].map((v) => {
+      const c = v / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+  };
+  const background = (el) => {
+    for (let node = el; node; node = node.parentElement) {
+      const bg = parse(getComputedStyle(node).backgroundColor);
+      if (bg && bg.a === 1) return bg;
+    }
+    return parse(getComputedStyle(document.documentElement).backgroundColor);
+  };
+  const failures = new Map();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let text = walker.nextNode(); text; text = walker.nextNode()) {
+    if (!text.textContent.trim()) continue;
+    const el = text.parentElement;
+    const style = getComputedStyle(el);
+    const rect = el.getBoundingClientRect();
+    if (!rect.width || rect.bottom < 0 || style.visibility === "hidden") continue;
+    if (el.closest("svg, desc")) continue;
+    const fg = parse(style.color);
+    const bg = background(el);
+    if (!fg || !bg) continue;
+    const [hi, lo] = [luminance(fg), luminance(bg)].sort((a, b) => b - a);
+    const ratio = (hi + 0.05) / (lo + 0.05);
+    const size = parseFloat(style.fontSize);
+    const large = size >= 24 || (size >= 18.66 && +style.fontWeight >= 700);
+    const needed = large ? 3 : 4.5;
+    if (ratio < needed) {
+      const key = style.color + " on " + getComputedStyle(document.documentElement).backgroundColor;
+      const sample = text.textContent.trim().slice(0, 24);
+      if (!failures.has(key)) failures.set(key, { ratio, needed, sample, count: 0 });
+      failures.get(key).count++;
+    }
+  }
+  return [...failures.entries()].map(([key, f]) => ({
+    check: "contrast",
+    detail: \`\${f.count} text(s) at \${f.ratio.toFixed(2)}:1, need \${f.needed}:1 (\${key}), e.g. "\${f.sample}"\`,
+  }));
+};
+`;
+
 const settle = (page: Page, ms = 400) => page.waitForTimeout(ms);
 
 const run = async () => {
@@ -266,8 +329,14 @@ const run = async () => {
     // tsx/esbuild may wrap functions with a `__name` helper that does not
     // exist inside the browser, so provide a no-op one.
     await context.addInitScript("window.__name = (fn) => fn;");
+    await context.addInitScript(CONTRAST_SCRIPT);
     const page = await context.newPage();
     await page.goto(url, { waitUntil: "networkidle" });
+    if (viewport.theme === "light") {
+      await page.evaluate(() =>
+        document.documentElement.classList.add("light-theme"),
+      );
+    }
     if (viewport.dir) {
       await page.evaluate((dir) => {
         document.documentElement.dir = dir;
@@ -277,6 +346,12 @@ const run = async () => {
     await settle(page, 2600);
 
     const problems = await page.evaluate(inspectPage);
+    problems.push(
+      ...(await page.evaluate(() =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).__checkContrast(document.body),
+      )),
+    );
     await page.screenshot({
       path: `${REPORT_DIR}/${viewport.name}-1-home.png`,
     });
@@ -305,6 +380,13 @@ const run = async () => {
       );
       return overflows && !scrolls;
     });
+    problems.push(
+      ...(await page.evaluate(() => {
+        const dialog = document.querySelector("[role='dialog']");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return dialog ? (window as any).__checkContrast(dialog) : [];
+      })),
+    );
     if (aboutCut) {
       problems.push({
         check: "about-overflow",

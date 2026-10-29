@@ -67,7 +67,7 @@ export const ScrollToTopButton = styled.a`
   color: var(--color-muted);
 
   &:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   svg {
