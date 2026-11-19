@@ -11,12 +11,13 @@ This project is a modern, performant, and visually engaging personal portfolio a
 ## Development
 
 ```bash
-pnpm dev          # Start development server
-pnpm build        # Build for production (fetches data from GitHub)
-pnpm test         # Run tests
-pnpm storybook    # Start Storybook
-pnpm lint:css     # Lint the CSS inside styled-components
-pnpm check:layout # After a build: check the layout at 14 viewports
+pnpm dev             # Start development server
+pnpm build           # Build for production (fetches data from GitHub)
+pnpm test            # Run tests
+pnpm storybook       # Start Storybook
+pnpm lint:css        # Lint the CSS inside styled-components
+pnpm install:browser # Install the browser the layout check needs
+pnpm check:layout    # After a build: check the layout at 14 viewports
 ```
 
 ### Layout principles
@@ -33,7 +34,7 @@ Two tools keep the layout from breaking on other screens:
 - **Stylelint** (`.stylelintrc.json`) lints the CSS written in styled-components. Besides catching invalid or duplicated declarations, it only allows logical properties (`inline-size`, `inset-block-start`, `margin-inline-end`, `text-align: start`…) so the layout works in any writing direction, rejects `100vw`/`100dvw` widths (they include the scrollbar and cause sideways scrolling) and `vh` (use `svh`/`dvh`, which account for the mobile browser bars).
 - **Layout check** (`scripts/check-layout.ts`) serves the static build, opens it in Chromium at 14 viewports, from a 320px phone to a 1920px screen, including landscape phones, and fails if the page scrolls sideways, an element sticks out of the screen, a project spills out of its section or is taller than one screen, the name collides with the shape, a touch target is under 24×24px or the About text gets cut. It also checks WCAG AA text contrast, that the section rail keeps its margin, and renders some viewports right-to-left and in the light theme. Screenshots and a report are saved to `layout-report/`.
 
-Both run on every pull request and branch in the **Checks** workflow; the screenshots are attached to the run as the `layout-report` artifact.
+Both run on every pull request in the **Checks** workflow; the screenshots are attached to the run as the `layout-report` artifact.
 
 ## Data Source
 

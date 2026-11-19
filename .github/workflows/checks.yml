@@ -40,9 +40,6 @@ jobs:
       - name: Run eslint
         run: pnpm run lint
 
-      - name: Annotate stylelint problems
-        run: echo "::add-matcher::.github/problem-matchers/stylelint.json"
-
       - name: Run stylelint
         run: pnpm run lint:css
 
@@ -68,15 +65,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Cache playwright browsers
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: playwright-${{ runner.os }}-
-
-      - name: Install playwright chromium browser
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Install the browser the layout check needs
+        run: pnpm run install:browser
 
       - name: Build site
         run: pnpm build
