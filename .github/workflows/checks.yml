@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  ts-only:
-    name: TypeScript only
+  static:
+    name: Format, lint and unit tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -14,13 +14,6 @@ jobs:
 
       - name: Fail on JavaScript files
         uses: MarcLlobet/ts-only@v2
-
-  static:
-    name: Format, lint and unit tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
