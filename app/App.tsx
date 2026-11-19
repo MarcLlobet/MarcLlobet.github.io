@@ -17,6 +17,7 @@ import {
   SurnameWrapper,
   WindowWrapper,
 } from "./App.styles";
+import type { SearchTree } from "./lib/search";
 import type { Repository, Bio } from "./types";
 
 const HeroSection = () => (
@@ -40,9 +41,10 @@ const HeroSection = () => (
 type AppProps = {
   repositories: Repository[];
   bio: Bio;
+  searchTree: SearchTree;
 };
 
-export const App = ({ repositories, bio }: AppProps) => {
+export const App = ({ repositories, bio, searchTree }: AppProps) => {
   return (
     <WindowWrapper data-testid="app-root" id="top">
       <a className="skip-to-content" href="#main-content">
@@ -54,7 +56,11 @@ export const App = ({ repositories, bio }: AppProps) => {
         </AsideLeftWrapper>
       </AsideWrapper>
       <MainWrapper>
-        <NavWrapper bio={bio} repositories={repositories} />
+        <NavWrapper
+          bio={bio}
+          repositories={repositories}
+          searchTree={searchTree}
+        />
         <HeroSection />
         <PageWrapper repositories={repositories} />
       </MainWrapper>

@@ -3,6 +3,8 @@
 import React, { useState, Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import { StyledNavWrapper, Button, LinkButton } from "./NavWrapper.styles";
+import { ProjectSearch } from "../ProjectSearch";
+import type { SearchTree } from "../../lib/search";
 import type { Repository, Bio } from "../../types";
 
 const LazyBioPortal = lazy(() =>
@@ -24,9 +26,14 @@ const toggleFavicon = () => {
 export type NavWrapperProps = {
   bio: Bio;
   repositories: Repository[];
+  searchTree: SearchTree;
 };
 
-export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
+export const NavWrapper = ({
+  bio,
+  repositories,
+  searchTree,
+}: NavWrapperProps) => {
   const [showBio, setShowBio] = useState(false);
   const [shouldLoadBio, setShouldLoadBio] = useState(false);
 
@@ -51,6 +58,7 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
       onMouseEnter={handleMouseEnter}
       onFocus={handleMouseEnter}
     >
+      <ProjectSearch repositories={repositories} searchTree={searchTree} />
       <LinkButton href="design">Design</LinkButton>
       <Button type="button" onClick={handleTheme}>
         Theme

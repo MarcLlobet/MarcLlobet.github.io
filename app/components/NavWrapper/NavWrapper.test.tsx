@@ -3,17 +3,30 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { NavWrapper } from "./NavWrapper";
 import { mockBio } from "../../mocks/bio";
 import { mockRepos } from "../../mocks/repos";
+import { mockSearchTree } from "../../mocks/searchTree";
 import userEvent from "@testing-library/user-event";
 
 describe("NavWrapper", () => {
   it("renders Theme and About buttons", () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        searchTree={mockSearchTree}
+      />,
+    );
     expect(screen.getByText("Theme")).toBeInTheDocument();
     expect(screen.getByText("About")).toBeInTheDocument();
   });
 
   it("toggles theme on click", () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        searchTree={mockSearchTree}
+      />,
+    );
     const btn = screen.getByText("Theme");
     fireEvent.click(btn);
     expect(document.documentElement.classList.contains("light-theme")).toBe(
@@ -22,7 +35,13 @@ describe("NavWrapper", () => {
   });
 
   it("lazy loads bio component on hover and shows bio on click", async () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        searchTree={mockSearchTree}
+      />,
+    );
     const navWrapper = screen.getByRole("navigation");
 
     const beforeBioContent = screen.queryByText(mockBio);
