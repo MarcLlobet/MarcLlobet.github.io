@@ -1,3 +1,5 @@
+import type { Linter } from "eslint";
+import storybook from "eslint-plugin-storybook";
 import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -25,4 +27,5 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  ...(storybook.configs["flat/recommended"] as Linter.Config[]),
 ]);
