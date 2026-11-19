@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useCurrentSection } from "./useCurrentSection";
-import * as throttle from "./throttle";
+import * as schedule from "./schedule";
 import { beforeEach, describe, expect, it, vi, afterEach } from "vitest";
 import { mockRepos } from "../mocks/repos";
 
@@ -11,7 +11,10 @@ describe("useCurrentSection", () => {
     // Clean up DOM
     document.body.innerHTML = "";
     // Mock throttle to call immediately
-    vi.spyOn(throttle, "throttle").mockImplementation((fn) => fn);
+    vi.spyOn(schedule, "throttle").mockImplementation((fn) => ({
+      run: fn,
+      cancel: () => {},
+    }));
     // Fix window.innerHeight for predictable tests
     originalInnerHeight = window.innerHeight;
     Object.defineProperty(window, "innerHeight", { value: 0, writable: true });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { throttle } from "./throttle";
+import { throttle } from "./schedule";
 import type { Repository } from "../types";
 
 export const useCurrentSection = (repositories: Repository[]) => {
@@ -12,7 +12,7 @@ export const useCurrentSection = (repositories: Repository[]) => {
   useEffect(() => {
     const sections = document.getElementsByClassName("page-section");
 
-    const onScroll = throttle(() => {
+    const scheduled = throttle(() => {
       const sectionsBoundary = Array.from(sections).map((section) => ({
         top: (section as HTMLElement).offsetTop,
         name: section.id as Repository["name"],
@@ -27,6 +27,8 @@ export const useCurrentSection = (repositories: Repository[]) => {
       setCurrentSection(currentSectionInViewport?.name ?? null);
     }, 100);
 
+    const onScroll = scheduled.run;
+
     onScroll(); // onMount
     window.addEventListener("scroll", onScroll);
     window.addEventListener("touchmove", onScroll);
@@ -35,6 +37,7 @@ export const useCurrentSection = (repositories: Repository[]) => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("touchmove", onScroll);
       window.removeEventListener("resize", onScroll);
+      scheduled.cancel();
     };
   }, [repositories]);
 
