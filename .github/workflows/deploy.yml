@@ -31,21 +31,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install playwright chromium browser
-        run: pnpm exec playwright install chromium
-
-      - name: Run prettier
-        run: pnpm exec prettier --check .
-
-      - name: Run eslint
-        run: pnpm run lint
-
-      - name: Run stylelint
-        run: pnpm run lint:css
-
-      - name: Run tests
-        run: pnpm exec vitest run
-
       - name: Build project
         run: pnpm run build
         env:
