@@ -62,7 +62,7 @@
     "jsdom": "^27.4.0",
     "lint-staged": "^16.2.7",
     "msw": "^2.12.7",
-    "playwright": "^1.57.0",
+    "playwright": "^1.65.1",
     "playwright-extra": "^4.3.6",
     "playwright-extra-plugin-stealth": "^0.0.1",
     "postcss-styled-syntax": "^0.7.4",
