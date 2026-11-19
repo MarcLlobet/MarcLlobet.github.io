@@ -24,7 +24,7 @@
     "build-storybook": "storybook build",
     "check:layout": "tsx scripts/check-layout.ts",
     "check:ts-only": "ts-only",
-    "lint:css": "stylelint --allow-empty-input \"app/**/*.{ts,tsx}\""
+    "lint:css": "stylelint --allow-empty-input --formatter unix \"app/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@octokit/graphql": "^9.0.3",
