@@ -2,9 +2,6 @@ name: Checks
 
 on:
   pull_request:
-  push:
-    branches-ignore:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -13,17 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+
+      - name: Fail on JavaScript files
+        uses: MarcLlobet/ts-only@v2
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "22"
+          node-version-file: .nvmrc
           cache: "pnpm"
 
       - name: Install dependencies
@@ -36,23 +34,7 @@ jobs:
         run: pnpm run lint
 
       - name: Run stylelint
-        run: |
-          status=0
-          pnpm run --silent lint:css --formatter json 2> stylelint.json || status=$?
-          node -e '
-            const fs = require("fs");
-            const raw = fs.readFileSync("stylelint.json", "utf8");
-            const start = raw.indexOf("[");
-            if (start === -1) { console.log(raw); process.exit(0); }
-            for (const file of JSON.parse(raw.slice(start))) {
-              const path = file.source.replace(process.cwd() + "/", "");
-              for (const w of file.warnings) {
-                const level = w.severity === "error" ? "error" : "warning";
-                console.log(`::${level} file=${path},line=${w.line},col=${w.column}::${w.text}`);
-              }
-            }
-          '
-          exit $status
+        run: pnpm run lint:css
 
       - name: Run unit tests
         run: pnpm exec vitest run
@@ -62,37 +44,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "22"
+          node-version-file: .nvmrc
           cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install playwright chromium browser
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Install the browser the layout check needs
+        run: pnpm run install:browser
 
       - name: Build site
         run: pnpm build
-        env:
-          GH_API_TOKEN: ${{ secrets.API_TOKEN }}
-          GH_API_USERNAME: ${{ secrets.API_USERNAME }}
 
       - name: Check layout at every viewport
         run: pnpm check:layout
 
       - name: Upload screenshots and report
-        if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: layout-report
           path: layout-report
