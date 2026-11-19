@@ -86,15 +86,11 @@ jobs:
 
       - name: Build site
         run: pnpm build
-        env:
-          GH_API_TOKEN: ${{ secrets.API_TOKEN }}
-          GH_API_USERNAME: ${{ secrets.API_USERNAME }}
 
       - name: Check layout at every viewport
         run: pnpm check:layout
 
       - name: Upload screenshots and report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: layout-report
