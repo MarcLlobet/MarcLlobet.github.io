@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mockRepos } from "../mocks/repos";
 import {
   accentFor,
+  firstSentence,
   ACCENTS,
   displayName,
   selectProjects,
@@ -33,6 +34,40 @@ describe("splitDescription", () => {
     expect(splitDescription("Tagline – detail").tagline).toBe("Tagline");
   });
 
+  it("falls back to the first sentence when there is no dash", () => {
+    expect(
+      splitDescription(
+        "Satellite data on a map. Built on Leaflet, with a tiny tile cache.",
+      ),
+    ).toEqual({
+      tagline: "Satellite data on a map.",
+      detail: "Built on Leaflet, with a tiny tile cache.",
+    });
+  });
+
+  it("prefers the dash over the first sentence", () => {
+    expect(
+      splitDescription("A store that feels effortless — fast. Really fast."),
+    ).toEqual({
+      tagline: "A store that feels effortless",
+      detail: "Fast. Really fast.",
+    });
+  });
+
+  it("does not split a sentence mid-abbreviation", () => {
+    expect(splitDescription("Built with Next.js and Node.js")).toEqual({
+      tagline: "Built with Next.js and Node.js",
+      detail: "",
+    });
+  });
+
+  it("keeps a single sentence whole", () => {
+    expect(splitDescription("Satellite data on a map.")).toEqual({
+      tagline: "Satellite data on a map.",
+      detail: "",
+    });
+  });
+
   it("keeps the whole text as the tagline without a separator", () => {
     expect(splitDescription("Satellite data on a map")).toEqual({
       tagline: "Satellite data on a map",
@@ -42,6 +77,20 @@ describe("splitDescription", () => {
 
   it("does not split hyphenated words", () => {
     expect(splitDescription("TypeScript-only CLI").detail).toBe("");
+  });
+});
+
+describe("firstSentence", () => {
+  it("stops at the first full stop", () => {
+    expect(firstSentence("One thing. And another. And more.")).toBe(
+      "One thing.",
+    );
+  });
+
+  it("keeps a single sentence, abbreviations and all", () => {
+    expect(firstSentence("Apps with HTML, SVG and Next.js")).toBe(
+      "Apps with HTML, SVG and Next.js",
+    );
   });
 });
 

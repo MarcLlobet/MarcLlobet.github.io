@@ -34,14 +34,29 @@ export const visibleLanguages = (repository: Repository): string[] => {
 };
 
 /**
- * The GitHub description holds both texts: "Tagline — detail".
- * Only the first em dash (or en dash) between spaces splits them.
+ * A sentence ends at a full stop followed by a capital, so "Next.js" and
+ * "No. 5" stay whole.
+ */
+const SENTENCE = /^([\s\S]+?[.!?])\s+([A-Z][\s\S]*)$/;
+
+/** The opening sentence of a text, or all of it when it is only one. */
+export const firstSentence = (text: string) => {
+  const trimmed = text.trim();
+  return trimmed.match(SENTENCE)?.[1] ?? trimmed;
+};
+
+/**
+ * The GitHub description holds both texts: "Tagline — detail". The first em
+ * dash (or en dash) between spaces splits them; without one, the first
+ * sentence is the tagline and whatever follows it is the detail.
  */
 export const splitDescription = (
   description: string,
 ): { tagline: string; detail: string } => {
-  const match = description.match(/^([\s\S]+?)\s+[—–]\s+([\s\S]+)$/);
-  if (!match) return { tagline: description.trim(), detail: "" };
+  const text = description.trim();
+  const match =
+    text.match(/^([\s\S]+?)\s+[—–]\s+([\s\S]+)$/) ?? text.match(SENTENCE);
+  if (!match) return { tagline: text, detail: "" };
   const detail = match[2].trim();
   return {
     tagline: match[1].trim(),
