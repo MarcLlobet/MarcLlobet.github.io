@@ -110,7 +110,7 @@ const ComponentCard = styled.div`
 const ComponentName = styled.h3`
   font-size: 1rem;
   color: var(--color-heading);
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   font-weight: 600;
 `;
 
@@ -206,14 +206,14 @@ const PreviewLabel = styled.div`
 const PreviewTitle = styled.h3`
   font-size: 1rem;
   color: var(--color-heading);
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   font-weight: 600;
 `;
 
 const PreviewDimensions = styled.span`
   font-size: 0.75rem;
   color: var(--color-muted);
-  font-family: monospace;
+  font-family: var(--font-mono);
 `;
 
 const DeviceFrame = styled.div<{
@@ -290,7 +290,7 @@ const PreviewMain = styled.div`
 const PreviewHero = styled.div<{ $fontSize: number }>`
   display: flex;
   flex-direction: column;
-  font-family: var(--stardom-stack);
+  font-family: var(--font-sans);
   color: var(--color-heading);
   font-size: ${(props) => props.$fontSize}px;
   line-height: 1;
@@ -370,7 +370,7 @@ const SectionPreviewWrapper = styled.div<{
 `;
 
 const SectionPreviewTitle = styled.div<{ $fontSize: number }>`
-  font-family: var(--stardom-stack);
+  font-family: var(--font-sans);
   color: var(--color-heading);
   font-size: ${(props) => props.$fontSize}px;
   inline-size: 100%;
@@ -497,7 +497,7 @@ export default function DesignPage() {
         <ComponentCard>
           <ComponentName>Hero Name</ComponentName>
           <ComponentDescription>
-            Font weight animation for the main name. Font family: Satoshi.
+            Font weight animation for the main name. Font family: Space Grotesk.
           </ComponentDescription>
           <ComponentPreview
             style={{
@@ -518,7 +518,7 @@ export default function DesignPage() {
           <ComponentName>Title</ComponentName>
           <ComponentDescription>
             Section title with highlighted letter in accent color. Font family:
-            Stardom.
+            Space Grotesk.
           </ComponentDescription>
           <ComponentPreview
             style={{
@@ -538,7 +538,7 @@ export default function DesignPage() {
         <ComponentCard>
           <ComponentName>Body Text</ComponentName>
           <ComponentDescription>
-            Paragraph text. Font family: Satoshi.
+            Paragraph text. Font family: Space Grotesk.
           </ComponentDescription>
           <ComponentPreview
             style={{

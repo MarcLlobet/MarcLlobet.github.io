@@ -3,7 +3,7 @@
 import styled, { css } from "styled-components";
 
 const mono = css`
-  font-family: var(--mono-stack);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -28,7 +28,7 @@ export const Head = styled.div`
 export const Title = styled.h2`
   margin-block: 1rem clamp(1.5rem, 5svh, 3rem);
   padding-block: 0;
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   font-size: clamp(3.5rem, min(9vw, 16svh), 8.5rem);
   line-height: 0.9;
   font-weight: 500;

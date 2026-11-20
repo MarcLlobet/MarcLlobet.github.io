@@ -7,7 +7,7 @@ const TWO_COLUMNS =
 const WIDE = "(min-width: 1100px)";
 
 const mono = css`
-  font-family: var(--mono-stack);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -68,7 +68,7 @@ export const Languages = styled.span`
 export const Name = styled.h2<Side>`
   margin-block: clamp(0.5rem, 2svh, 1rem) clamp(0.75rem, 3.5svh, 2rem);
   padding-block: 0;
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   font-size: clamp(2rem, min(12vw, 14svh), 11.5rem);
   line-height: 0.88;
   font-weight: 500;

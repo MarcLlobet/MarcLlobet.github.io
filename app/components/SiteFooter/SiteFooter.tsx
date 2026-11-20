@@ -3,7 +3,7 @@
 import styled, { css } from "styled-components";
 
 const mono = css`
-  font-family: var(--mono-stack);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;

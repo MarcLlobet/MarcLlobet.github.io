@@ -35,7 +35,7 @@ const Bar = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
-  font-family: var(--mono-stack);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;

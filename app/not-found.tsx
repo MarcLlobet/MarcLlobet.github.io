@@ -36,7 +36,7 @@ const Content = styled.div`
 `;
 
 const ErrorCode = styled.h1`
-  font-family: var(--stardom-stack);
+  font-family: var(--font-sans);
   font-size: calc(1rem * var(--golden-ratio) * 6);
   line-height: 1;
   color: var(--color-heading);

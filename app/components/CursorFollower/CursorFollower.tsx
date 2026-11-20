@@ -32,7 +32,7 @@ const Dot = styled.div`
 `;
 
 const Label = styled.span`
-  font-family: var(--mono-stack);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;

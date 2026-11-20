@@ -71,6 +71,15 @@ The color palette is built around a deep, near-black background to create visual
 
 The site supports both light and dark (default) themes.
 
+### Typography
+
+Two variable fonts, both under the SIL Open Font License and served from `app/public/fonts`:
+
+- **Space Grotesk** (`--font-sans`, weights 300–700) for names, headings and running text.
+- **JetBrains Mono** (`--font-mono`, weights 100–800) for labels, counters and metadata, always in small uppercase.
+
+Use the tokens, never a font name, so a future change happens in one place (`GlobalStyles.tsx`).
+
 ## Roadmap
 
 ### To Do

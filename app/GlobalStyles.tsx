@@ -2,37 +2,36 @@
 
 import { createGlobalStyle } from "styled-components";
 
-const Satoshi = `
+/*
+ * Typography: Space Grotesk for everything you read, JetBrains Mono for
+ * labels, counters and metadata. Both are variable fonts served from /fonts.
+ */
+const Fonts = `
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/satoshi/Satoshi-Variable.woff2') format('woff2');
-  font-weight: 300 900;
+  font-family: 'Space Grotesk';
+  src: url('/fonts/space-grotesk/SpaceGrotesk-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
   font-display: swap;
   font-style: normal;
 }
 
 :root {
-  --satoshi-stack: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont,
-             'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --satoshi-weight-light: 300;
-  --satoshi-weight-regular: 400;
-  --satoshi-weight-medium: 500;
-  --satoshi-weight-bold: 700;
-  --satoshi-weight-black: 900;
-}
-`;
-
-const Stardom = `
-@font-face {
-  font-family: 'Stardom';
-  src: url('/fonts/stardom/Stardom-Regular.woff2') format('woff2');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
-}
-
-:root {
-  --stardom-stack: 'Stardom', Georgia, 'Times New Roman', Times, serif;
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo,
+    Consolas, 'Liberation Mono', monospace;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 }
 `;
 
@@ -59,7 +58,7 @@ const GenericStyles = `
   --tap-target: 2.75rem;
   --shape-size: clamp(64px, 10vmin + 2rem, 180px);
   --selector-size: 20px;
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
 
@@ -69,8 +68,6 @@ const GenericStyles = `
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  --mono-stack: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
 
   --color-bg: #0E0E0C;
   --color-surface: #161614;
@@ -244,13 +241,13 @@ p {
 }
 
 b {
-  font-weight: var(--satoshi-weight-bold);
+  font-weight: var(--font-weight-bold);
 }
 
 h2,h3,h4,h5,h6 {
   color: var(--color-heading);
   display: block;
-  font-family: var(--stardom-stack);
+  font-family: var(--font-sans);
   margin-block-start: 0;
   margin-block-end: 0;
 }
@@ -298,7 +295,6 @@ h6 {
 `;
 
 export const GlobalStyles = createGlobalStyle`
-  ${Satoshi}
-  ${Stardom}
+  ${Fonts}
   ${GenericStyles}
 `;

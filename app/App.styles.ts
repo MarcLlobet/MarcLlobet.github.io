@@ -3,7 +3,7 @@
 import styled, { css, keyframes } from "styled-components";
 
 const mono = css`
-  font-family: var(--mono-stack);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -53,7 +53,7 @@ export const NameGroup = styled.hgroup`
 
 export const Name = styled.h1`
   margin: 0;
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   font-size: clamp(4.5rem, min(15vw, 22svh), 14.5rem);
   line-height: 0.86;
   font-weight: 500;
