@@ -5,6 +5,7 @@ import { prefersReducedMotion } from "../../utils/useMediaQuery";
 import {
   axis,
   BEAMS,
+  beamMatrix,
   beamStart,
   multiply,
   quat,
@@ -13,14 +14,8 @@ import {
   UP,
   type Vec3,
 } from "./triangle";
-import {
-  Beam,
-  Count,
-  Digits,
-  Hud,
-  Stage,
-  TriangleRoot,
-} from "./ScrollScene.styles";
+import { createRenderer, type FaceColours, type Rgb } from "./renderer";
+import { Canvas, Count, Digits, Hud } from "./ScrollScene.styles";
 
 /** Ids of the elements the scene reads; the page renders them. */
 export const SCENE = {
@@ -31,7 +26,6 @@ export const SCENE = {
   hud: "scene-hud",
 } as const;
 
-const FACES = ["px", "nx", "py", "ny", "pz", "nz"] as const;
 const INTRO_DELAY = 0.35;
 const INTRO_STAGGER = 0.18;
 const INTRO_DURATION = 1.5;
@@ -43,6 +37,31 @@ const easeInOut = (x: number) =>
 const easeOutExpo = (x: number) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
 const pad = (n: number) => String(n).padStart(2, "0");
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
+
+/* Colours: three visible faces (top, side, front) plus the hidden ones */
+const hex = (value: string): Rgb => {
+  const n = parseInt(value.replace("#", "").slice(0, 6), 16);
+  return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+};
+const mix = (a: Rgb, b: Rgb, k: number): Rgb => [
+  lerp(a[0], b[0], k),
+  lerp(a[1], b[1], k),
+  lerp(a[2], b[2], k),
+];
+const WHITE: Rgb = [1, 1, 1];
+const INK = hex("#0E0E0C");
+
+/** Face order: +x side, −x, +y top, −y, +z front, −z. */
+const faces = (top: Rgb, side: Rgb, front: Rgb): FaceColours => {
+  const hidden = mix(front, INK, 0.4);
+  return [side, hidden, top, hidden, front, hidden];
+};
+const fromAccent = (accent: string): FaceColours => {
+  const c = hex(accent);
+  return faces(mix(c, WHITE, 0.35), c, mix(c, INK, 0.55));
+};
+const MONO_DARK = faces(hex("#EDECE6"), hex("#8A8880"), hex("#2E2E2B"));
+const MONO_LIGHT = faces(hex("#9A948A"), hex("#3F3B36"), hex("#1C1B19"));
 
 type Anchor = { x: number; y: number; size: number };
 
@@ -64,19 +83,19 @@ export type ScrollSceneProps = {
 /**
  * Directs the page while it scrolls: reveals each project (--p, --q), sets the
  * accent of the project in view, runs the counter, and flies the impossible
- * triangle from the hero to the counter, through every project and to the footer.
+ * triangle (WebGL) from the hero to the counter, through every project and to
+ * the footer.
  */
 export const ScrollScene = ({ total }: ScrollSceneProps) => {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const beamRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const hudRef = useRef<HTMLDivElement>(null);
   const digitsRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const stage = stageRef.current;
-    const root = rootRef.current;
-    if (!stage || !root || typeof requestAnimationFrame === "undefined") return;
+    const canvas = canvasRef.current;
+    if (!canvas || typeof requestAnimationFrame === "undefined") return;
+    const renderer = createRenderer(canvas);
+    if (!renderer) return;
 
     const reduced = prefersReducedMotion();
     const coarse =
@@ -91,6 +110,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
       pointer.y = event.clientY;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("resize", renderer.resize);
 
     const tumbleAxis = axis(1, 0.35);
     const wobbleAxis = axis(0.3, 1);
@@ -98,6 +118,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
     const starts = BEAMS.map((beam) => beamStart(beam.home, beam.from));
 
     const t0 = performance.now();
+    let colours: FaceColours = MONO_DARK.map((c) => [...c]) as FaceColours;
     let tiltX = 0;
     let tiltY = 0;
     let pulse = 0;
@@ -111,18 +132,18 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
       const vh = window.innerHeight;
       const vw = window.innerWidth;
 
-      /* Intro: the beams fly in and lock */
-      BEAMS.forEach((beam, i) => {
-        const element = beamRefs.current[i];
-        if (!element) return;
+      /* Intro: the three beams fly in and lock */
+      const beams = BEAMS.map((beam, i) => {
         const k = reduced
           ? 1
           : easeOutExpo(
               clamp((t - INTRO_DELAY - i * INTRO_STAGGER) / INTRO_DURATION),
             );
-        const p = beam.home.map((v, j) => lerp(starts[i][j], v, k)) as Vec3;
-        const [sx, sy, sz] = beam.spin.map((angle) => angle * (1 - k));
-        element.style.transform = `translate3d(${p[0]}px, ${p[1]}px, ${p[2]}px) rotateX(${sx}deg) rotateY(${sy}deg) rotateZ(${sz}deg)`;
+        const position = beam.home.map((v, j) =>
+          lerp(starts[i][j], v, k),
+        ) as Vec3;
+        const spin = beam.spin.map((angle) => angle * (1 - k)) as Vec3;
+        return beamMatrix(position, spin);
       });
       const assembled = reduced || t > INTRO_END;
       if (assembled && !introPulsed) {
@@ -133,18 +154,16 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
       /* Projects: reveal progress, and which one is in the middle */
       const cases = [...document.querySelectorAll<HTMLElement>("[data-case]")];
       const centres = cases.map((element) => {
-        const frameRect = (
+        const rect = (
           element.querySelector("[data-frame]") ?? element
         ).getBoundingClientRect();
         if (!reduced) {
-          const p = clamp((vh - frameRect.top) / (vh * 0.7));
-          const q = clamp(
-            (vh - frameRect.top) / (vh / 2 + frameRect.height / 2),
-          );
+          const p = clamp((vh - rect.top) / (vh * 0.7));
+          const q = clamp((vh - rect.top) / (vh / 2 + rect.height / 2));
           element.style.setProperty("--p", p.toFixed(3));
           element.style.setProperty("--q", q.toFixed(3));
         }
-        return frameRect.top + frameRect.height / 2;
+        return rect.top + rect.height / 2;
       });
       let index = -1;
       centres.forEach((centre, i) => {
@@ -161,7 +180,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
       const work = document.getElementById(SCENE.work)?.getBoundingClientRect();
       const inWork = !!work && work.top < vh / 2 && work.bottom > vh / 2;
       const hud = hudRef.current;
-      if (hud) hud.toggleAttribute("data-on", inWork);
+      hud?.toggleAttribute("data-on", inWork);
       const active = inWork ? Math.max(0, frac < 0.5 ? index : index + 1) : -1;
       if (active !== lastActive) {
         lastActive = active;
@@ -174,10 +193,8 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
             "transform",
             `translateY(${-active * 1.3}em)`,
           );
-          stage.style.setProperty("--tri", cases[active].dataset.accent ?? "");
         } else {
           html.style.removeProperty("--scene-accent");
-          stage.style.setProperty("--tri", "var(--color-text)");
         }
       }
 
@@ -255,15 +272,27 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
         quat(RIGHT, tiltY),
       ].reduce(multiply);
 
+      /* Colour: monochrome in the hero and footer, the project's accent between */
+      let target = html.classList.contains("light-theme")
+        ? MONO_LIGHT
+        : MONO_DARK;
+      if (travelling && cases[index]) {
+        const from = fromAccent(cases[index].dataset.accent ?? "#888888");
+        const next = cases[Math.min(index + 1, cases.length - 1)];
+        const into = fromAccent(next.dataset.accent ?? "#888888");
+        const k = frac * frac * (3 - 2 * frac);
+        target = from.map((c, i) => mix(c, into[i], k)) as FaceColours;
+      }
+      colours = colours.map((c, i) => mix(c, target[i], 0.08)) as FaceColours;
+
       pulse *= 0.9;
       if (pulse < 0.001) pulse = 0;
-      root.style.transform = sceneMatrix(
-        x,
-        y,
-        size * (1 + pulse * 0.12),
-        rotation,
+      renderer.draw(
+        sceneMatrix(x, y, size * (1 + pulse * 0.12), rotation),
+        beams,
+        colours,
       );
-      stage.setAttribute("data-ready", "");
+      canvas.setAttribute("data-ready", "");
 
       frame = requestAnimationFrame(tick);
     };
@@ -272,6 +301,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("resize", renderer.resize);
       delete html.dataset.scene;
       html.style.removeProperty("--scene-accent");
     };
@@ -279,25 +309,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
 
   return (
     <>
-      <Stage ref={stageRef} dir="ltr" aria-hidden="true">
-        <TriangleRoot ref={rootRef}>
-          {BEAMS.map((beam, i) => (
-            <Beam
-              key={i}
-              ref={(element) => {
-                beamRefs.current[i] = element;
-              }}
-              $w={beam.size[0]}
-              $h={beam.size[1]}
-              $d={beam.size[2]}
-            >
-              {FACES.map((name) => (
-                <div key={name} data-face={name} />
-              ))}
-            </Beam>
-          ))}
-        </TriangleRoot>
-      </Stage>
+      <Canvas ref={canvasRef} aria-hidden="true" />
       {total > 0 && (
         <Hud ref={hudRef} id={SCENE.hud} aria-hidden="true">
           <Count>

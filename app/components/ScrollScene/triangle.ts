@@ -8,8 +8,10 @@
  */
 
 export type Vec3 = [number, number, number];
-type Quat = [number, number, number, number];
+export type Quat = [number, number, number, number];
 type Mat3 = [Vec3, Vec3, Vec3];
+/** 4×4 matrix in column-major order, as WebGL expects. */
+export type Mat4 = number[];
 
 export const L = 100;
 export const T = 24;
@@ -52,8 +54,8 @@ export const UP: Vec3 = [-1 / s6, 2 / s6, -1 / s6];
 const BACK: Vec3 = [1 / s3, 1 / s3, 1 / s3];
 
 /**
- * World → CSS (x right, y down, z towards the viewer), with no perspective.
- * The rows are a proper rotation, so CSS keeps the faces' front and back.
+ * World → screen pixels (x right, y down, z towards the viewer), orthographic.
+ * The rows form a proper rotation.
  */
 const VIEW: Mat3 = [
   [-RIGHT[0], -RIGHT[1], -RIGHT[2]],
@@ -98,16 +100,36 @@ const times = (a: Mat3, b: Mat3): Mat3 =>
     ),
   ) as Mat3;
 
+/** Column-major 4×4 from a 3×3 linear part and a translation. */
+const affine = (a: Mat3, t: Vec3): Mat4 => [
+  a[0][0],
+  a[1][0],
+  a[2][0],
+  0,
+  a[0][1],
+  a[1][1],
+  a[2][1],
+  0,
+  a[0][2],
+  a[1][2],
+  a[2][2],
+  0,
+  t[0],
+  t[1],
+  t[2],
+  1,
+];
+
 /**
- * CSS matrix3d that draws the triangle centred on (x, y) in viewport pixels,
- * `size` pixels wide, rotated by `rotation`.
+ * World → screen pixels: draws the triangle centred on (x, y) in the viewport,
+ * about `size` pixels wide, rotated by `rotation`.
  */
 export const sceneMatrix = (
   x: number,
   y: number,
   size: number,
   rotation: Quat,
-): string => {
+): Mat4 => {
   const scale = size / (1.2 * L);
   const a = times(VIEW, toMatrix(rotation)).map((row) =>
     row.map((value) => value * scale),
@@ -116,26 +138,56 @@ export const sceneMatrix = (
     (i) =>
       (i === 0 ? x : i === 1 ? y : 0) -
       (a[i][0] * CENTROID[0] + a[i][1] * CENTROID[1] + a[i][2] * CENTROID[2]),
-  );
-  const values = [
-    a[0][0],
-    a[1][0],
-    a[2][0],
-    0,
-    a[0][1],
-    a[1][1],
-    a[2][1],
-    0,
-    a[0][2],
-    a[1][2],
-    a[2][2],
-    0,
-    t[0],
-    t[1],
-    t[2],
-    1,
+  ) as Vec3;
+  return affine(a, t);
+};
+
+/**
+ * Screen pixels → WebGL clip space. Larger z (nearer the viewer) gets a smaller
+ * depth, so the default depth test keeps the nearest face.
+ */
+export const pixelsToClip = (width: number, height: number): Mat4 => [
+  2 / width,
+  0,
+  0,
+  0,
+  0,
+  -2 / height,
+  0,
+  0,
+  0,
+  0,
+  -1 / 4000,
+  0,
+  -1,
+  1,
+  0,
+  1,
+];
+
+const rad = (deg: number) => (deg * Math.PI) / 180;
+
+/** A beam's own placement: translate, then rotate X, Y and Z (degrees). */
+export const beamMatrix = (position: Vec3, [ax, ay, az]: Vec3): Mat4 => {
+  const [cx, sx] = [Math.cos(rad(ax)), Math.sin(rad(ax))];
+  const [cy, sy] = [Math.cos(rad(ay)), Math.sin(rad(ay))];
+  const [cz, sz] = [Math.cos(rad(az)), Math.sin(rad(az))];
+  const rx: Mat3 = [
+    [1, 0, 0],
+    [0, cx, -sx],
+    [0, sx, cx],
   ];
-  return `matrix3d(${values.map((v) => +v.toFixed(5)).join(",")})`;
+  const ry: Mat3 = [
+    [cy, 0, sy],
+    [0, 1, 0],
+    [-sy, 0, cy],
+  ];
+  const rz: Mat3 = [
+    [cz, -sz, 0],
+    [sz, cz, 0],
+    [0, 0, 1],
+  ];
+  return affine(times(times(rx, ry), rz), position);
 };
 
 /** Where a beam starts its fly-in: off to the side on screen, in world units. */
@@ -144,3 +196,34 @@ export const beamStart = (home: Vec3, [right, up]: [number, number]): Vec3 => [
   home[1] + (RIGHT[1] * right + UP[1] * up) * L,
   home[2] + (RIGHT[2] * right + UP[2] * up) * L,
 ];
+
+/**
+ * The six faces of a box centred on the origin, as triangles: 36 vertices of
+ * (x, y, z, face). Faces are +x, −x, +y, −y, +z, −z (0…5).
+ */
+export const boxVertices = ([w, h, d]: Vec3): Float32Array => {
+  const half = [w / 2, h / 2, d / 2];
+  const corners: [number, number][] = [
+    [-1, -1],
+    [1, -1],
+    [1, 1],
+    [-1, 1],
+  ];
+  const data: number[] = [];
+  [0, 1, 2].forEach((axisIndex) => {
+    [1, -1].forEach((sign, signIndex) => {
+      const u = (axisIndex + 1) % 3;
+      const v = (axisIndex + 2) % 3;
+      const points = corners.map(([su, sv]) => {
+        const p = [0, 0, 0];
+        p[axisIndex] = sign * half[axisIndex];
+        p[u] = su * half[u];
+        p[v] = sv * half[v];
+        return p;
+      });
+      const face = axisIndex * 2 + signIndex;
+      [0, 1, 2, 0, 2, 3].forEach((k) => data.push(...points[k], face));
+    });
+  });
+  return new Float32Array(data);
+};

@@ -117,11 +117,6 @@ html.light-theme {
   initial-value: #5B9BFF;
 }
 
-@property --tri {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #EDECE6;
-}
 
 /* The drawn triangle in the hero is a fallback: hidden once the 3D one runs */
 html[data-scene="on"] [data-scene-fallback] {

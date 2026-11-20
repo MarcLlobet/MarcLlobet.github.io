@@ -2,71 +2,21 @@
 
 import styled, { css } from "styled-components";
 
-/* Fixed layer over the page; the triangle inside is placed by a matrix3d */
-export const Stage = styled.div`
+/* Fixed WebGL layer over the page, where the triangle is drawn */
+export const Canvas = styled.canvas`
   position: fixed;
   inset: 0;
   z-index: 35;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
   pointer-events: none;
   opacity: 0;
-  transition:
-    opacity 0.4s,
-    --tri 0.6s ease;
+  transition: opacity 0.4s;
 
   &[data-ready] {
     opacity: 1;
   }
-`;
-
-export const TriangleRoot = styled.div`
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  transform-style: preserve-3d;
-  will-change: transform;
-`;
-
-const face = (
-  name: string,
-  inline: number,
-  block: number,
-  transform: string,
-  color: string,
-) => css`
-  & > [data-face="${name}"] {
-    inline-size: ${inline}px;
-    block-size: ${block}px;
-    transform: ${transform} translate(-50%, -50%);
-    background: ${color};
-  }
-`;
-
-const TOP = "color-mix(in srgb, var(--tri) 62%, white)";
-const SIDE = "var(--tri)";
-const FRONT = "color-mix(in srgb, var(--tri) 45%, black)";
-const HIDDEN = "color-mix(in srgb, var(--tri) 30%, black)";
-
-/* A box of $w × $h × $d world units: six faces around its centre */
-export const Beam = styled.div<{ $w: number; $h: number; $d: number }>`
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  transform-style: preserve-3d;
-
-  & > [data-face] {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-  }
-
-  ${({ $w, $h, $d }) => css`
-    ${face("px", $d, $h, `rotateY(90deg) translateZ(${$w / 2}px)`, SIDE)}
-    ${face("nx", $d, $h, `rotateY(-90deg) translateZ(${$w / 2}px)`, HIDDEN)}
-    ${face("py", $w, $d, `rotateX(-90deg) translateZ(${$h / 2}px)`, TOP)}
-    ${face("ny", $w, $d, `rotateX(90deg) translateZ(${$h / 2}px)`, HIDDEN)}
-    ${face("pz", $w, $h, `translateZ(${$d / 2}px)`, FRONT)}
-    ${face("nz", $w, $h, `rotateY(180deg) translateZ(${$d / 2}px)`, HIDDEN)}
-  `}
 `;
 
 const mono = css`
