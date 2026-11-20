@@ -9,18 +9,6 @@ const LazyBioPortal = lazy(() =>
   import("../BioPortal").then((mod) => ({ default: mod.BioPortal })),
 );
 
-const whiteFavicon = "/favicon-white.svg";
-const redFavicon = "/favicon-red.svg";
-
-const toggleFavicon = () => {
-  const favicon = document.querySelector("link[rel~='icon']");
-  const href = favicon?.getAttribute("href");
-  favicon?.setAttribute(
-    "href",
-    href === whiteFavicon ? redFavicon : whiteFavicon,
-  );
-};
-
 export type NavWrapperProps = {
   bio: Bio;
   repositories: Repository[];
@@ -43,7 +31,6 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
 
   const handleTheme = () => {
     document.documentElement.classList.toggle("light-theme");
-    toggleFavicon();
   };
 
   return (
