@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  accentFor,
   displayName,
   splitDescription,
   visibleLanguages,
@@ -10,6 +11,7 @@ import {
   Head,
   List,
   Row,
+  RowGo,
   RowLanguages,
   RowName,
   RowNumber,
@@ -35,9 +37,17 @@ export const ArchiveIndex = ({ repositories }: ArchiveIndexProps) => (
     <List>
       {repositories.map((repository, index) => (
         <li key={repository.id}>
-          <Row href={repository.url} target="_blank" rel="noopener noreferrer">
+          <Row
+            href={repository.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            $accent={accentFor(index)}
+          >
             <RowNumber>{pad(index + 1)}</RowNumber>
-            <RowName>{displayName(repository.name)}</RowName>
+            <RowName>
+              {displayName(repository.name)}
+              <RowGo aria-hidden="true">↗</RowGo>
+            </RowName>
             <RowLanguages>
               {visibleLanguages(repository).slice(0, 3).join(" · ")}
             </RowLanguages>

@@ -40,19 +40,18 @@ export const List = styled.ol`
   margin: 0;
   padding: 0;
   border-block-end: 1px solid var(--color-line);
-
-  &:hover a,
-  &:has(a:focus-visible) a {
-    opacity: 0.55;
-  }
-
-  & a:hover,
-  & a:focus-visible {
-    opacity: 1;
-  }
 `;
 
-export const Row = styled.a`
+/*
+ * A row reads as a line of an index until you point at it: then the rule
+ * underneath draws from the start to the end in the row's own colour, and an
+ * arrow comes out of the name. Leaving reverses nothing: the rule keeps going
+ * and leaves through the far edge.
+ */
+export const Row = styled.a<{ $accent: string }>`
+  --c: ${({ $accent }) => $accent};
+  --line: var(--c);
+  position: relative;
   display: grid;
   grid-template-columns: 3rem minmax(0, 1fr) auto;
   align-items: baseline;
@@ -60,11 +59,11 @@ export const Row = styled.a`
   padding-block: 1.125rem;
   border-block-start: 1px solid var(--color-line);
   color: var(--color-text);
-  transition: opacity 0.3s;
 
-  &:hover {
-    color: var(--color-text);
-    text-decoration: none;
+  /* The rule: the global line, moved to the foot of the whole row */
+  &::after {
+    inset-block-end: 0;
+    block-size: 2px;
   }
 
   @media ${NO_HOVER} {
@@ -78,29 +77,44 @@ export const RowNumber = styled.span`
 `;
 
 export const RowName = styled.span`
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   font-size: clamp(1.625rem, 3.4vw, 3rem);
   line-height: 1.05;
   font-weight: 500;
   letter-spacing: -0.03em;
   overflow-wrap: anywhere;
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+`;
+
+/** The arrow that comes out of the name when the row is pointed at. */
+export const RowGo = styled.span`
+  font-size: 0.5em;
+  /* The row's own ink: an accent this small does not carry in light theme */
+  color: inherit;
+  opacity: 0;
+  transform: translateX(-0.5rem);
+  transition:
+    opacity 0.35s,
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 
   a:hover &,
   a:focus-visible & {
-    transform: translateX(1rem);
-    text-decoration-line: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.2em;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.08s;
   }
 
-  a:hover &:dir(rtl),
-  a:focus-visible &:dir(rtl) {
-    transform: translateX(-1rem);
+  /* Nothing to point with: the arrow stays out, in the row's own colour */
+  @media ${NO_HOVER} {
+    opacity: 1;
+    transform: none;
   }
 `;
 
 export const RowLanguages = styled.span`
   ${mono}
+  position: relative;
   color: var(--color-muted);
 
   @media ${NO_HOVER} {
@@ -109,6 +123,7 @@ export const RowLanguages = styled.span`
 `;
 
 export const RowTagline = styled.span`
+  position: relative;
   grid-column: 2 / -1;
   color: var(--color-muted);
 `;

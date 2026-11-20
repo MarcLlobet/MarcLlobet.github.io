@@ -56,9 +56,12 @@ const Hello = styled.a`
     `,
   )}
 
+  &::after {
+    content: none;
+  }
+
   &:hover {
     color: var(--color-heading);
-    text-decoration: none;
   }
 
   &:hover span {

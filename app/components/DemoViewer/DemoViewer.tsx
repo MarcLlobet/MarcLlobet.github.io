@@ -52,10 +52,7 @@ const Actions = styled.div`
     align-items: center;
     min-block-size: var(--tap-target);
     color: var(--color-text);
-  }
-
-  a:hover {
-    text-decoration-color: var(--c);
+    --line: var(--c);
   }
 
   button {

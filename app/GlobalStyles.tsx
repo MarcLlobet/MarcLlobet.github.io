@@ -178,18 +178,51 @@ a {
   font-weight: 500;
   color: var(--color-muted);
   text-decoration: inherit;
+  position: relative;
 }
 
 button {
   color: var(--color-muted);
+  position: relative;
 }
 
-/* Hover: no colour change, a line underneath */
-a:hover,
-button:hover {
-  text-decoration-line: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.35em;
+/*
+ * Hover: no colour change, a line that wipes in from the start of the word and
+ * leaves through its end. --line paints it (a project accent where there is
+ * one); setting content: none on the ::after opts an element out.
+ */
+a::after,
+button::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(50% - 0.82em);
+  block-size: 2px;
+  background: var(--line, currentColor);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  pointer-events: none;
+}
+
+a:dir(rtl)::after,
+button:dir(rtl)::after {
+  transform-origin: 0 50%;
+}
+
+a:hover::after,
+a:focus-visible::after,
+button:hover::after,
+button:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+
+a:hover:dir(rtl)::after,
+a:focus-visible:dir(rtl)::after,
+button:hover:dir(rtl)::after,
+button:focus-visible:dir(rtl)::after {
+  transform-origin: 100% 50%;
 }
 
 /* Focus styles for accessibility */
@@ -224,6 +257,10 @@ button:focus-visible {
 
 .skip-to-content:focus {
   inset-block-start: 0;
+}
+
+.skip-to-content::after {
+  content: none;
 }
 
 /* Reduced motion support */
