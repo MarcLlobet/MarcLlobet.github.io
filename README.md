@@ -51,7 +51,7 @@ GitHub is the single source of truth, read **at build time**: `app/page.tsx` is 
 
 `ScrollScene` directs the page from one animation frame loop: it reveals each project (`--p`, `--q`), sets the accent of the project in view, runs the counter and flies the impossible triangle (three real beams drawn with WebGL and a depth buffer, seen from the one angle where they look closed; no 3D library) from the hero to the counter and to the footer. Everything stays still with `prefers-reduced-motion`.
 
-Set `GH_API_TOKEN` (a token that can read public repos) and optionally `GH_API_USERNAME` in `.env.local`, as in `.env.example`. Without a token the build uses `app/data/fixtures/portfolio.json` and says so; the deploy sets `PORTFOLIO_REQUIRE_LIVE_DATA=true`, so it fails rather than publish fixtures.
+Set `GH_API_TOKEN` (a token that can read public repos) and optionally `GH_API_USERNAME` in `.env.local`, as in `.env.example`. With the token set, `pnpm snapshot:fixtures` refreshes the fixture from GitHub, so the build without a token shows the current projects, pins and descriptions. Without a token the build uses `app/data/fixtures/portfolio.json` and says so; the deploy sets `PORTFOLIO_REQUIRE_LIVE_DATA=true`, so it fails rather than publish fixtures.
 
 ### When the site rebuilds
 

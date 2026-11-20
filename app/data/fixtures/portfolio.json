@@ -1,10 +1,10 @@
 {
   "bio": "Front End Dev crafting fast, accessible, beautiful apps with HTML, SVG, CSS, JS, TS. Product-minded, tech enthusiast, code perfectionist, world-changer!",
-  "pinned": ["ts-only", "wordle-app", "semantic-git"],
+  "pinned": [],
   "repositories": [
     {
-      "id": "R_kgDOQrH-Zg",
-      "name": "fluency-report",
+      "id": "R_kgDOVsIKqA",
+      "name": "gryphon",
       "isArchived": false,
       "owner": {
         "login": "MarcLlobet"
@@ -12,31 +12,94 @@
       "defaultBranchRef": {
         "name": "main"
       },
-      "homepageUrl": "https://marcllobet.github.io/fluency-report/",
-      "url": "https://github.com/MarcLlobet/fluency-report",
-      "description": "A web-based reporting tool that transforms raw fluency data into a clear and structured overview, helping educators understand learning patterns, compare progress across multiplication tables, and identify gaps early in order to support better teaching and assessment decisions.",
+      "homepageUrl": "https://marcllobet.github.io/gryphon/",
+      "url": "https://github.com/MarcLlobet/gryphon",
+      "description": "Satellite heat data on a map anyone can open — a thermal Earth-observation frontend built with Next.js and React Query, with map layers that load lazily so the interface stays instant, and typed mocks for tests and local development.",
       "primaryLanguage": {
         "name": "TypeScript"
       },
       "languages": [
         {
-          "name": "Makefile"
+          "name": "TypeScript"
         },
         {
-          "name": "Dockerfile"
+          "name": "CSS"
         },
         {
-          "name": "PHP"
+          "name": "JavaScript"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/gryphon/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOUsHmvw",
+      "name": "mobile-store",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/mobile-store/",
+      "url": "https://github.com/MarcLlobet/mobile-store",
+      "description": "A phone store built to feel effortless: search answers instantly through an O(1) prefix index, the detail view lets you pick color and storage, the cart survives reloads, and pages glide smoothly into each other. Available in English and Spanish, and checked for accessibility on every change.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
+        },
+        {
+          "name": "Bru"
+        },
+        {
+          "name": "CSS"
+        },
+        {
+          "name": "HTML"
+        },
+        {
+          "name": "JavaScript"
+        }
+      ],
+      "topics": ["demo"],
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/mobile-store/main/.github/preview.png"
+    },
+    {
+      "id": "R_kgDOQrH-Zg",
+      "name": "gym-grid",
+      "isArchived": false,
+      "owner": {
+        "login": "MarcLlobet"
+      },
+      "defaultBranchRef": {
+        "name": "main"
+      },
+      "homepageUrl": "https://marcllobet.github.io/gym-grid/",
+      "url": "https://github.com/MarcLlobet/gym-grid",
+      "description": "Times-table fluency at a glance — turns raw fluency data into a clear report, so teachers can compare progress across multiplication tables and spot gaps early.",
+      "primaryLanguage": {
+        "name": "TypeScript"
+      },
+      "languages": [
+        {
+          "name": "TypeScript"
         },
         {
           "name": "JavaScript"
         },
         {
           "name": "HTML"
+        },
+        {
+          "name": "CSS"
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/fluency-report/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/gym-grid/main/.github/preview.png"
     },
     {
       "id": "R_kgDOQn0Mkw",
@@ -50,7 +113,7 @@
       },
       "homepageUrl": "https://marcllobet.github.io/adventofcode/",
       "url": "https://github.com/MarcLlobet/adventofcode",
-      "description": "Solutions for the daily logic challenges by breaking each puzzle into smaller reasoning steps, helping learners strengthen analytical thinking, experiment with different problem‑solving strategies, and better understand how structured approaches shape outcomes.",
+      "description": "Advent of Code, solved in TypeScript — each daily puzzle broken into small reasoning steps you can follow and test one by one.",
       "primaryLanguage": {
         "name": "TypeScript"
       },
@@ -83,10 +146,10 @@
       },
       "languages": [
         {
-          "name": "Shell"
+          "name": "HTML"
         },
         {
-          "name": "HTML"
+          "name": "Shell"
         }
       ],
       "topics": ["demo"],
@@ -104,19 +167,19 @@
       },
       "homepageUrl": "https://marcllobet.github.io/accordion-progress/",
       "url": "https://github.com/MarcLlobet/accordion-progress",
-      "description": "Created to guide users through multi‑step tasks, this project organizes information in a way that reveals context at the right moment, making it easier to understand progress, follow instructions, and stay oriented while working through layered content.",
+      "description": "An accordion that shows how far you've come — multi-step content that reveals context at the right moment, so you always know where you are and what comes next.",
       "primaryLanguage": {
         "name": "TypeScript"
       },
       "languages": [
         {
+          "name": "TypeScript"
+        },
+        {
           "name": "JavaScript"
         },
         {
           "name": "HTML"
-        },
-        {
-          "name": "TypeScript"
         }
       ],
       "topics": ["demo"],
@@ -134,7 +197,7 @@
       },
       "homepageUrl": "https://marcllobet.github.io/vanilla-documents/",
       "url": "https://github.com/MarcLlobet/vanilla-documents",
-      "description": "Focused on making document management feel organized rather than chaotic, this project brings updates, notifications, and file changes into a unified flow that helps users keep context, respond confidently, and stay aware of everything happening in real time.",
+      "description": "Live document updates without a framework — updates, notifications and file changes in one real-time flow, built in vanilla TypeScript with a Go backend.",
       "primaryLanguage": {
         "name": "TypeScript"
       },
@@ -170,16 +233,16 @@
       },
       "homepageUrl": "https://marcllobet.github.io/pet-manager/",
       "url": "https://github.com/MarcLlobet/pet-manager",
-      "description": "Built around clear flows and predictable interactions, this project helps users review pet information, update details with confidence, and understand how changes tie together, creating a smoother experience when managing several profiles at once.",
+      "description": "Several pet profiles, one calm place — review and edit each pet's details through clear, predictable flows that show how every change fits together.",
       "primaryLanguage": {
         "name": "HTML"
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "HTML"
         },
         {
-          "name": "HTML"
+          "name": "TypeScript"
         },
         {
           "name": "CSS"
@@ -210,9 +273,6 @@
       "languages": [
         {
           "name": "TypeScript"
-        },
-        {
-          "name": "JavaScript"
         },
         {
           "name": "HTML"
@@ -252,7 +312,7 @@
       "preview": "https://raw.githubusercontent.com/MarcLlobet/wordle-app/main/.github/preview.png"
     },
     {
-      "id": "R_kgDOONg1tw",
+      "id": "R_kgDONg1tw",
       "name": "atlesdevidessecretes",
       "isArchived": false,
       "owner": {
@@ -287,16 +347,16 @@
       },
       "homepageUrl": "https://marcllobet.github.io/users-by-colors/",
       "url": "https://github.com/MarcLlobet/users-by-colors",
-      "description": "By reorganizing people based on color preferences and ranking, this project reveals patterns that might otherwise stay hidden, helping viewers compare groups, understand relationships in the data, and draw clearer insights from visual sorting.",
+      "description": "People, sorted by their favourite colours — groups and ranks users by colour preference to reveal patterns a plain list hides.",
       "primaryLanguage": {
         "name": "TypeScript"
       },
       "languages": [
         {
-          "name": "JavaScript"
+          "name": "TypeScript"
         },
         {
-          "name": "TypeScript"
+          "name": "JavaScript"
         },
         {
           "name": "HTML"
@@ -320,16 +380,16 @@
       },
       "homepageUrl": "https://marcllobet.github.io/scheduling-ui/",
       "url": "https://github.com/MarcLlobet/scheduling-ui",
-      "description": "Designed to make rescheduling feel intuitive, this project presents availability changes in a structured way that helps users understand conflicts, evaluate options, and manage time with more confidence across repeated interactions.",
+      "description": "Rescheduling without the guesswork — an availability view that makes conflicts obvious and lets you compare options before you commit.",
       "primaryLanguage": {
         "name": "JavaScript"
       },
       "languages": [
         {
-          "name": "HTML"
+          "name": "JavaScript"
         },
         {
-          "name": "JavaScript"
+          "name": "HTML"
         },
         {
           "name": "CSS"
@@ -350,7 +410,7 @@
       },
       "homepageUrl": "https://marcllobet.github.io/image-gallery/",
       "url": "https://github.com/MarcLlobet/image-gallery",
-      "description": "Designed for smooth, uninterrupted exploration, this project arranges images in a continuously loading flow that helps users discover visual patterns, browse naturally, and move through content without manual reloading or complexity.",
+      "description": "An image gallery that never ends — images keep loading as you scroll, with no pages to click through and nothing to reload.",
       "primaryLanguage": {
         "name": "JavaScript"
       },
@@ -377,16 +437,16 @@
       },
       "homepageUrl": "https://marcllobet.github.io/scss-helpers/",
       "url": "https://github.com/MarcLlobet/scss-helpers",
-      "description": "Created to avoid repeating the same styling logic across projects, this collection of helpers brings structure and consistency to visual decisions, helping developers reason about design rules and apply them with ease.",
+      "description": "Styling rules you write once — a set of SCSS helpers that keeps the same design decisions consistent across projects.",
       "primaryLanguage": {
         "name": "HTML"
       },
       "languages": [
         {
-          "name": "JavaScript"
+          "name": "HTML"
         },
         {
-          "name": "HTML"
+          "name": "JavaScript"
         },
         {
           "name": "SCSS"
