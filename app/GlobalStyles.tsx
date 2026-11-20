@@ -70,21 +70,71 @@ const GenericStyles = `
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --color-bg: #141518;
-  --color-text: #D1CDC4;
-  --color-heading: #E9CFA4;
-  --color-muted: #8E8A80;
+  --mono-stack: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --color-bg: #0E0E0C;
+  --color-surface: #161614;
+  --color-text: #EDECE6;
+  --color-heading: #EDECE6;
+  --color-muted: #9C9A92;
+  --color-line: #2A2A27;
+  --color-line-strong: #3A3A36;
   --color-accent: #B0483A;
   --color-accent-text: #C9685B;
+
+  /* Mockup colour roles */
+  --mk-surf: #161614;
+  --mk-head: #121210;
+  --mk-ink: #EDECE6;
+  --mk-bar: #2A2A27;
+  --mk-bar2: #3A3A36;
+  --mk-grey: #6B6A64;
+
+  /* Accent of the project in view; the scene changes it while scrolling */
+  --scene-accent: #5B9BFF;
+  transition: --scene-accent 0.8s ease;
 }
 
 html.light-theme {
   --color-bg: #F4F1EB;
-  --color-heading: #2E2A25;
-  --color-text: #3F3B36;
-  --color-muted: #69635C;
+  --color-surface: #EAE6DE;
+  --color-heading: #1C1B19;
+  --color-text: #2A2825;
+  --color-muted: #5F5A53;
+  --color-line: #D9D4CA;
+  --color-line-strong: #C4BEB2;
   --color-accent: #B0483A;
   --color-accent-text: #B0483A;
+
+  --mk-surf: #EAE6DE;
+  --mk-head: #E0DBD1;
+  --mk-ink: #2A2825;
+  --mk-bar: #D3CDC2;
+  --mk-bar2: #C2BBAE;
+  --mk-grey: #99928A;
+}
+
+@property --scene-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #5B9BFF;
+}
+
+@property --tri {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #EDECE6;
+}
+
+/* The drawn triangle in the hero is a fallback: hidden once the 3D one runs */
+html[data-scene="on"] [data-scene-fallback] {
+  visibility: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-cursor-follower] [data-cursor] {
+    cursor: none;
+  }
 }
 
 * {
@@ -93,7 +143,6 @@ html.light-theme {
 
 #root {
   display: flex;
-  scroll-snap-align: start;
   inline-size: 100%;
   min-block-size: 100svh;
   padding-inline: max(var(--space-gutter), env(safe-area-inset-left))
@@ -114,7 +163,6 @@ html.light-theme {
 
 html {
   font-size: clamp(1rem, 0.85rem + 0.7vmin, 1.25rem);
-  scroll-snap-type: y mandatory;
   background-color: var(--color-bg);
   color: var(--color-text);
   -webkit-text-size-adjust: 100%;
@@ -186,6 +234,7 @@ button:focus-visible {
 
 body {
   margin: 0;
+  overflow: clip visible;
 }
 
 p {

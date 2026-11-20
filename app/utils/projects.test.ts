@@ -1,0 +1,90 @@
+import { describe, expect, it } from "vitest";
+import { mockRepos } from "../mocks/repos";
+import {
+  accentFor,
+  ACCENTS,
+  displayName,
+  selectProjects,
+  splitDescription,
+  visibleLanguages,
+} from "./projects";
+import type { Repository } from "../types";
+
+const repo = (name: string): Repository => ({
+  ...mockRepos[0],
+  id: name,
+  name,
+});
+
+describe("splitDescription", () => {
+  it("splits the tagline from the detail at the first em dash", () => {
+    expect(
+      splitDescription(
+        "A phone store built to feel effortless — instant search — and more.",
+      ),
+    ).toEqual({
+      tagline: "A phone store built to feel effortless",
+      detail: "Instant search — and more.",
+    });
+  });
+
+  it("accepts an en dash", () => {
+    expect(splitDescription("Tagline – detail").tagline).toBe("Tagline");
+  });
+
+  it("keeps the whole text as the tagline without a separator", () => {
+    expect(splitDescription("Satellite data on a map")).toEqual({
+      tagline: "Satellite data on a map",
+      detail: "",
+    });
+  });
+
+  it("does not split hyphenated words", () => {
+    expect(splitDescription("TypeScript-only CLI").detail).toBe("");
+  });
+});
+
+describe("visibleLanguages", () => {
+  it("puts the primary language first and drops tooling noise", () => {
+    expect(
+      visibleLanguages({
+        ...mockRepos[0],
+        primaryLanguage: { name: "TypeScript" },
+        languages: [{ name: "Bru" }, { name: "CSS" }, { name: "TypeScript" }],
+      }),
+    ).toEqual(["TypeScript", "CSS"]);
+  });
+});
+
+describe("selectProjects", () => {
+  const repos = ["a", "b", "c", "d", "e", "f", "g", "h"].map(repo);
+
+  it("features pinned repositories in pin order", () => {
+    const { featured, archive } = selectProjects(repos, ["c", "missing", "a"]);
+    expect(featured.map(({ name }) => name)).toEqual(["c", "a"]);
+    expect(archive.map(({ name }) => name)).toEqual([
+      "b",
+      "d",
+      "e",
+      "f",
+      "g",
+      "h",
+    ]);
+  });
+
+  it("features the newest six without pins", () => {
+    const { featured, archive } = selectProjects(repos, []);
+    expect(featured).toHaveLength(6);
+    expect(archive.map(({ name }) => name)).toEqual(["g", "h"]);
+  });
+});
+
+describe("helpers", () => {
+  it("cycles the accents", () => {
+    expect(accentFor(ACCENTS.length)).toBe(ACCENTS[0]);
+  });
+
+  it("turns slugs into words", () => {
+    expect(displayName("mobile-store")).toBe("mobile store");
+  });
+});

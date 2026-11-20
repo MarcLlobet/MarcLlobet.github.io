@@ -41,8 +41,15 @@ Both run on every pull request in the **Checks** workflow; the screenshots are a
 GitHub is the single source of truth, read **at build time**: `app/page.tsx` is an async Server Component that calls `getPortfolioData()` (`app/data/github.ts`) while `next build` renders the static export. No JSON files are generated or committed.
 
 - **Repositories**: public, non-fork repos with the `demo` topic, newest first
-- **Preview images**: `.github/preview.png` in each repo (the OpenGraph social preview was unreliable)
+- **Featured projects**: the repos pinned on the GitHub profile (up to six, in pin order) get a full-screen case; the other `demo` repos are listed in the Archive. Without pins, the six newest are featured.
+- **Tagline and detail**: the repo description, split at the first em dash: `Tagline — detail`.
+- **Mockups**: drawn in code by the portfolio (`app/mockups`), not taken from each repo. `MOCKUP_BY_REPOSITORY` gives a project its own mockup; otherwise a `mockup-<kind>` topic (`map`, `store`, `matrix`, `terminal`, `tiles`, `graph`) picks one, or one is chosen from the name, so a new repo never breaks the build. Mockups redraw at the exact size of their 2:1 box, build up as the project scrolls in and play a loop on hover.
+- **Preview images**: `.github/preview.png` in each repo (the OpenGraph social preview was unreliable); kept in the data for the social card, no longer shown on the page
 - **Bio**: the GitHub profile bio, shown in the About overlay
+
+### Motion
+
+`ScrollScene` directs the page from one animation frame loop: it reveals each project (`--p`, `--q`), sets the accent of the project in view, runs the counter and flies the impossible triangle (three real beams in CSS 3D, seen from the one angle where they look closed) from the hero to the counter and to the footer. Everything stays still with `prefers-reduced-motion`.
 
 Set `GH_API_TOKEN` (a token that can read public repos) and optionally `GH_API_USERNAME` in `.env.local`, as in `.env.example`. Without a token the build uses `app/data/fixtures/portfolio.json` and says so; the deploy sets `PORTFOLIO_REQUIRE_LIVE_DATA=true`, so it fails rather than publish fixtures.
 
