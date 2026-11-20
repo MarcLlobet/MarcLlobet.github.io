@@ -105,49 +105,6 @@ export const RowLanguages = styled.span`
 `;
 
 export const RowTagline = styled.span`
-  display: none;
   grid-column: 2 / -1;
   color: var(--color-muted);
-
-  @media ${NO_HOVER} {
-    display: block;
-  }
-`;
-
-/* Floating preview that follows the pointer; the scene writes its transform */
-export const Float = styled.div<{ $visible: boolean; $accent: string }>`
-  --c: ${({ $accent }) => $accent};
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  z-index: 40;
-  inline-size: clamp(17.5rem, 26vw, 25rem);
-  pointer-events: none;
-  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transition: opacity 0.3s;
-`;
-
-export const FloatFrame = styled.div<{ $visible: boolean }>`
-  position: relative;
-  aspect-ratio: 2 / 1;
-  overflow: hidden;
-  background: var(--c);
-  filter: url(#archive-ripple);
-  transform: scale(${({ $visible }) => ($visible ? 1 : 0.85)});
-  transition:
-    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background-color 0.3s;
-`;
-
-export const FloatShot = styled.div`
-  position: absolute;
-  inset-block: 5% 0;
-  inset-inline: 5%;
-`;
-
-export const FloatCaption = styled.p`
-  margin-block-start: 0.625rem;
-  font-size: 0.9375rem;
-  line-height: 1.3;
-  color: var(--color-text);
 `;

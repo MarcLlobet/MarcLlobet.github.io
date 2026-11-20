@@ -3,20 +3,25 @@ import type { Repository } from "../types";
 /** How many projects get a full case; the rest go to the archive index. */
 export const MAX_FEATURED = 6;
 
-/** One accent per project, used for its frame, mockup and the triangle. */
+/**
+ * One accent per project, used for its frame, mockup and the triangle. They are
+ * CSS tokens (GlobalStyles) so each theme has its own shade.
+ */
 export const ACCENTS = [
-  "#5B9BFF",
-  "#FF7A45",
-  "#B6F24A",
-  "#E879F9",
-  "#F2C94C",
-  "#4FD1C5",
+  "--accent-1",
+  "--accent-2",
+  "--accent-3",
+  "--accent-4",
+  "--accent-5",
+  "--accent-6",
 ] as const;
 
-export const accentFor = (index: number) => ACCENTS[index % ACCENTS.length];
+/** The accent of the project at `index`, as a CSS value: var(--accent-n). */
+export const accentFor = (index: number) =>
+  `var(${ACCENTS[index % ACCENTS.length]})`;
 
 /** Languages GitHub reports that say nothing about how a project is built. */
-const IGNORED_LANGUAGES = new Set(["Bru", "Makefile", "Dockerfile"]);
+export const IGNORED_LANGUAGES = new Set(["Bru", "Makefile", "Dockerfile"]);
 
 export const visibleLanguages = (repository: Repository): string[] => {
   const names = [

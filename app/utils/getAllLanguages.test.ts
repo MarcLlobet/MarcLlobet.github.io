@@ -7,4 +7,11 @@ describe("getAllLanguages", () => {
     const result = getAllLanguages(mockRepos);
     expect(result).toEqual(["TypeScript", "CSS"]);
   });
+
+  it("leaves out tooling such as Bru", () => {
+    const result = getAllLanguages([
+      { ...mockRepos[0], languages: [{ name: "Bru" }, { name: "CSS" }] },
+    ]);
+    expect(result).toEqual(["TypeScript", "CSS"]);
+  });
 });

@@ -60,8 +60,19 @@ const faces = (top: Rgb, side: Rgb, front: Rgb): FaceColours => [
   front,
   front,
 ];
-const fromAccent = (accent: string): FaceColours => {
-  const c = hex(accent);
+/**
+ * Accents are CSS values like var(--accent-2); read the token's colour for the
+ * current theme, so the triangle follows light and dark mode.
+ */
+const resolveColour = (value: string | undefined) => {
+  const token = value?.match(/--[\w-]+/)?.[0];
+  const colour = token
+    ? getComputedStyle(document.documentElement).getPropertyValue(token).trim()
+    : value;
+  return colour?.startsWith("#") ? colour : "#888888";
+};
+const fromAccent = (accent: string | undefined): FaceColours => {
+  const c = hex(resolveColour(accent));
   return faces(mix(c, WHITE, 0.35), c, mix(c, INK, 0.55));
 };
 const MONO_DARK = faces(hex("#EDECE6"), hex("#8A8880"), hex("#2E2E2B"));
@@ -281,9 +292,9 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
         ? MONO_LIGHT
         : MONO_DARK;
       if (travelling && cases[index]) {
-        const from = fromAccent(cases[index].dataset.accent ?? "#888888");
+        const from = fromAccent(cases[index].dataset.accent);
         const next = cases[Math.min(index + 1, cases.length - 1)];
-        const into = fromAccent(next.dataset.accent ?? "#888888");
+        const into = fromAccent(next.dataset.accent);
         const k = frac * frac * (3 - 2 * frac);
         target = from.map((c, i) => mix(c, into[i], k)) as FaceColours;
       }

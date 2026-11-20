@@ -102,12 +102,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
       accent: accentFor(index),
       kind: mockupFor(repository),
     });
-    return {
-      featured: featured.map(toItem),
-      archive: archive.map((repository, index) =>
-        toItem(repository, index + featured.length),
-      ),
-    };
+    return { featured: featured.map(toItem), archive };
   }, [repositories, pinned]);
 
   /* The preview grows into the full-screen demo inside a View Transition */
@@ -185,7 +180,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
           </EmptyWork>
         )}
       </Work>
-      {archive.length > 0 && <ArchiveIndex items={archive} />}
+      {archive.length > 0 && <ArchiveIndex repositories={archive} />}
       <SiteFooter
         id={SCENE.footer}
         slotId={SCENE.endSlot}

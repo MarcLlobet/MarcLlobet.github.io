@@ -76,8 +76,17 @@ const GenericStyles = `
   --color-muted: #9C9A92;
   --color-line: #2A2A27;
   --color-line-strong: #3A3A36;
-  --color-accent: #B0483A;
-  --color-accent-text: #C9685B;
+  /* No brand red: the accent is the project in view */
+  --color-accent: var(--scene-accent);
+  --color-accent-text: var(--color-heading);
+
+  /* Project accents, for frames, mockups and the triangle */
+  --accent-1: #5B9BFF;
+  --accent-2: #FF7A45;
+  --accent-3: #B6F24A;
+  --accent-4: #E879F9;
+  --accent-5: #F2C94C;
+  --accent-6: #4FD1C5;
 
   /* Mockup colour roles */
   --mk-surf: #161614;
@@ -88,7 +97,7 @@ const GenericStyles = `
   --mk-grey: #6B6A64;
 
   /* Accent of the project in view; the scene changes it while scrolling */
-  --scene-accent: #5B9BFF;
+  --scene-accent: var(--accent-1);
   transition: --scene-accent 0.8s ease;
 }
 
@@ -100,8 +109,12 @@ html.light-theme {
   --color-muted: #5F5A53;
   --color-line: #D9D4CA;
   --color-line-strong: #C4BEB2;
-  --color-accent: #B0483A;
-  --color-accent-text: #B0483A;
+  --accent-1: #2F6FD6;
+  --accent-2: #D9531E;
+  --accent-3: #5E9A0A;
+  --accent-4: #B240C8;
+  --accent-5: #B8860B;
+  --accent-6: #158F84;
 
   --mk-surf: #EAE6DE;
   --mk-head: #E0DBD1;

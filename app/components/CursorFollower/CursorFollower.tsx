@@ -37,7 +37,7 @@ const Label = styled.span`
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #0e0e0c;
+  color: var(--color-bg);
   opacity: 0;
   transition: opacity 0.2s;
 

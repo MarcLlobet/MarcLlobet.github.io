@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { CSSProperties } from "react";
 import { Mockup } from "./Mockup";
 import { MOCKUP_KINDS } from "../../mockups";
-import { ACCENTS } from "../../utils/projects";
+import { accentFor } from "../../utils/projects";
 
 const meta: Meta<typeof Mockup> = {
   title: "Components/Mockup",
@@ -16,7 +16,7 @@ const meta: Meta<typeof Mockup> = {
         data-play="hover"
         style={
           {
-            "--c": ACCENTS[0],
+            "--c": accentFor(0),
             position: "relative",
             inlineSize: "min(100%, 720px)",
             aspectRatio: "2 / 1",

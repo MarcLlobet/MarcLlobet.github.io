@@ -81,7 +81,7 @@ export const MockupSvg = styled.svg`
     fill: var(--mk-grey);
   }
   .fill-acc {
-    fill: var(--c, var(--color-accent));
+    fill: var(--c, var(--scene-accent));
   }
   .stroke-bar2 {
     fill: none;
@@ -89,7 +89,7 @@ export const MockupSvg = styled.svg`
   }
   .stroke-acc {
     fill: none;
-    stroke: var(--c, var(--color-accent));
+    stroke: var(--c, var(--scene-accent));
   }
 
   /* Scroll: --q (0..1, set on the project) builds every shape in its --i order */

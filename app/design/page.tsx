@@ -507,9 +507,7 @@ export default function DesignPage() {
           >
             <NameWrapper style={{ fontSize: "3.5rem", lineHeight: "3.5rem" }}>
               <FirstNameWrapper>Marc</FirstNameWrapper>
-              <SurnameWrapper>
-                Ll<span style={{ color: "var(--color-accent)" }}>o</span>bet
-              </SurnameWrapper>
+              <SurnameWrapper>Llobet</SurnameWrapper>
             </NameWrapper>
           </ComponentPreview>
         </ComponentCard>

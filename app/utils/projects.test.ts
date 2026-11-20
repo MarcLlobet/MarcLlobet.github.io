@@ -93,7 +93,7 @@ describe("unmatchedPins", () => {
 
 describe("helpers", () => {
   it("cycles the accents", () => {
-    expect(accentFor(ACCENTS.length)).toBe(ACCENTS[0]);
+    expect(accentFor(ACCENTS.length)).toBe(`var(${ACCENTS[0]})`);
   });
 
   it("turns slugs into words", () => {
