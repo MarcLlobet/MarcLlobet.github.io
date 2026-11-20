@@ -6,6 +6,10 @@
  * `clamp(12px, 3.5%, 48px)`, and columns, rows and lines are recounted for each
  * size, so a wide box gets more columns and a tall one more rows.
  *
+ * A mockup fills the room it is given: counts are rounded to the nearest fit and
+ * the cells then stretched to the content area (the box less its page margin),
+ * instead of being laid out at a fixed size and leaving a gap at the end.
+ *
  * Every shape can carry an `order` (0..1): its place in the build animation that
  * plays with the scroll, and a `loop`: the animation it plays on hover.
  */
@@ -215,11 +219,12 @@ export const buildMockup = (
     const g = clamp(m / 40, 8, 32);
     rect(p, y0, Math.min(W - p * 2, 720), sh, "bar", { rx: sh / 2 });
     const top = y0 + sh + g * 1.5;
-    const cols = clamp(Math.floor((W - p * 2 + g) / 200), 1, 6);
+    const gridH = H - p - top;
+    const cols = clamp(Math.round((W - p * 2 + g) / 230), 1, 6);
     const cw = (W - p * 2 - g * (cols - 1)) / cols;
-    let ch = cw * 1.2;
-    const rows = Math.max(1, Math.floor((H - top - p + g) / (ch + g)));
-    if (rows === 1) ch = Math.min(ch, H - top - p);
+    /* As many rows of near-portrait cards as fit, stretched to fill the grid */
+    const rows = Math.max(1, Math.round((gridH + g) / (cw * 1.2 + g)));
+    const ch = (gridH - g * (rows - 1)) / rows;
     // Too little room for a card: leave the search bar alone
     for (let j = 0; ch >= 24 && j < rows; j++) {
       for (let i = 0; i < cols; i++) {
@@ -265,16 +270,20 @@ export const buildMockup = (
       opacity: 0.85,
     });
     const top = y0 + th + p;
-    const cell = clamp(m / 14, 10, 44);
-    const gap = cell * 0.14;
-    const cols = Math.max(1, Math.floor((W - p * 2 + gap) / cell));
-    const rows = Math.max(1, Math.floor((H - top - p + gap) / cell));
-    const ox = (W - cols * cell + gap) / 2;
+    /* Square-ish cells that divide the room exactly, so the grid fills it */
+    const target = clamp(m / 14, 10, 44);
+    const availW = W - p * 2;
+    const availH = H - p - top;
+    const cols = Math.max(1, Math.round(availW / target));
+    const cw = availW / cols;
+    const rows = Math.max(1, Math.round(availH / cw));
+    const chh = availH / rows;
+    const gap = Math.min(cw, chh) * 0.14;
     for (let j = 0; j < rows; j++) {
       for (let i = 0; i < cols; i++) {
         const o = r();
-        rect(ox + i * cell, top + j * cell, cell - gap, cell - gap, "acc", {
-          rx: cell * 0.12,
+        rect(p + i * cw, top + j * chh, cw - gap, chh - gap, "acc", {
+          rx: cw * 0.12,
           opacity: 0.06 + o * o * 0.94,
           order: (i * rows + j) / (cols * rows),
           loop: "wave",
@@ -295,10 +304,13 @@ export const buildMockup = (
         "bar2",
       );
     }
-    const step = clamp(m / 16, 14, 40);
-    const lh = step * 0.45;
-    const ly0 = y0 + p * 0.6 + dot * 2 + step * 0.8;
-    const count = Math.max(1, Math.floor((y0 + inner - p * 0.6 - ly0) / step));
+    const lead = clamp(m / 16, 14, 40);
+    const lh = lead * 0.45;
+    const ly0 = y0 + p * 0.6 + dot * 2 + lead * 0.8;
+    /* Lines spread over the whole panel instead of stopping short of it */
+    const room = y0 + inner - p * 0.6 - ly0;
+    const count = Math.max(1, Math.round(room / lead));
+    const step = room / count;
     for (let i = 0; i < count; i++) {
       const hit = i % 4 === 3;
       const ly = ly0 + i * step;
@@ -326,38 +338,51 @@ export const buildMockup = (
 
   if (kind === "tiles") {
     const gap = clamp(m / 80, 3, 14);
-    const tz = Math.min((W - p * 2 - gap * 4) / 5, (inner - gap * 5) / 6);
-    const tx0 = (W - (tz * 5 + gap * 4)) / 2;
-    const ty0 = y0 + (inner - (tz * 6 + gap * 5)) / 2;
-    for (let j = 0; j < 6; j++) {
-      for (let i = 0; i < 5; i++) {
-        const x = tx0 + i * (tz + gap);
-        const y = ty0 + j * (tz + gap);
-        const order = (j * 5 + i) / 30;
-        if (j < 4) {
+    /* The board is as many square-ish tiles as the box takes, edge to edge */
+    const target = clamp(m / 6, 40, 130);
+    const cols = clamp(Math.round((W - p * 2) / target), 2, 9);
+    const tw = (W - p * 2) / cols;
+    const rows = clamp(Math.round(inner / tw), 2, 12);
+    const thh = inner / rows;
+    const played = Math.max(1, Math.round(rows * 0.68));
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const x = p + i * tw;
+        const y = y0 + j * thh;
+        const order = (j * cols + i) / (rows * cols);
+        const rx = Math.min(tw, thh) * 0.08;
+        if (j < played) {
           const q = r();
-          rect(x, y, tz, tz, q > 0.66 ? "acc" : q > 0.4 ? "grey" : "bar", {
-            rx: tz * 0.08,
-            order,
-            loop: "flip",
-          });
+          rect(
+            x,
+            y,
+            tw - gap,
+            thh - gap,
+            q > 0.66 ? "acc" : q > 0.4 ? "grey" : "bar",
+            { rx, order, loop: "flip" },
+          );
         } else {
-          outline(x + sw / 2, y + sw / 2, tz - sw, tz - sw, "bar2", {
-            rx: tz * 0.08,
-            order,
-          });
+          outline(
+            x + sw / 2,
+            y + sw / 2,
+            tw - gap - sw,
+            thh - gap - sw,
+            "bar2",
+            { rx, order },
+          );
         }
       }
     }
   }
 
   if (kind === "graph") {
-    const st = clamp(inner / 8, 18, 80);
+    /* The branch spans the whole height: the first and last nodes are its ends */
+    const count = Math.max(2, Math.round(inner / clamp(inner / 8, 18, 80)));
+    const st = inner / (count - 1);
     const gx = p + st * 0.8;
     const radius = clamp(st * 0.16, 3, 16);
     const br = st * 1.1;
-    const count = Math.max(1, Math.floor(inner / st));
-    const gy0 = y0 + st * 0.5;
+    const gy0 = y0;
     rect(gx - sw, gy0, sw * 2, (count - 1) * st, "bar2");
     if (count >= 5) {
       shapes.push({

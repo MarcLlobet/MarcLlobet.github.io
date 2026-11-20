@@ -30,6 +30,39 @@ describe("buildMockup", () => {
   });
 });
 
+describe("buildMockup filling its box", () => {
+  /* Desktop frame, laptop, tablet, phone and a short landscape one */
+  const BOXES = [
+    [1200, 600],
+    [840, 470],
+    [560, 420],
+    [330, 400],
+    [840, 200],
+  ];
+  /* The page margin the mockup keeps around its content, as in buildMockup */
+  const margin = (w: number) => Math.max(12, Math.min(48, (w * 3.5) / 100));
+
+  it.each(MOCKUP_KINDS)("draws %s out to the edges of the box", (kind) => {
+    for (const [w, h] of BOXES) {
+      let bottom = 0;
+      let right = 0;
+      for (const shape of buildMockup(kind, w, h)) {
+        if (shape.type === "circle") {
+          bottom = Math.max(bottom, shape.cy + shape.r);
+          right = Math.max(right, shape.cx + shape.r);
+          continue;
+        }
+        /* The page background is not content */
+        if (shape.type !== "rect" || (shape.w >= w && shape.h >= h)) continue;
+        bottom = Math.max(bottom, shape.y + shape.h);
+        right = Math.max(right, shape.x + shape.w);
+      }
+      expect(bottom).toBeGreaterThan(h - margin(w) * 2);
+      expect(right).toBeGreaterThan(w - margin(w) * 2);
+    }
+  });
+});
+
 describe("mockupFor", () => {
   it("uses the project's own mockup", () => {
     expect(mockupFor({ ...mockRepos[0], name: "gryphon" })).toBe("map");
