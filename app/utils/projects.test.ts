@@ -6,6 +6,7 @@ import {
   displayName,
   selectProjects,
   splitDescription,
+  unmatchedPins,
   visibleLanguages,
 } from "./projects";
 import type { Repository } from "../types";
@@ -72,10 +73,21 @@ describe("selectProjects", () => {
     ]);
   });
 
-  it("features the newest six without pins", () => {
+  it("features nothing without pins", () => {
     const { featured, archive } = selectProjects(repos, []);
-    expect(featured).toHaveLength(6);
-    expect(archive.map(({ name }) => name)).toEqual(["g", "h"]);
+    expect(featured).toHaveLength(0);
+    expect(archive).toHaveLength(repos.length);
+  });
+
+  it("matches pins by the exact git name", () => {
+    const { featured } = selectProjects(repos, ["A", "a "]);
+    expect(featured).toHaveLength(0);
+  });
+});
+
+describe("unmatchedPins", () => {
+  it("lists pins without the demo topic", () => {
+    expect(unmatchedPins([repo("a")], ["a", "dotfiles"])).toEqual(["dotfiles"]);
   });
 });
 

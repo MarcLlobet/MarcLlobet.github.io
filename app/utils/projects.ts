@@ -47,23 +47,28 @@ export const splitDescription = (
 export const displayName = (name: string) => name.replaceAll("-", " ");
 
 /**
- * Featured projects are the pinned ones, in pin order. Without pins, the
- * newest projects are featured. Everything else goes to the archive.
+ * Featured projects are exactly the pinned ones, in pin order, matched by the
+ * repository's git name. There is no fallback: a repo is featured only if it
+ * is both pinned and tagged "demo". Everything else goes to the archive.
  */
 export const selectProjects = (
   repositories: Repository[],
   pinned: string[],
 ): { featured: Repository[]; archive: Repository[] } => {
   const byName = new Map(repositories.map((repo) => [repo.name, repo]));
-  const pinnedRepos = pinned
+  const featured = pinned
     .map((name) => byName.get(name))
-    .filter((repo): repo is Repository => Boolean(repo));
-  const featured = (
-    pinnedRepos.length ? pinnedRepos : repositories.slice(0, MAX_FEATURED)
-  ).slice(0, MAX_FEATURED);
+    .filter((repo): repo is Repository => Boolean(repo))
+    .slice(0, MAX_FEATURED);
   const featuredNames = new Set(featured.map(({ name }) => name));
   return {
     featured,
     archive: repositories.filter(({ name }) => !featuredNames.has(name)),
   };
+};
+
+/** Pinned repositories that will not be featured because they lack the "demo" topic. */
+export const unmatchedPins = (repositories: Repository[], pinned: string[]) => {
+  const names = new Set(repositories.map(({ name }) => name));
+  return pinned.filter((name) => !names.has(name));
 };

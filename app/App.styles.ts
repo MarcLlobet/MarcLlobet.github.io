@@ -77,10 +77,6 @@ export const Letter = styled.span<{ $i: number }>`
   animation-delay: ${({ $i }) => $i * 45 + 120}ms;
 `;
 
-export const HighlightLetter = styled.span`
-  color: var(--color-accent);
-`;
-
 /* Previous hero name (weight animation), still shown on the design page */
 const toHeavyFontWeightAnimation = keyframes`
   0% { font-weight: 300; }
@@ -178,5 +174,12 @@ export const SectionHead = styled.p`
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
   padding-block-end: 1rem;
+  color: var(--color-muted);
+`;
+
+export const EmptyWork = styled.p`
+  border-block-start: 1px solid var(--color-line);
+  padding-block: clamp(2rem, 8svh, 4rem);
+  max-inline-size: 46ch;
   color: var(--color-muted);
 `;

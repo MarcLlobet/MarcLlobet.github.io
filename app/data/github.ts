@@ -1,6 +1,7 @@
 import { graphql } from "@octokit/graphql";
 import type { Bio, Repository } from "../types";
 import fixtures from "./fixtures/portfolio.json";
+import { unmatchedPins } from "../utils/projects";
 
 export const DEMO_TOPIC = "demo";
 
@@ -127,7 +128,13 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
   });
   const data = toPortfolioData(response);
   console.log(
-    `✓ Fetched ${data.repositories.length} "${DEMO_TOPIC}" repositories from GitHub.`,
+    `✓ Fetched ${data.repositories.length} "${DEMO_TOPIC}" repositories from GitHub, ${data.pinned.length} pinned.`,
   );
+  const skipped = unmatchedPins(data.repositories, data.pinned);
+  if (skipped.length) {
+    console.warn(
+      `⚠ Pinned but not tagged "${DEMO_TOPIC}", so not featured: ${skipped.join(", ")}.`,
+    );
+  }
   return data;
 };

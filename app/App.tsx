@@ -14,12 +14,12 @@ import { accentFor, selectProjects } from "./utils/projects";
 import { prefersReducedMotion } from "./utils/useMediaQuery";
 import {
   Brand,
+  EmptyWork,
   Facts,
   Header,
   HeroBottom,
   HeroSection,
   HeroTop,
-  HighlightLetter,
   Letter,
   Name,
   NameGroup,
@@ -41,7 +41,7 @@ type OpenDemo = Item & { frame: HTMLAnchorElement };
 const lettersOf = (word: string, offset: number) =>
   [...word].map((letter, i) => (
     <Letter key={i} $i={offset + i}>
-      {letter === "o" ? <HighlightLetter>{letter}</HighlightLetter> : letter}
+      {letter}
     </Letter>
   ));
 
@@ -178,6 +178,12 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
             onOpen={openDemo}
           />
         ))}
+        {total === 0 && (
+          <EmptyWork>
+            No pinned projects yet. Pin repositories tagged “demo” on the GitHub
+            profile to feature them here.
+          </EmptyWork>
+        )}
       </Work>
       {archive.length > 0 && <ArchiveIndex items={archive} />}
       <SiteFooter

@@ -517,8 +517,8 @@ export default function DesignPage() {
         <ComponentCard>
           <ComponentName>Title</ComponentName>
           <ComponentDescription>
-            Section title with highlighted letter in accent color. Font family:
-            Space Grotesk.
+            Section title, sized to fit its longest word. Font family: Space
+            Grotesk.
           </ComponentDescription>
           <ComponentPreview
             style={{
@@ -529,7 +529,7 @@ export default function DesignPage() {
               padding: "var(--space-l)",
             }}
           >
-            <Title title="fluency-report" />
+            <Title title="gym-grid" />
             <Title title="wordle-app" />
             <Title title="semantic-git" />
           </ComponentPreview>
