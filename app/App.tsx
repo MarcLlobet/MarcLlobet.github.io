@@ -154,7 +154,11 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
       </a>
       <Header>
         <Brand href="#top">Marc Llobet</Brand>
-        <NavWrapper bio={bio} repositories={repositories} />
+        <NavWrapper
+          bio={bio}
+          repositories={repositories}
+          hasArchive={archive.length > 0}
+        />
       </Header>
       <Hero />
       <Work id={SCENE.work} aria-label="Selected work">

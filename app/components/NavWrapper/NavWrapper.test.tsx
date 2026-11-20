@@ -12,6 +12,23 @@ describe("NavWrapper", () => {
     expect(screen.getByText("About")).toBeInTheDocument();
   });
 
+  it("links to the sections of the page", () => {
+    render(<NavWrapper bio={mockBio} repositories={mockRepos} hasArchive />);
+    expect(screen.getByRole("link", { name: "Work" })).toHaveAttribute(
+      "href",
+      "#main-content",
+    );
+    expect(screen.getByRole("link", { name: "Archive" })).toHaveAttribute(
+      "href",
+      "#archive",
+    );
+  });
+
+  it("hides the Archive link without an archive", () => {
+    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+    expect(screen.queryByRole("link", { name: "Archive" })).toBeNull();
+  });
+
   it("toggles theme on click", () => {
     render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
     const btn = screen.getByText("Theme");

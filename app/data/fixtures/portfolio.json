@@ -2,11 +2,11 @@
   "bio": "Front End Dev crafting fast, accessible, beautiful apps with HTML, SVG, CSS, JS, TS. Product-minded, tech enthusiast, code perfectionist, world-changer!",
   "pinned": [
     "gryphon",
-    "mobile-store",
     "gym-grid",
+    "mobile-store",
+    "semantic-git",
     "ts-only",
-    "wordle-app",
-    "semantic-git"
+    "wordle-app"
   ],
   "repositories": [
     {

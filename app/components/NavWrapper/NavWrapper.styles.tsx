@@ -9,7 +9,7 @@ export const StyledNavWrapper = styled.nav`
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 0 var(--space-s);
+  gap: 0 1.75rem;
   align-items: center;
   justify-content: flex-end;
   inline-size: 100%;
@@ -23,13 +23,16 @@ export const Button = styled.button`
   min-block-size: var(--tap-target);
   background: none;
   border: none;
-  font-size: 1rem;
-  line-height: 1;
   padding: 0;
   appearance: none;
-  font-family: inherit;
   cursor: pointer;
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text);
 `;
 
 export const LinkButton = styled(Button).attrs({ as: "a" })``;
