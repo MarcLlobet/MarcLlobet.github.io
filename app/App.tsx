@@ -10,7 +10,8 @@ import { DemoViewer } from "./components/DemoViewer";
 import { CursorFollower } from "./components/CursorFollower";
 import { SiteFooter } from "./components/SiteFooter";
 import { mockupFor, type MockupKind } from "./mockups";
-import { accentFor, selectProjects } from "./utils/projects";
+import { accentFor, firstSentence, selectProjects } from "./utils/projects";
+import { getAllLanguages } from "./utils/getAllLanguages";
 import { prefersReducedMotion } from "./utils/useMediaQuery";
 import {
   Brand,
@@ -45,7 +46,20 @@ const lettersOf = (word: string, offset: number) =>
     </Letter>
   ));
 
-const Hero = () => (
+const pad = (n: number) => String(n).padStart(2, "0");
+
+/* A dot never starts a line: it is glued to the word before it */
+const list = (items: string[]) => items.join("\u00a0· ");
+
+type HeroProps = {
+  /** The GitHub bio: its opening sentence is the pitch. */
+  bio: Bio;
+  featured: number;
+  archived: number;
+  languages: string[];
+};
+
+const Hero = ({ bio, featured, archived, languages }: HeroProps) => (
   <HeroSection>
     <HeroTop>
       <NameGroup>
@@ -54,29 +68,17 @@ const Hero = () => (
           <NameLine>{lettersOf("Llobet", 4)}</NameLine>
         </Name>
       </NameGroup>
-      <ShapeSlot id={SCENE.heroSlot} data-testid="hero-shape">
-        <svg
-          viewBox="0 0 180 160"
-          aria-hidden="true"
-          data-scene-fallback="true"
-          fill="none"
-          stroke="currentColor"
-        >
-          <polygon points="90,6 174,152 6,152" strokeWidth="2" />
-          <polygon points="90,52 134,128 46,128" strokeWidth="2" />
-        </svg>
-      </ShapeSlot>
+      <ShapeSlot id={SCENE.heroSlot} data-testid="hero-shape" />
     </HeroTop>
     <HeroBottom>
-      <Pitch>
-        Frontend engineer building design systems, server-rendered apps and
-        things made of SVG.
-      </Pitch>
+      <Pitch>{firstSentence(bio)}</Pitch>
       <Facts>
-        <dt>Now</dt>
-        <dd>Boundless</dd>
-        <dt>Before</dt>
-        <dd>Typeform, Worldsensing</dd>
+        <dt>Work</dt>
+        <dd>
+          {list([`(${pad(featured)}) featured`, `(${pad(archived)}) archived`])}
+        </dd>
+        <dt>Built with</dt>
+        <dd>{list(languages.slice(0, 5))}</dd>
       </Facts>
     </HeroBottom>
   </HeroSection>
@@ -146,6 +148,10 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
   }, [demo]);
 
   const total = featured.length;
+  const languages = useMemo(
+    () => getAllLanguages(repositories),
+    [repositories],
+  );
 
   return (
     <Page data-testid="app-root" id="top">
@@ -156,11 +162,16 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
         <Brand href="#top">Marc Llobet</Brand>
         <NavWrapper bio={bio} repositories={repositories} />
       </Header>
-      <Hero />
+      <Hero
+        bio={bio}
+        featured={total}
+        archived={archive.length}
+        languages={languages}
+      />
       <Work id={SCENE.work} aria-label="Selected work">
         <SectionHead>
           <span>Selected work</span>
-          <span>({String(total).padStart(2, "0")}) · Pinned on GitHub</span>
+          <span>({pad(total)}) · Pinned on GitHub</span>
         </SectionHead>
         {featured.map(({ repository, accent, kind }, index) => (
           <ProjectCase

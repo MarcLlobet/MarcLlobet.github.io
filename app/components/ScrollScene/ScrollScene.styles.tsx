@@ -53,6 +53,11 @@ export const Hud = styled.div`
     opacity: 1;
     transform: none;
   }
+
+  /* The triangle stays in the hero then, so it needs no room here */
+  @media (prefers-reduced-motion: reduce) {
+    padding-inline: 0.75rem;
+  }
 `;
 
 export const Count = styled.span`

@@ -77,49 +77,11 @@ export const Letter = styled.span<{ $i: number }>`
   animation-delay: ${({ $i }) => $i * 45 + 120}ms;
 `;
 
-/* Previous hero name (weight animation), still shown on the design page */
-const toHeavyFontWeightAnimation = keyframes`
-  0% { font-weight: 300; }
-  100% { font-weight: 900; }
-`;
-
-const AnimationWrapper = styled.span`
-  animation-name: ${toHeavyFontWeightAnimation};
-  animation-duration: 2s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-fill-mode: forwards;
-  display: inline-block;
-`;
-
-export const FirstNameWrapper = styled(AnimationWrapper)`
-  animation-direction: reverse;
-`;
-
-export const SurnameWrapper = styled(AnimationWrapper)`
-  animation-direction: normal;
-`;
-
-export const NameWrapper = styled.h1`
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  font-size: clamp(3rem, min(15vw, 17svh), 6.5rem);
-  line-height: 0.875;
-`;
-
-/* Where the impossible triangle starts; holds a drawn fallback without JavaScript */
+/* The room the impossible triangle lands in; the scene draws it over this */
 export const ShapeSlot = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   inline-size: clamp(150px, 26vw, 360px);
   aspect-ratio: 1.1 / 1;
   flex: none;
-
-  svg {
-    inline-size: 70%;
-    block-size: auto;
-  }
 `;
 
 const fade = keyframes`
@@ -146,12 +108,14 @@ export const Pitch = styled.p`
   text-wrap: balance;
 `;
 
+/* What the page holds and what it is made of, straight from the data */
 export const Facts = styled.dl`
   ${mono}
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 0.5rem 2rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
   margin: 0;
+  max-inline-size: 46ch;
 
   dt {
     color: var(--color-muted);
@@ -159,12 +123,19 @@ export const Facts = styled.dl`
 
   dd {
     margin: 0;
+    text-wrap: balance;
   }
 `;
 
+/*
+ * Each project reveals itself by sliding in from its own side, so a title that
+ * has not arrived yet sits outside the column: clipped here, it never widens
+ * the page.
+ */
 export const Work = styled.main`
   display: flex;
   flex-direction: column;
+  overflow: clip visible;
 `;
 
 export const SectionHead = styled.p`

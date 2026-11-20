@@ -131,15 +131,15 @@ html.light-theme {
 }
 
 
-/* The drawn triangle in the hero is a fallback: hidden once the 3D one runs */
-html[data-scene="on"] [data-scene-fallback] {
-  visibility: hidden;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  html[data-cursor-follower] [data-cursor] {
-    cursor: none;
-  }
+/*
+ * The dot is the pointer: while it follows, nothing draws a cursor. It only
+ * mounts on a fine pointer, so the attribute is the whole condition. The
+ * attribute is repeated to outweigh the components that set a pointer
+ * cursor of their own.
+ */
+html[data-cursor-follower][data-cursor-follower],
+html[data-cursor-follower][data-cursor-follower] * {
+  cursor: none;
 }
 
 * {
