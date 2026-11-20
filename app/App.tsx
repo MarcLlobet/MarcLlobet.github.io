@@ -153,7 +153,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
         Skip to projects
       </a>
       <Header>
-        <Brand href="#top">Marc Llobet</Brand>
+        <Brand href="#top">Frontend Engineer</Brand>
         <NavWrapper
           bio={bio}
           repositories={repositories}

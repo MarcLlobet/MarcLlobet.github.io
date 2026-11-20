@@ -1,923 +1,406 @@
 "use client";
 
-import styled from "styled-components";
-import { useState, useEffect, useRef } from "react";
-import { MorphShape } from "../components/MorphShape";
-import { Title } from "../components/Title";
-import { FirstNameWrapper, SurnameWrapper, NameWrapper } from "../App.styles";
+import { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
+import { Mockup } from "../components/Mockup";
+import { MOCKUP_KINDS } from "../mockups";
+import { accentFor, ACCENTS } from "../utils/projects";
 
-const BackButton = styled.a`
-  position: fixed;
-  inset-block-start: var(--space-m);
-  inset-inline-start: var(--space-m);
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 100;
-  transition: transform 0.2s ease;
-  text-decoration: none;
+const mono = css`
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+`;
+
+const Page = styled.div`
+  inline-size: 100%;
+  max-inline-size: 90rem;
+  margin-inline: auto;
+  padding-block: 0 6rem;
+`;
+
+const Top = styled.header`
+  ${mono}
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  min-block-size: var(--nav-block-size);
 
-  svg {
-    inline-size: 1.5rem;
-    block-size: 1.5rem;
-    transform: rotate(-90deg);
-  }
-
-  &:hover {
-    transform: scale(1.1);
+  a,
+  button {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap-target);
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--color-text);
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 `;
 
-const ThemeToggle = styled.button<{ $isLight: boolean }>`
-  position: fixed;
-  inset-block-start: var(--space-m);
-  inset-inline-end: var(--space-m);
-  background: var(--color-text);
-  color: var(--color-bg);
-  border: none;
-  border-radius: 50%;
-  inline-size: 44px;
-  block-size: 44px;
-  cursor: pointer;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.1);
-    color: var(--color-bg);
-  }
-`;
-
-const PageWrapper = styled.div`
+const Intro = styled.div`
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) * 4);
-  padding: var(--space-l);
-  max-inline-size: 1200px;
-  margin-block: 0;
-  margin-inline: auto;
-`;
-
-const Header = styled.header`
-  border-block-end: 1px solid var(--color-muted);
-  padding-block-end: var(--space-l);
+  gap: 1.5rem;
+  padding-block: clamp(2rem, 8svh, 5rem);
 `;
 
 const PageTitle = styled.h1`
-  font-size: calc(1rem * var(--golden-ratio) * 2);
-  margin-block-end: var(--spacing);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(4rem, 12vw, 10rem);
+  line-height: 0.88;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  color: var(--color-heading);
 `;
 
-const PageDescription = styled.p`
-  color: var(--color-muted);
+const Lead = styled.p`
+  max-inline-size: 52ch;
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  line-height: 1.4;
 `;
 
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: var(--spacing);
+  gap: 1.5rem;
+  border-block-start: 1px solid var(--color-line);
+  padding-block: 3rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: calc(1rem * var(--golden-ratio) * 1.5);
-  padding: 0;
-  border-block-end: 1px solid var(--color-muted);
-  padding-block-end: var(--space-2xs);
-`;
-
-const ComponentGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-l);
-`;
-
-const ComponentCard = styled.div`
-  background: color-mix(in srgb, var(--color-bg) 90%, var(--color-text) 10%);
-  border-radius: 8px;
-  padding: var(--space-m);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing);
-`;
-
-const ComponentName = styled.h3`
-  font-size: 1rem;
-  color: var(--color-heading);
+  margin: 0;
+  padding-block: 0;
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.03em;
 `;
 
-const ComponentDescription = styled.p`
-  font-size: 0.875rem;
+const Note = styled.p`
+  max-inline-size: 64ch;
   color: var(--color-muted);
-`;
-
-const ComponentPreview = styled.div`
-  background: var(--color-bg);
-  border-radius: 4px;
-  padding: var(--spacing);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-block-size: 100px;
 `;
 
 const Label = styled.span`
-  font-size: 0.75rem;
+  ${mono}
   color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 `;
 
-const InteractiveButton = styled.button`
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  padding-block: var(--space-2xs);
-  padding-inline: var(--spacing);
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.875rem;
-  transition: background-color 100ms ease-in-out;
-
-  &:hover {
-    opacity: 0.9;
-    color: white;
-    background-color: #6d332bff;
-  }
-`;
-
-const ColorSwatch = styled.div<{ $color: string }>`
-  inline-size: 120px;
-  block-size: 120px;
-  border-radius: 8px;
-  background: var(${(props) => props.$color});
-  ${({ $color }) =>
-    $color === "--color-bg"
-      ? `
-    border: 2px solid var(--color-text);
-  `
-      : ""}
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-block-end: 4px;
-`;
-
-const ColorsGrid = styled.div`
-  display: flex;
-  gap: var(--spacing);
-  flex-wrap: wrap;
-`;
-
-const PreviewGrid = styled.div`
+const Swatches = styled.div`
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: var(--space-l);
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 1rem;
 `;
 
-const PreviewCard = styled.div`
-  background: color-mix(in srgb, var(--color-bg) 90%, var(--color-text) 10%);
-  border-radius: 8px;
-  padding: var(--space-m);
+const Swatch = styled.figure`
   display: flex;
   flex-direction: column;
-  gap: var(--spacing);
-`;
-
-const PreviewLabel = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const PreviewTitle = styled.h3`
-  font-size: 1rem;
-  color: var(--color-heading);
-  font-family: var(--font-sans);
-  font-weight: 600;
-`;
-
-const PreviewDimensions = styled.span`
-  font-size: 0.75rem;
-  color: var(--color-muted);
-  font-family: var(--font-mono);
-`;
-
-const DeviceFrame = styled.div<{
-  $width: number;
-  $height: number;
-  $maxHeight?: string;
-}>`
-  inline-size: 100%;
-  aspect-ratio: ${(props) => props.$width / props.$height};
-  ${(props) => props.$maxHeight && `max-height: ${props.$maxHeight};`}
-  background: var(--color-bg);
-  border: 2px solid var(--color-muted);
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const LayoutRowGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-l);
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 700px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-// Simulated layout previews
-const LayoutPreview = styled.div<{ $direction: "row" | "column" }>`
-  inline-size: 100%;
-  block-size: 100%;
-  display: flex;
-  flex-direction: ${(props) => props.$direction};
-  padding: 8px;
-  gap: 8px;
-`;
-
-const PreviewAside = styled.div<{ $isTop?: boolean }>`
-  background: color-mix(in srgb, var(--color-muted) 20%, transparent);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  ${(props) =>
-    props.$isTop
-      ? `
-    inline-size: 100%;
-    block-size: 28px;
-    flex-shrink: 0;
-    flex-direction: row;
-  `
-      : `
-    inline-size: 28px;
-    block-size: 100%;
-    flex-shrink: 0;
-    flex-direction: column;
-  `}
-`;
-
-const PreviewMain = styled.div`
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-`;
-
-const PreviewHero = styled.div<{ $fontSize: number }>`
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-sans);
-  color: var(--color-heading);
-  font-size: ${(props) => props.$fontSize}px;
-  line-height: 1;
-  text-align: center;
-`;
-
-const PreviewAccent = styled.span`
-  color: var(--color-accent);
-`;
-
-const PreviewShape = styled.div<{ $animated?: boolean; $size: number }>`
-  inline-size: ${(props) => props.$size}px;
-  block-size: ${(props) => props.$size}px;
-  border: 2px solid var(--color-accent);
-  border-radius: 50%;
-  ${(props) =>
-    props.$animated &&
-    `
-    animation: spin 3s linear infinite;
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  `}
-`;
-
-const PreviewNav = styled.div`
-  block-size: 16px;
-  background: color-mix(in srgb, var(--color-muted) 15%, transparent);
-  border-radius: 2px;
-  position: absolute;
-  inset-block-start: 8px;
-  inset-inline-start: 8px;
-  inset-inline-end: 8px;
-  inline-size: calc(100% - 16px);
-`;
-
-const MiniCircle = styled.div<{ $size?: number }>`
-  inline-size: ${(props) => props.$size || 8}px;
-  block-size: ${(props) => props.$size || 8}px;
-  border: 1.5px solid var(--color-muted);
-  border-radius: 50%;
-`;
-
-const MiniTriangle = styled.div<{ $size?: number }>`
-  inline-size: 0;
-  block-size: 0;
-  border-inline-start: ${(props) => (props.$size || 8) / 2}px solid transparent;
-  border-inline-end: ${(props) => (props.$size || 8) / 2}px solid transparent;
-  border-block-end: ${(props) => props.$size || 8}px solid var(--color-accent);
-`;
-
-// Section preview components
-const SectionPreviewWrapper = styled.div<{
-  $direction: "row" | "column";
-  $centerVertical?: boolean;
-}>`
-  inline-size: 100%;
-  block-size: 100%;
-  display: flex;
-  flex-direction: ${(props) => props.$direction};
-  padding: 12px;
-  gap: 8px;
-  align-items: ${(props) =>
-    props.$direction === "row"
-      ? "center"
-      : props.$centerVertical
-        ? "center"
-        : "flex-start"};
-  justify-content: ${(props) =>
-    props.$direction === "row"
-      ? "space-between"
-      : props.$centerVertical
-        ? "center"
-        : "flex-start"};
-  flex-wrap: wrap;
-`;
-
-const SectionPreviewTitle = styled.div<{ $fontSize: number }>`
-  font-family: var(--font-sans);
-  color: var(--color-heading);
-  font-size: ${(props) => props.$fontSize}px;
-  inline-size: 100%;
-`;
-
-const SectionImage = styled.div<{ $width: string; $order: number }>`
-  background: linear-gradient(
-    135deg,
-    var(--color-muted) 0%,
-    color-mix(in srgb, var(--color-muted) 50%, transparent) 100%
-  );
-  border-radius: 4px;
-  inline-size: ${(props) => props.$width};
-  aspect-ratio: 16/10;
-  order: ${(props) => props.$order};
-  flex-shrink: 0;
-`;
-
-const SectionText = styled.div<{ $width: string; $gap: number }>`
-  display: flex;
-  flex-direction: column;
-  gap: ${(props) => props.$gap}px;
-  inline-size: ${(props) => props.$width};
-`;
-
-const TextLine = styled.div<{ $width: string }>`
-  block-size: 6px;
-  background: var(--color-text);
-  border-radius: 2px;
-  inline-size: ${(props) => props.$width};
-  opacity: 0.6;
-`;
-
-const TextLineAccent = styled(TextLine)`
-  background: var(--color-accent);
-  opacity: 1;
-`;
-
-const SectionLinks = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-block-start: 4px;
-`;
-
-const LinkPlaceholder = styled.div`
-  block-size: 6px;
-  inline-size: 24px;
-  background: var(--color-muted);
-  border-radius: 2px;
-`;
-
-const PreviewDescription = styled.p`
-  font-size: 0.8rem;
-  color: var(--color-muted);
+  gap: 0.5rem;
   margin: 0;
 `;
 
+const Chip = styled.div<{ $token: string }>`
+  block-size: 4.5rem;
+  background: var(${({ $token }) => $token});
+  border: 1px solid var(--color-line);
+`;
+
+const TypeRow = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.5rem 2rem;
+  padding-block: 1.25rem;
+  border-block-end: 1px solid var(--color-line);
+
+  @media (max-width: 640px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`;
+
+const Display = styled.span`
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 0.9;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  color: var(--color-heading);
+`;
+
+const ProjectName = styled.span`
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.9;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  color: var(--color-heading);
+`;
+
+const Tagline = styled.span`
+  font-size: clamp(1.25rem, 2.3vw, 2.125rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-heading);
+`;
+
+const MonoSample = styled.span`
+  ${mono}
+`;
+
+const Links = styled.p`
+  ${mono}
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.75rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap-target);
+    color: var(--color-text);
+  }
+
+  a:hover {
+    text-decoration-color: var(--accent-1);
+  }
+`;
+
+const Mockups = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+  gap: 2rem;
+`;
+
+const MockupCard = styled.figure`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+`;
+
+/* Each sample uses its own shape, to show the mockup reflowing */
+const SHAPES = ["16 / 7", "1 / 1", "4 / 5"] as const;
+
+const Frame = styled.div<{ $accent: string; $ratio: string }>`
+  --c: ${({ $accent }) => $accent};
+  position: relative;
+  aspect-ratio: ${({ $ratio }) => $ratio};
+  max-block-size: 26rem;
+  overflow: hidden;
+  background: var(--c);
+`;
+
+const Shot = styled.div`
+  position: absolute;
+  inset-block: 4% 0;
+  inset-inline: 4%;
+`;
+
+const Rules = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--color-line);
+  }
+
+  strong {
+    font-weight: 500;
+    color: var(--color-heading);
+  }
+`;
+
+const NEUTRALS = [
+  ["--color-bg", "Background"],
+  ["--color-surface", "Surface"],
+  ["--color-heading", "Heading"],
+  ["--color-text", "Text"],
+  ["--color-muted", "Muted"],
+  ["--color-line", "Line"],
+] as const;
+
+const MOTION = [
+  [
+    "Build with the scroll",
+    "Each project reveals from a slit and its mockup builds up in order as it reaches the middle of the screen.",
+  ],
+  [
+    "Play on hover",
+    "Hovering a frame plays the project's loop: pulses, waves, flips or a flowing branch.",
+  ],
+  [
+    "One impossible triangle",
+    "Three real beams, seen from the only angle where they close. It flies from the hero to the counter, locks on every project in its colour and ends in the footer.",
+  ],
+  [
+    "Still when asked",
+    "With reduced motion everything is shown complete and nothing moves.",
+  ],
+] as const;
+
 export default function DesignPage() {
-  const morphRef = useRef<{
-    morph: () => void;
-    reset: () => void;
-  }>(null);
-  const isMorph = useRef<boolean>(true);
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLight, setIsLight] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("light-theme", isLightTheme);
-    return () => {
-      document.documentElement.classList.remove("light-theme");
-    };
-  }, [isLightTheme]);
+    document.documentElement.classList.toggle("light-theme", isLight);
+  }, [isLight]);
 
   return (
-    <PageWrapper>
-      <BackButton href="/" aria-label="Go back to main page">
-        <svg
-          stroke="var(--color-accent)"
-          strokeWidth={4}
-          fill="none"
-          viewBox="0 0 100 100"
-        >
-          <desc>Go to main page</desc>
-          <path d="M50 2L2 98h98L50 2z" />
-        </svg>
-      </BackButton>
-      <ThemeToggle
-        $isLight={isLightTheme}
-        onClick={() => setIsLightTheme((prev) => !prev)}
-        aria-label={
-          isLightTheme ? "Switch to dark mode" : "Switch to light mode"
-        }
-        title={isLightTheme ? "Dark mode" : "Light mode"}
-      >
-        {isLightTheme ? "◐" : "◑"}
-      </ThemeToggle>
-      <Header>
+    <Page>
+      <Top>
+        <a href="/">← Portfolio</a>
+        <button type="button" onClick={() => setIsLight((light) => !light)}>
+          {isLight ? "Dark theme" : "Light theme"}
+        </button>
+      </Top>
+
+      <Intro>
+        <Label>Design</Label>
         <PageTitle>Design</PageTitle>
-        <PageDescription>
-          Visual language and design foundations used in this portfolio. For
-          technical component documentation, see the{" "}
-          <a href="/storybook" style={{ color: "var(--color-accent)" }}>
-            Storybook
-          </a>
-          .
-        </PageDescription>
-      </Header>
+        <Lead>
+          The visual language of this portfolio: two typefaces, a quiet neutral
+          palette, one accent per project and motion that follows the scroll.
+          Component documentation lives in the{" "}
+          <a href="/storybook">Storybook</a>.
+        </Lead>
+      </Intro>
 
-      {/* Colors */}
-      <Section>
-        <SectionTitle>Colors</SectionTitle>
-        <ColorsGrid>
-          <ColorSwatch $color="--color-bg" />
-
-          <ColorSwatch $color="--color-text" />
-          <ColorSwatch $color="--color-heading" />
-          <ColorSwatch $color="--color-muted" />
-          <ColorSwatch $color="--color-accent" />
-        </ColorsGrid>
+      <Section aria-labelledby="colours">
+        <SectionTitle id="colours">Colours</SectionTitle>
+        <Note>
+          Neutrals carry the page. There is no brand colour: the accent is
+          always the project in view. Switch the theme to see both palettes.
+        </Note>
+        <Swatches>
+          {NEUTRALS.map(([token, name]) => (
+            <Swatch key={token}>
+              <Chip $token={token} />
+              <figcaption>
+                {name}
+                <br />
+                <Label>{token}</Label>
+              </figcaption>
+            </Swatch>
+          ))}
+        </Swatches>
+        <Note>
+          Project accents, in pin order. Light mode uses darker shades so they
+          stay visible on the light background.
+        </Note>
+        <Swatches>
+          {ACCENTS.map((token) => (
+            <Swatch key={token}>
+              <Chip $token={token} />
+              <figcaption>
+                <Label>{token}</Label>
+              </figcaption>
+            </Swatch>
+          ))}
+        </Swatches>
       </Section>
 
-      {/* Typography */}
-      <Section>
-        <SectionTitle>Typography</SectionTitle>
-        <ComponentCard>
-          <ComponentName>Hero Name</ComponentName>
-          <ComponentDescription>
-            Font weight animation for the main name. Font family: Space Grotesk.
-          </ComponentDescription>
-          <ComponentPreview
-            style={{
-              justifyContent: "flex-start",
-              padding: "var(--space-l)",
-            }}
-          >
-            <NameWrapper style={{ fontSize: "3.5rem", lineHeight: "3.5rem" }}>
-              <FirstNameWrapper>Marc</FirstNameWrapper>
-              <SurnameWrapper>Llobet</SurnameWrapper>
-            </NameWrapper>
-          </ComponentPreview>
-        </ComponentCard>
-
-        <ComponentCard>
-          <ComponentName>Title</ComponentName>
-          <ComponentDescription>
-            Section title, sized to fit its longest word. Font family: Space
-            Grotesk.
-          </ComponentDescription>
-          <ComponentPreview
-            style={{
-              flexDirection: "row",
-              gap: "2rem",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-              padding: "var(--space-l)",
-            }}
-          >
-            <Title title="gym-grid" />
-            <Title title="wordle-app" />
-            <Title title="semantic-git" />
-          </ComponentPreview>
-        </ComponentCard>
-
-        <ComponentCard>
-          <ComponentName>Body Text</ComponentName>
-          <ComponentDescription>
-            Paragraph text. Font family: Space Grotesk.
-          </ComponentDescription>
-          <ComponentPreview
-            style={{
-              flexDirection: "column",
-              gap: "1rem",
-              alignItems: "flex-start",
-              padding: "var(--space-l)",
-            }}
-          >
-            <p style={{ margin: 0 }}>
-              Done mainly with <b>TypeScript</b> along with React, Styled
-              Components and Vitest.
-            </p>
-            <p style={{ margin: 0, color: "var(--color-muted)" }}>
-              <a href="#" style={{ color: "var(--color-muted)" }}>
-                Demo
-              </a>{" "}
-              •{" "}
-              <a href="#" style={{ color: "var(--color-muted)" }}>
-                Code
-              </a>
-            </p>
-          </ComponentPreview>
-        </ComponentCard>
+      <Section aria-labelledby="type">
+        <SectionTitle id="type">Typography</SectionTitle>
+        <Note>
+          Space Grotesk for everything you read, JetBrains Mono for labels,
+          counters and metadata. Use the tokens, never a font name.
+        </Note>
+        <div>
+          <TypeRow>
+            <Label>Hero · --font-sans 500</Label>
+            <Display>Marc Llobet</Display>
+          </TypeRow>
+          <TypeRow>
+            <Label>Project name · 500</Label>
+            <ProjectName>wordle app</ProjectName>
+          </TypeRow>
+          <TypeRow>
+            <Label>Tagline · 400</Label>
+            <Tagline>Find the strongest Wordle opener with maths.</Tagline>
+          </TypeRow>
+          <TypeRow>
+            <Label>Body · 400</Label>
+            <span>
+              Running text stays near 65 characters wide, in the muted colour
+              for details and the text colour for everything else.
+            </span>
+          </TypeRow>
+          <TypeRow>
+            <Label>Label · --font-mono</Label>
+            <MonoSample>03 / 06 · TypeScript · CSS</MonoSample>
+          </TypeRow>
+        </div>
       </Section>
 
-      {/* Shapes */}
-      <Section>
-        <SectionTitle>Shapes</SectionTitle>
-        <ComponentGrid>
-          <ComponentCard>
-            <ComponentName>Infinite animation</ComponentName>
-            <ComponentDescription>
-              MorphShape with continuous animation between circle and triangle.
-            </ComponentDescription>
-            <ComponentPreview>
-              <MorphShape
-                size="big"
-                infiniteAnimation
-                stroke="var(--color-accent)"
-              />
-            </ComponentPreview>
-          </ComponentCard>
-
-          <ComponentCard>
-            <ComponentName>Triggered animation</ComponentName>
-            <ComponentDescription>
-              MorphShape that animates when the button is pressed.
-            </ComponentDescription>
-            <ComponentPreview>
-              <MorphShape
-                ref={morphRef}
-                size="big"
-                stroke="var(--color-accent)"
-              />
-            </ComponentPreview>
-            <InteractiveButton
-              onClick={() => {
-                if (isMorph.current) {
-                  morphRef?.current?.reset?.();
-                } else {
-                  morphRef?.current?.morph?.();
-                }
-                isMorph.current = !isMorph.current;
-              }}
-            >
-              Animate
-            </InteractiveButton>
-          </ComponentCard>
-        </ComponentGrid>
+      <Section aria-labelledby="interaction">
+        <SectionTitle id="interaction">Interaction</SectionTitle>
+        <Note>
+          Links and buttons never change colour on hover: a line appears
+          underneath, in the project accent where there is one.
+        </Note>
+        <Links>
+          <a href="#interaction">Live demo ↗</a>
+          <a href="#interaction">Code ↗</a>
+        </Links>
       </Section>
 
-      {/* Spacing Scale */}
-      <Section>
-        <SectionTitle>Spacing Scale</SectionTitle>
-        <ComponentCard>
-          <ComponentName>Golden Ratio</ComponentName>
-          <ComponentDescription>
-            Spacing scale based on the golden ratio (1.618).
-          </ComponentDescription>
-          <ComponentPreview
-            style={{
-              flexDirection: "column",
-              gap: "0.5rem",
-              alignItems: "flex-start",
-            }}
-          >
-            {[1, 2, 3, 4, 5].map((n) => (
-              <div
-                key={n}
-                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+      <Section aria-labelledby="mockups">
+        <SectionTitle id="mockups">Mockups</SectionTitle>
+        <Note>
+          Each project gets a mockup drawn in SVG, like a small responsive page:
+          every measure is a percentage with a minimum and a maximum, and
+          columns and rows are recounted for the size of the frame. These
+          samples use different shapes on purpose. Hover one to play its loop.
+        </Note>
+        <Mockups>
+          {MOCKUP_KINDS.map((kind, index) => (
+            <MockupCard key={kind}>
+              <Frame
+                data-play="hover"
+                $accent={accentFor(index)}
+                $ratio={SHAPES[index % SHAPES.length]}
               >
-                <Label style={{ width: "80px" }}>×{n}</Label>
-                <div
-                  style={{
-                    height: "20px",
-                    width: `calc(1rem * var(--golden-ratio) * ${n})`,
-                    background: "var(--color-accent)",
-                    borderRadius: "2px",
-                  }}
-                />
-              </div>
-            ))}
-          </ComponentPreview>
-        </ComponentCard>
+                <Shot>
+                  <Mockup kind={kind} />
+                </Shot>
+              </Frame>
+              <figcaption>
+                <Label>
+                  {kind} · {SHAPES[index % SHAPES.length].replace(" / ", ":")}
+                </Label>
+              </figcaption>
+            </MockupCard>
+          ))}
+        </Mockups>
       </Section>
 
-      {/* Layout Features */}
-      <Section>
-        <SectionTitle>Layout Features</SectionTitle>
-        <LayoutRowGrid>
-          {/* Desktop */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Desktop</PreviewTitle>
-              <PreviewDimensions>20px base</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={1440} $height={900}>
-              <PreviewNav />
-              <LayoutPreview $direction="row">
-                <PreviewAside>
-                  <MiniCircle />
-                  <MiniTriangle />
-                  <MiniCircle />
-                  <MiniCircle />
-                  <MiniCircle />
-                </PreviewAside>
-                <PreviewMain>
-                  <PreviewHero $fontSize={24}>
-                    <span>Marc</span>
-                    <span>
-                      Ll<PreviewAccent>o</PreviewAccent>bet
-                    </span>
-                  </PreviewHero>
-                  <PreviewShape $animated $size={40} />
-                </PreviewMain>
-              </LayoutPreview>
-            </DeviceFrame>
-            <PreviewDescription>
-              <b>flex-direction: row</b>. Lateral aside.
-            </PreviewDescription>
-          </PreviewCard>
-
-          {/* Mobile */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Mobile</PreviewTitle>
-              <PreviewDimensions>16px base</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={375} $height={667} $maxHeight="180px">
-              <PreviewNav />
-              <LayoutPreview $direction="row">
-                <PreviewAside>
-                  <MiniCircle $size={6} />
-                  <MiniTriangle $size={6} />
-                  <MiniCircle $size={6} />
-                  <MiniCircle $size={6} />
-                  <MiniCircle $size={6} />
-                </PreviewAside>
-                <PreviewMain>
-                  <PreviewHero $fontSize={16}>
-                    <span>Marc</span>
-                    <span>
-                      Ll<PreviewAccent>o</PreviewAccent>bet
-                    </span>
-                  </PreviewHero>
-                  <PreviewShape $animated $size={28} />
-                </PreviewMain>
-              </LayoutPreview>
-            </DeviceFrame>
-            <PreviewDescription>
-              Smaller title (4.05rem ≈ 65px).
-            </PreviewDescription>
-          </PreviewCard>
-
-          {/* Landscape */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Landscape</PreviewTitle>
-              <PreviewDimensions>14px base</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={844} $height={390}>
-              <LayoutPreview $direction="column">
-                <PreviewAside $isTop>
-                  <MiniCircle $size={6} />
-                  <MiniTriangle $size={6} />
-                  <MiniCircle $size={6} />
-                  <MiniCircle $size={6} />
-                  <MiniCircle $size={6} />
-                </PreviewAside>
-                <PreviewMain>
-                  <PreviewHero $fontSize={14}>
-                    <span>Marc</span>
-                    <span>
-                      Ll<PreviewAccent>o</PreviewAccent>bet
-                    </span>
-                  </PreviewHero>
-                  <PreviewShape $animated $size={24} />
-                </PreviewMain>
-              </LayoutPreview>
-            </DeviceFrame>
-            <PreviewDescription>
-              <b>flex-direction: column</b>. Aside on top.
-            </PreviewDescription>
-          </PreviewCard>
-
-          {/* Reduced Motion */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Reduced Motion</PreviewTitle>
-              <PreviewDimensions>prefers-reduced-motion</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={1440} $height={900}>
-              <PreviewNav />
-              <LayoutPreview $direction="row">
-                <PreviewAside>
-                  <MiniCircle />
-                  <MiniTriangle />
-                  <MiniCircle />
-                  <MiniCircle />
-                  <MiniCircle />
-                </PreviewAside>
-                <PreviewMain>
-                  <PreviewHero $fontSize={24}>
-                    <span>Marc</span>
-                    <span>
-                      Ll<PreviewAccent>o</PreviewAccent>bet
-                    </span>
-                  </PreviewHero>
-                  <PreviewShape $size={40} />
-                </PreviewMain>
-              </LayoutPreview>
-            </DeviceFrame>
-            <PreviewDescription>
-              <b>No animations</b>. Static shape.
-            </PreviewDescription>
-          </PreviewCard>
-        </LayoutRowGrid>
+      <Section aria-labelledby="motion">
+        <SectionTitle id="motion">Motion</SectionTitle>
+        <Rules>
+          {MOTION.map(([title, text]) => (
+            <li key={title}>
+              <strong>{title}</strong>
+              <Note>{text}</Note>
+            </li>
+          ))}
+        </Rules>
       </Section>
-
-      {/* Section Layout */}
-      <Section>
-        <SectionTitle>Section Layout</SectionTitle>
-        <PreviewGrid>
-          {/* Desktop */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Desktop</PreviewTitle>
-              <PreviewDimensions>&gt;900px · text 30ch</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={1440} $height={900}>
-              <SectionPreviewWrapper $direction="row">
-                <SectionPreviewTitle $fontSize={18}>
-                  fluency-rep<PreviewAccent>o</PreviewAccent>rt
-                </SectionPreviewTitle>
-                <SectionText $width="35%" $gap={8}>
-                  <TextLine $width="100%" />
-                  <TextLine $width="90%" />
-                  <TextLine $width="95%" />
-                  <TextLine $width="60%" />
-                  <div style={{ marginTop: 4 }}>
-                    <TextLine $width="70%" />
-                    <TextLineAccent $width="40%" style={{ marginTop: 4 }} />
-                  </div>
-                  <SectionLinks>
-                    <LinkPlaceholder />
-                    <LinkPlaceholder />
-                  </SectionLinks>
-                </SectionText>
-                <SectionImage $width="55%" $order={1} />
-              </SectionPreviewWrapper>
-            </DeviceFrame>
-            <PreviewDescription>
-              Layout <b>flex row</b>. Text on the left (30ch), image on the
-              right (order: 1). Element gap: 2rem.
-            </PreviewDescription>
-          </PreviewCard>
-
-          {/* Mobile */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Mobile</PreviewTitle>
-              <PreviewDimensions>≤900px · text 100%</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={375} $height={667}>
-              <SectionPreviewWrapper $direction="column" $centerVertical>
-                <SectionPreviewTitle $fontSize={14}>
-                  fluency-rep<PreviewAccent>o</PreviewAccent>rt
-                </SectionPreviewTitle>
-                <SectionImage $width="100%" $order={0} />
-                <SectionText $width="100%" $gap={6}>
-                  <TextLine $width="100%" />
-                  <TextLine $width="90%" />
-                  <TextLine $width="95%" />
-                  <TextLine $width="60%" />
-                  <div style={{ marginTop: 2 }}>
-                    <TextLine $width="70%" />
-                    <TextLineAccent $width="40%" style={{ marginTop: 2 }} />
-                  </div>
-                  <SectionLinks>
-                    <LinkPlaceholder />
-                    <LinkPlaceholder />
-                  </SectionLinks>
-                </SectionText>
-              </SectionPreviewWrapper>
-            </DeviceFrame>
-            <PreviewDescription>
-              Image first (<b>order: 0</b>), text below. Text takes 100% width
-              (max 32ch). Reduced gap to 1rem.
-            </PreviewDescription>
-          </PreviewCard>
-
-          {/* Landscape */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Landscape</PreviewTitle>
-              <PreviewDimensions>max-height: 400px</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={844} $height={390}>
-              <SectionPreviewWrapper $direction="row">
-                <SectionPreviewTitle $fontSize={12}>
-                  fluency-rep<PreviewAccent>o</PreviewAccent>rt
-                </SectionPreviewTitle>
-                <SectionText $width="50%" $gap={4}>
-                  <TextLine $width="100%" />
-                  <TextLine $width="90%" />
-                  <TextLine $width="95%" />
-                  <TextLine $width="60%" />
-                  <div style={{ marginTop: 2 }}>
-                    <TextLine $width="70%" />
-                    <TextLineAccent $width="40%" style={{ marginTop: 2 }} />
-                  </div>
-                  <SectionLinks>
-                    <LinkPlaceholder />
-                    <LinkPlaceholder />
-                  </SectionLinks>
-                </SectionText>
-                <SectionImage $width="35%" $order={1} />
-              </SectionPreviewWrapper>
-            </DeviceFrame>
-            <PreviewDescription>
-              Smaller image (<b>max 250px</b>), order: 1. padding-block-start:
-              4dvw to compensate for aside.
-            </PreviewDescription>
-          </PreviewCard>
-
-          {/* Tablet */}
-          <PreviewCard>
-            <PreviewLabel>
-              <PreviewTitle>Tablet</PreviewTitle>
-              <PreviewDimensions>600-900px</PreviewDimensions>
-            </PreviewLabel>
-            <DeviceFrame $width={768} $height={1024}>
-              <SectionPreviewWrapper $direction="column" $centerVertical>
-                <SectionPreviewTitle $fontSize={16}>
-                  fluency-rep<PreviewAccent>o</PreviewAccent>rt
-                </SectionPreviewTitle>
-                <SectionImage $width="80%" $order={0} />
-                <SectionText $width="100%" $gap={6}>
-                  <TextLine $width="100%" />
-                  <TextLine $width="90%" />
-                  <TextLine $width="95%" />
-                  <TextLine $width="60%" />
-                  <div style={{ marginTop: 2 }}>
-                    <TextLine $width="70%" />
-                    <TextLineAccent $width="40%" style={{ marginTop: 2 }} />
-                  </div>
-                  <SectionLinks>
-                    <LinkPlaceholder />
-                    <LinkPlaceholder />
-                  </SectionLinks>
-                </SectionText>
-              </SectionPreviewWrapper>
-            </DeviceFrame>
-            <PreviewDescription>
-              Breakpoint ≤900px active: image first, text 100%. Image limited to
-              max 450px.
-            </PreviewDescription>
-          </PreviewCard>
-        </PreviewGrid>
-      </Section>
-    </PageWrapper>
+    </Page>
   );
 }

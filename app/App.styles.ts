@@ -77,37 +77,6 @@ export const Letter = styled.span<{ $i: number }>`
   animation-delay: ${({ $i }) => $i * 45 + 120}ms;
 `;
 
-/* Previous hero name (weight animation), still shown on the design page */
-const toHeavyFontWeightAnimation = keyframes`
-  0% { font-weight: 300; }
-  100% { font-weight: 900; }
-`;
-
-const AnimationWrapper = styled.span`
-  animation-name: ${toHeavyFontWeightAnimation};
-  animation-duration: 2s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-fill-mode: forwards;
-  display: inline-block;
-`;
-
-export const FirstNameWrapper = styled(AnimationWrapper)`
-  animation-direction: reverse;
-`;
-
-export const SurnameWrapper = styled(AnimationWrapper)`
-  animation-direction: normal;
-`;
-
-export const NameWrapper = styled.h1`
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  font-size: clamp(3rem, min(15vw, 17svh), 6.5rem);
-  line-height: 0.875;
-`;
-
-/* Where the impossible triangle starts; holds a drawn fallback without JavaScript */
 export const ShapeSlot = styled.div`
   display: flex;
   align-items: center;

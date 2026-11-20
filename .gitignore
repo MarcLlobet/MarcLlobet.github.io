@@ -38,5 +38,3 @@ tsconfig.tsbuildinfo
 # Claude Code
 .claude
 
-# Layout check output
-layout-report
