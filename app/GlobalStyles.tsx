@@ -179,16 +179,17 @@ a {
   color: var(--color-muted);
   text-decoration: inherit;
 }
-a:hover {
-  color: var(--color-accent-text);
-}
 
 button {
   color: var(--color-muted);
 }
 
+/* Hover: no colour change, a line underneath */
+a:hover,
 button:hover {
-  color: var(--color-accent-text);
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
 }
 
 /* Focus styles for accessibility */

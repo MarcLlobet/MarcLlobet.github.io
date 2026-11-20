@@ -64,6 +64,7 @@ export const Row = styled.a`
 
   &:hover {
     color: var(--color-text);
+    text-decoration: none;
   }
 
   @media ${NO_HOVER} {
@@ -87,6 +88,9 @@ export const RowName = styled.span`
   a:hover &,
   a:focus-visible & {
     transform: translateX(1rem);
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
   }
 
   a:hover &:dir(rtl),

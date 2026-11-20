@@ -58,6 +58,7 @@ const Hello = styled.a`
 
   &:hover {
     color: var(--color-heading);
+    text-decoration: none;
   }
 
   &:hover span {

@@ -97,6 +97,10 @@ export const Body = styled.div`
 `;
 
 export const Frame = styled.a<Side>`
+  &:hover {
+    text-decoration: none;
+  }
+
   position: relative;
   display: block;
   inline-size: 100%;
@@ -178,16 +182,9 @@ export const Links = styled.p`
     align-items: center;
     min-block-size: var(--tap-target);
     color: var(--color-text);
-    border-block-end: 2px solid var(--color-line-strong);
-    transition: border-color 0.3s;
-  }
-
-  a:first-child {
-    border-block-end-color: var(--c);
   }
 
   a:hover {
-    color: var(--color-text);
-    border-block-end-color: var(--color-text);
+    text-decoration-color: var(--c);
   }
 `;
