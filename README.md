@@ -25,15 +25,9 @@ pnpm lint:css        # Lint the CSS inside styled-components
 - **Navigation works without JavaScript**: the section rail, the skip link and the scroll-to-top button are plain `#anchor` links; `scroll-behavior: smooth` animates them (except with reduced motion), and the scroll-to-top button fades in with a CSS scroll-driven animation. JavaScript only adds the highlight of the current section.
 - **Colour contrast**: every text colour meets WCAG AA (4.5:1) in both themes. Use `--color-accent` for shapes and large letters, and `--color-accent-text` when the accent colours normal-size text.
 
-### Layout checks
+### Style checks
 
-**Stylelint** (`stylelint.config.ts`) lints the CSS written in styled-components.
-Besides catching invalid or duplicated declarations, it only allows logical
-properties (`inline-size`, `inset-block-start`, `margin-inline-end`,
-`text-align: start`…) so the layout works in any writing direction, rejects
-`100vw`/`100dvw` widths (they include the scrollbar and cause sideways
-scrolling) and `vh` (use `svh`/`dvh`, which account for the mobile browser
-bars). It runs on every pull request in the **Checks** workflow.
+**Stylelint** (`stylelint.config.ts`) lints the CSS written in styled-components. Besides catching invalid or duplicated declarations, it only allows logical properties (`inline-size`, `inset-block-start`, `margin-inline-end`, `text-align: start`…) so the layout works in any writing direction, rejects `100vw`/`100dvw` widths (they include the scrollbar and cause sideways scrolling) and `vh` (use `svh`/`dvh`, which account for the mobile browser bars). It runs on every pull request in the **Checks** workflow.
 
 ## Data Source
 
@@ -93,7 +87,7 @@ Use the tokens, never a font name, so a future change happens in one place (`Glo
 
 ### Done
 
-- Fluid, breakpoint-light responsive layout and automated layout checks
+- Fluid, breakpoint-light responsive layout
 - Build-time data fetching; rebuilds triggered by pushes and other repositories
 - Review accessibility (html-validate added)
 - Migrate from Vite to Next.js (App Router)

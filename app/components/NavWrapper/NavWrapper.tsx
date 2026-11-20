@@ -12,9 +12,15 @@ const LazyBioPortal = lazy(() =>
 export type NavWrapperProps = {
   bio: Bio;
   repositories: Repository[];
+  /** Show the Archive link (only when the page has an archive). */
+  hasArchive?: boolean;
 };
 
-export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
+export const NavWrapper = ({
+  bio,
+  repositories,
+  hasArchive = false,
+}: NavWrapperProps) => {
   const [showBio, setShowBio] = useState(false);
   const [shouldLoadBio, setShouldLoadBio] = useState(false);
 
@@ -38,13 +44,15 @@ export const NavWrapper = ({ bio, repositories }: NavWrapperProps) => {
       onMouseEnter={handleMouseEnter}
       onFocus={handleMouseEnter}
     >
-      <LinkButton href="design">Design</LinkButton>
-      <Button type="button" onClick={handleTheme}>
-        Theme
-      </Button>
+      <LinkButton href="#main-content">Work</LinkButton>
+      {hasArchive && <LinkButton href="#archive">Archive</LinkButton>}
       <Button type="button" onClick={handleClick}>
         About
       </Button>
+      <Button type="button" onClick={handleTheme}>
+        Theme
+      </Button>
+      <LinkButton href="design">Design ↗</LinkButton>
       {shouldLoadBio &&
         createPortal(
           <Suspense fallback={null}>
