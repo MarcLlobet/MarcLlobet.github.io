@@ -49,3 +49,36 @@ describe("mockupFor", () => {
     expect(MOCKUP_KINDS).toContain(mockupFor({ ...mockRepos[0], name: "zzz" }));
   });
 });
+
+describe("buildMockup at any aspect ratio", () => {
+  const SHAPES = [
+    [1600, 240],
+    [900, 900],
+    [360, 640],
+    [240, 900],
+  ];
+
+  it.each(MOCKUP_KINDS)(
+    "keeps every %s shape inside wide, square and tall boxes",
+    (kind) => {
+      for (const [w, h] of SHAPES) {
+        for (const shape of buildMockup(kind, w, h)) {
+          if (shape.type === "rect") {
+            expect(shape.x + shape.w).toBeLessThanOrEqual(w + 0.5);
+            expect(shape.y + shape.h).toBeLessThanOrEqual(h + 0.5);
+          }
+        }
+      }
+    },
+  );
+
+  it("lays a wide box out in more columns than a tall one", () => {
+    const columns = (w: number, h: number) =>
+      new Set(
+        buildMockup("matrix", w, h)
+          .filter((s) => s.type === "rect" && s.fill === "acc")
+          .map((s) => (s.type === "rect" ? Math.round(s.x) : 0)),
+      ).size;
+    expect(columns(1600, 240)).toBeGreaterThan(columns(240, 900));
+  });
+});

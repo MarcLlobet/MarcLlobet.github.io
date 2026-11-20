@@ -1,6 +1,10 @@
 /**
- * Mockups are drawn in code at the exact pixel size of their box (viewBox = W×H),
- * so they never scale or crop: columns, rows and lines are recounted for each size.
+ * Mockups are small responsive pages drawn in SVG. The box has no fixed aspect
+ * ratio: the mockup is drawn at the exact pixel size it gets (viewBox = W×H), so
+ * it never scales or crops. Like a page layout, every measure is a percentage of
+ * the box with a minimum and a maximum, `pct(W, 3.5, 12, 48)` being the CSS
+ * `clamp(12px, 3.5%, 48px)`, and columns, rows and lines are recounted for each
+ * size, so a wide box gets more columns and a tall one more rows.
  *
  * Every shape can carry an `order` (0..1): its place in the build animation that
  * plays with the scroll, and a `loop`: the animation it plays on hover.
@@ -64,6 +68,10 @@ export type Shape =
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
+/** `percent`% of `size`, never under `min` or over `max` pixels. */
+const pct = (size: number, percent: number, min: number, max: number) =>
+  clamp((size * percent) / 100, min, max);
+
 /** Small seeded generator, so a mockup looks the same on every render. */
 const random = (seed: number) => () => {
   seed = (seed + 0x6d2b79f5) | 0;
@@ -80,10 +88,11 @@ export const buildMockup = (
   const shapes: Shape[] = [];
   const r = random(kind.length * 97 + 11);
   const m = Math.min(W, H);
-  const p = clamp(W * 0.035, 12, 48);
-  const nh = clamp(H * 0.08, 22, 52);
-  const sw = clamp(m / 180, 1.5, 6);
-  const rx = clamp(m / 90, 2, 10);
+  /* Page metrics: margin, top bar, stroke and corner radius */
+  const p = pct(W, 3.5, 12, 48);
+  const nh = pct(H, 8, 22, 52);
+  const sw = pct(m, 0.55, 1.5, 6);
+  const rx = pct(m, 1.1, 2, 10);
 
   const rect = (
     x: number,
@@ -169,8 +178,8 @@ export const buildMockup = (
 
   if (kind === "map") {
     const gs = clamp(m / 7, 20, 80);
-    for (let x = gs; x < W; x += gs) rect(x, nh, 1, H - nh, "bar");
-    for (let y = nh + gs; y < H; y += gs) rect(0, y, W, 1, "bar");
+    for (let x = gs; x < W - 1; x += gs) rect(x, nh, 1, H - nh, "bar");
+    for (let y = nh + gs; y < H - 1; y += gs) rect(0, y, W, 1, "bar");
     const dots = Math.min(500, Math.round((W * H) / 2200));
     const dr = clamp(m / 70, 2, 12);
     for (let i = 0; i < dots; i++) {

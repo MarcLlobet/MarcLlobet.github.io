@@ -18,8 +18,8 @@ type Side = { $even: boolean };
 /*
  * One project = one screen. --p (reveal) and --q (mockup build) go from 0 to 1
  * as the project scrolls in; the scene sets them. --case-reserve is the room the
- * name and the paddings need, so the 2:1 frame narrows on short screens instead
- * of pushing the project past one screen.
+ * name, text and paddings need: the frame takes the rest of the screen, with no
+ * fixed aspect ratio, and the mockup inside reflows to whatever shape it gets.
  */
 export const Case = styled.section<Side & { $accent: string }>`
   --c: ${({ $accent }) => $accent};
@@ -100,11 +100,7 @@ export const Frame = styled.a<Side>`
   position: relative;
   display: block;
   inline-size: 100%;
-  aspect-ratio: 2 / 1;
-  max-inline-size: min(
-    100%,
-    max(60%, calc((100svh - var(--case-reserve)) * 2))
-  );
+  block-size: clamp(8rem, calc(100svh - var(--case-reserve)), 40rem);
   overflow: hidden;
   background: var(--c);
   clip-path: inset(
@@ -115,7 +111,6 @@ export const Frame = styled.a<Side>`
     grid-row: 1;
     grid-column: ${({ $even }) => ($even ? "6 / span 7" : "1 / span 7")};
     justify-self: ${({ $even }) => ($even ? "end" : "start")};
-    max-inline-size: min(100%, calc((100svh - var(--case-reserve)) * 2));
   }
 
   @media ${WIDE} {
