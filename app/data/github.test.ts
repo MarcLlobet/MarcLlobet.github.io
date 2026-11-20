@@ -38,6 +38,7 @@ describe("getPortfolioData", () => {
     request.mockResolvedValue({
       user: {
         bio: "Frontend developer",
+        pinnedItems: { nodes: [{ name: "mobile-store" }, {}, null] },
         repositories: {
           nodes: [
             node("mobile-store", ["demo", "nextjs"]),
@@ -53,6 +54,7 @@ describe("getPortfolioData", () => {
     expect(data.source).toBe("github");
     expect(data.bio).toBe("Frontend developer");
     expect(data.repositories.map(({ name }) => name)).toEqual(["mobile-store"]);
+    expect(data.pinned).toEqual(["mobile-store"]);
     expect(data.repositories[0]).toMatchObject({
       languages: [{ name: "TypeScript" }, { name: "CSS" }],
       topics: ["demo", "nextjs"],
@@ -69,6 +71,7 @@ describe("getPortfolioData", () => {
 
     expect(data.source).toBe("fixtures");
     expect(data.repositories.length).toBeGreaterThan(0);
+    expect(Array.isArray(data.pinned)).toBe(true);
     expect(request).not.toHaveBeenCalled();
   });
 

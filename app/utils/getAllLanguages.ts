@@ -1,4 +1,5 @@
 import type { Repository } from "../types";
+import { IGNORED_LANGUAGES } from "./projects";
 
 export const getAllLanguages = (repositories: Repository[]) => {
   const valueByLanguages = repositories.reduce(
@@ -19,5 +20,7 @@ export const getAllLanguages = (repositories: Repository[]) => {
   const sortedLanguages = Object.entries(valueByLanguages).sort(
     ([, a], [, b]) => b - a,
   );
-  return sortedLanguages.map(([language]) => language);
+  return sortedLanguages
+    .map(([language]) => language)
+    .filter((language) => language && !IGNORED_LANGUAGES.has(language));
 };

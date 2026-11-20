@@ -2,37 +2,36 @@
 
 import { createGlobalStyle } from "styled-components";
 
-const Satoshi = `
+/*
+ * Typography: Space Grotesk for everything you read, JetBrains Mono for
+ * labels, counters and metadata. Both are variable fonts served from /fonts.
+ */
+const Fonts = `
 @font-face {
-  font-family: 'Satoshi';
-  src: url('/fonts/satoshi/Satoshi-Variable.woff2') format('woff2');
-  font-weight: 300 900;
+  font-family: 'Space Grotesk';
+  src: url('/fonts/space-grotesk/SpaceGrotesk-Variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
   font-display: swap;
   font-style: normal;
 }
 
 :root {
-  --satoshi-stack: 'Satoshi', system-ui, -apple-system, BlinkMacSystemFont,
-             'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --satoshi-weight-light: 300;
-  --satoshi-weight-regular: 400;
-  --satoshi-weight-medium: 500;
-  --satoshi-weight-bold: 700;
-  --satoshi-weight-black: 900;
-}
-`;
-
-const Stardom = `
-@font-face {
-  font-family: 'Stardom';
-  src: url('/fonts/stardom/Stardom-Regular.woff2') format('woff2');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 400;
-}
-
-:root {
-  --stardom-stack: 'Stardom', Georgia, 'Times New Roman', Times, serif;
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo,
+    Consolas, 'Liberation Mono', monospace;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 }
 `;
 
@@ -59,7 +58,7 @@ const GenericStyles = `
   --tap-target: 2.75rem;
   --shape-size: clamp(64px, 10vmin + 2rem, 180px);
   --selector-size: 20px;
-  font-family: var(--satoshi-stack);
+  font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
 
@@ -70,21 +69,77 @@ const GenericStyles = `
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --color-bg: #141518;
-  --color-text: #D1CDC4;
-  --color-heading: #E9CFA4;
-  --color-muted: #8E8A80;
-  --color-accent: #B0483A;
-  --color-accent-text: #C9685B;
+  --color-bg: #0E0E0C;
+  --color-surface: #161614;
+  --color-text: #EDECE6;
+  --color-heading: #EDECE6;
+  --color-muted: #9C9A92;
+  --color-line: #2A2A27;
+  --color-line-strong: #3A3A36;
+  /* No brand red: the accent is the project in view */
+  --color-accent: var(--scene-accent);
+  --color-accent-text: var(--color-heading);
+
+  /* Project accents, for frames, mockups and the triangle */
+  --accent-1: #5B9BFF;
+  --accent-2: #FF7A45;
+  --accent-3: #B6F24A;
+  --accent-4: #E879F9;
+  --accent-5: #F2C94C;
+  --accent-6: #4FD1C5;
+
+  /* Mockup colour roles */
+  --mk-surf: #161614;
+  --mk-head: #121210;
+  --mk-ink: #EDECE6;
+  --mk-bar: #2A2A27;
+  --mk-bar2: #3A3A36;
+  --mk-grey: #6B6A64;
+
+  /* Accent of the project in view; the scene changes it while scrolling */
+  --scene-accent: var(--accent-1);
+  transition: --scene-accent 0.8s ease;
 }
 
 html.light-theme {
   --color-bg: #F4F1EB;
-  --color-heading: #2E2A25;
-  --color-text: #3F3B36;
-  --color-muted: #69635C;
-  --color-accent: #B0483A;
-  --color-accent-text: #B0483A;
+  --color-surface: #EAE6DE;
+  --color-heading: #1C1B19;
+  --color-text: #2A2825;
+  --color-muted: #5F5A53;
+  --color-line: #D9D4CA;
+  --color-line-strong: #C4BEB2;
+  --accent-1: #2F6FD6;
+  --accent-2: #D9531E;
+  --accent-3: #5E9A0A;
+  --accent-4: #B240C8;
+  --accent-5: #B8860B;
+  --accent-6: #158F84;
+
+  --mk-surf: #EAE6DE;
+  --mk-head: #E0DBD1;
+  --mk-ink: #2A2825;
+  --mk-bar: #D3CDC2;
+  --mk-bar2: #C2BBAE;
+  --mk-grey: #99928A;
+}
+
+@property --scene-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #5B9BFF;
+}
+
+
+/*
+ * The dot is the pointer: while it follows, nothing draws a cursor. It only
+ * mounts on a fine pointer, so the attribute is the whole condition. The
+ * attribute is repeated to outweigh the components that set a pointer
+ * cursor of their own.
+ */
+html[data-cursor-follower][data-cursor-follower],
+html[data-cursor-follower][data-cursor-follower] * {
+  cursor: none;
 }
 
 * {
@@ -93,7 +148,6 @@ html.light-theme {
 
 #root {
   display: flex;
-  scroll-snap-align: start;
   inline-size: 100%;
   min-block-size: 100svh;
   padding-inline: max(var(--space-gutter), env(safe-area-inset-left))
@@ -114,7 +168,6 @@ html.light-theme {
 
 html {
   font-size: clamp(1rem, 0.85rem + 0.7vmin, 1.25rem);
-  scroll-snap-type: y mandatory;
   background-color: var(--color-bg);
   color: var(--color-text);
   -webkit-text-size-adjust: 100%;
@@ -125,17 +178,51 @@ a {
   font-weight: 500;
   color: var(--color-muted);
   text-decoration: inherit;
-}
-a:hover {
-  color: var(--color-accent-text);
+  position: relative;
 }
 
 button {
   color: var(--color-muted);
+  position: relative;
 }
 
-button:hover {
-  color: var(--color-accent-text);
+/*
+ * Hover: no colour change, a line that wipes in from the start of the word and
+ * leaves through its end. --line paints it (a project accent where there is
+ * one); setting content: none on the ::after opts an element out.
+ */
+a::after,
+button::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(50% - 0.82em);
+  block-size: 2px;
+  background: var(--line, currentColor);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  pointer-events: none;
+}
+
+a:dir(rtl)::after,
+button:dir(rtl)::after {
+  transform-origin: 0 50%;
+}
+
+a:hover::after,
+a:focus-visible::after,
+button:hover::after,
+button:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+
+a:hover:dir(rtl)::after,
+a:focus-visible:dir(rtl)::after,
+button:hover:dir(rtl)::after,
+button:focus-visible:dir(rtl)::after {
+  transform-origin: 100% 50%;
 }
 
 /* Focus styles for accessibility */
@@ -172,6 +259,10 @@ button:focus-visible {
   inset-block-start: 0;
 }
 
+.skip-to-content::after {
+  content: none;
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -186,6 +277,7 @@ button:focus-visible {
 
 body {
   margin: 0;
+  overflow: clip visible;
 }
 
 p {
@@ -195,13 +287,13 @@ p {
 }
 
 b {
-  font-weight: var(--satoshi-weight-bold);
+  font-weight: var(--font-weight-bold);
 }
 
 h2,h3,h4,h5,h6 {
   color: var(--color-heading);
   display: block;
-  font-family: var(--stardom-stack);
+  font-family: var(--font-sans);
   margin-block-start: 0;
   margin-block-end: 0;
 }
@@ -249,7 +341,6 @@ h6 {
 `;
 
 export const GlobalStyles = createGlobalStyle`
-  ${Satoshi}
-  ${Stardom}
+  ${Fonts}
   ${GenericStyles}
 `;

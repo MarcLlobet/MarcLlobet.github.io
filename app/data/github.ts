@@ -1,12 +1,15 @@
 import { graphql } from "@octokit/graphql";
 import type { Bio, Repository } from "../types";
 import fixtures from "./fixtures/portfolio.json";
+import { unmatchedPins } from "../utils/projects";
 
 export const DEMO_TOPIC = "demo";
 
 export type PortfolioData = {
   bio: Bio;
   repositories: Repository[];
+  /** Names of the repositories pinned on the GitHub profile, in pin order. */
+  pinned: string[];
   source: "github" | "fixtures";
 };
 
@@ -27,6 +30,7 @@ type RepositoryNode = {
 type PortfolioQueryResponse = {
   user: {
     bio: string | null;
+    pinnedItems?: { nodes: ({ name?: string } | null)[] } | null;
     repositories: { nodes: RepositoryNode[] };
   };
 };
@@ -35,6 +39,9 @@ const QUERY = `
   query Portfolio($login: String!) {
     user(login: $login) {
       bio
+      pinnedItems(first: 6, types: [REPOSITORY]) {
+        nodes { ... on Repository { name } }
+      }
       repositories(
         first: 100
         ownerAffiliations: OWNER
@@ -85,6 +92,9 @@ export const toPortfolioData = (
   repositories: response.user.repositories.nodes
     .map(toRepository)
     .filter(({ topics }) => topics.includes(DEMO_TOPIC)),
+  pinned: (response.user.pinnedItems?.nodes ?? [])
+    .map((node) => node?.name)
+    .filter((name): name is string => Boolean(name)),
   source: "github",
 });
 
@@ -100,8 +110,12 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
     console.warn(
       "⚠ GH_API_TOKEN is not set: building with fixture data (app/data/fixtures/portfolio.json).",
     );
+    const data = fixtures as Omit<PortfolioData, "source" | "pinned"> & {
+      pinned?: string[];
+    };
     return {
-      ...(fixtures as Omit<PortfolioData, "source">),
+      ...data,
+      pinned: data.pinned ?? [],
       source: "fixtures",
     };
   }
@@ -114,7 +128,13 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
   });
   const data = toPortfolioData(response);
   console.log(
-    `✓ Fetched ${data.repositories.length} "${DEMO_TOPIC}" repositories from GitHub.`,
+    `✓ Fetched ${data.repositories.length} "${DEMO_TOPIC}" repositories from GitHub, ${data.pinned.length} pinned.`,
   );
+  const skipped = unmatchedPins(data.repositories, data.pinned);
+  if (skipped.length) {
+    console.warn(
+      `⚠ Pinned but not tagged "${DEMO_TOPIC}", so not featured: ${skipped.join(", ")}.`,
+    );
+  }
   return data;
 };

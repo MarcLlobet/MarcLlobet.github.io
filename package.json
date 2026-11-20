@@ -22,8 +22,7 @@
     "preinstall": "husky || true",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "install:browser": "playwright install chromium",
-    "check:layout": "tsx scripts/check-layout.ts",
+    "snapshot:fixtures": "tsx scripts/snapshot-fixtures.ts",
     "check:ts-only": "ts-only",
     "lint:css": "stylelint --allow-empty-input \"app/**/*.{ts,tsx}\""
   },

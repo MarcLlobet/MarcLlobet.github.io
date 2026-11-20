@@ -6,6 +6,8 @@ const config: Config = {
   rules: {
     "no-empty-source": null,
     "no-descending-specificity": null,
+    /* Breakpoints are shared as JS constants: the parser sees ${THEM}, not a query */
+    "media-query-no-invalid": null,
     "declaration-property-value-disallowed-list": [
       {
         "/^(width|inline-size|min-width|min-inline-size|max-width|max-inline-size)$/":

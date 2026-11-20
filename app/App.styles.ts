@@ -1,149 +1,156 @@
 "use client";
 
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
-const toHeavyFontWeightAnimation = keyframes`
-  0% { font-weight: 300; }
-  100% { font-weight: 900; }
+const mono = css`
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 `;
 
-const AnimationWrapper = styled.span`
-  animation-name: ${toHeavyFontWeightAnimation};
-  animation-duration: 2s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-fill-mode: forwards;
-  display: inline-block;
+export const Page = styled.div`
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 90rem;
+  margin-inline: auto;
 `;
 
-export const FirstNameWrapper = styled(AnimationWrapper)`
-  animation-direction: reverse;
-`;
-export const SurnameWrapper = styled(AnimationWrapper)`
-  animation-direction: normal;
+export const Header = styled.header`
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-s);
 `;
 
-export const NameWrapper = styled.h1`
+export const Brand = styled.a`
+  ${mono}
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap-target);
+  color: var(--color-text);
+`;
+
+export const HeroSection = styled.div`
   display: flex;
   flex-direction: column;
-  inline-size: 100%;
-  font-size: clamp(3rem, min(15vw, 17svh), 6.5rem);
-  line-height: 0.875;
+  gap: clamp(2rem, 7svh, 3.5rem);
+  padding-block: clamp(2rem, 10svh, 8rem) clamp(3rem, 10svh, 7rem);
 `;
 
-export const HeroWrapper = styled.hgroup`
-  grid-area: hero;
+export const HeroTop = styled.div`
   display: flex;
-  align-items: center;
-  min-inline-size: 0;
-  min-block-size: calc(100svh - var(--nav-block-size));
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+`;
+
+export const NameGroup = styled.hgroup`
   margin: 0;
-  padding-block: var(--space-s);
-`;
-
-const CircularAnimation = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-export const CircularShape = styled.div`
-  grid-area: shape;
-  align-self: start;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: var(--shape-size);
-  block-size: var(--shape-size);
-  margin-block-start: calc(
-    (100svh - var(--nav-block-size) - var(--shape-size)) / 2
-  );
-  color: var(--color-muted);
-  position: sticky;
-  inset-block-start: calc(50svh - var(--shape-size) / 2);
-  z-index: 0;
-  pointer-events: none;
-
-  @media (max-width: 599px) and (orientation: portrait) {
-    grid-area: hero;
-    align-self: end;
-    justify-self: end;
-    position: static;
-    margin-block: 0 var(--space-l);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    position: static;
-  }
-`;
-
-export const CircularShapeWrapper = styled.div`
-  display: flex;
-
-  svg {
-    overflow: visible;
-  }
-
-  path {
-    transform-box: view-box;
-    transform-origin: 50% 70%;
-    animation: ${CircularAnimation} 5s linear infinite;
-  }
-
-  &:dir(rtl) path {
-    transform-origin: 50% 30%;
-    animation-direction: reverse;
-  }
-`;
-
-export const AsideWrapper = styled.aside`
-  flex-shrink: 0;
-  block-size: 100svh;
-  padding-block: var(--space-rail);
-  display: flex;
-  position: sticky;
-  inset-block-start: 0;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-`;
-
-export const AsideLeftWrapper = styled.div`
-  display: flex;
-  max-block-size: 100%;
-`;
-
-export const MainWrapper = styled.div`
-  flex: 1;
   min-inline-size: 0;
+`;
+
+export const Name = styled.h1`
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(4.5rem, min(15vw, 22svh), 14.5rem);
+  line-height: 0.86;
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  color: var(--color-heading);
+`;
+
+export const NameLine = styled.span`
+  display: block;
+  overflow: hidden;
+  padding-block-end: 0.05em;
+`;
+
+const rise = keyframes`
+  from { transform: translateY(108%); }
+`;
+
+export const Letter = styled.span<{ $i: number }>`
+  display: inline-block;
+  animation: ${rise} 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: ${({ $i }) => $i * 45 + 120}ms;
+`;
+
+/* The room the impossible triangle lands in; the scene draws it over this */
+export const ShapeSlot = styled.div`
+  inline-size: clamp(150px, 26vw, 360px);
+  aspect-ratio: 1.1 / 1;
+  flex: none;
+`;
+
+const fade = keyframes`
+  from { opacity: 0; transform: translateY(0.75rem); }
+`;
+
+export const HeroBottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+  border-block-start: 1px solid var(--color-line);
+  padding-block-start: 2rem;
+  animation: ${fade} 1s ease 0.7s both;
+`;
+
+export const Pitch = styled.p`
+  max-inline-size: 34ch;
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-heading);
+  text-wrap: balance;
+`;
+
+/* What the page holds and what it is made of, straight from the data */
+export const Facts = styled.dl`
+  ${mono}
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto 1fr;
-  grid-template-areas:
-    "nav"
-    "hero"
-    "page";
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  max-inline-size: 46ch;
 
-  @media (min-width: 600px), (orientation: landscape) {
-    grid-template-columns: minmax(0, 1fr) var(--shape-size);
-    column-gap: var(--space-gutter);
-    grid-template-areas:
-      "nav nav"
-      "hero shape"
-      "page shape";
+  dt {
+    color: var(--color-muted);
+  }
+
+  dd {
+    margin: 0;
+    text-wrap: balance;
   }
 `;
 
-export const WindowWrapper = styled.div`
+/*
+ * Each project reveals itself by sliding in from its own side, so a title that
+ * has not arrived yet sits outside the column: clipped here, it never widens
+ * the page.
+ */
+export const Work = styled.main`
   display: flex;
-  flex-direction: row;
-  gap: var(--space-s) var(--space-gutter);
-  inline-size: 100%;
-  min-inline-size: 0;
+  flex-direction: column;
+  overflow: clip visible;
 `;
 
-export const HighlightLetter = styled.span`
-  color: var(--color-accent);
+export const SectionHead = styled.p`
+  ${mono}
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding-block-end: 1rem;
+  color: var(--color-muted);
+`;
+
+export const EmptyWork = styled.p`
+  border-block-start: 1px solid var(--color-line);
+  padding-block: clamp(2rem, 8svh, 4rem);
+  max-inline-size: 46ch;
+  color: var(--color-muted);
 `;
