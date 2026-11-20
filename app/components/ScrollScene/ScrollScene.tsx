@@ -51,11 +51,15 @@ const mix = (a: Rgb, b: Rgb, k: number): Rgb => [
 const WHITE: Rgb = [1, 1, 1];
 const INK = hex("#0E0E0C");
 
-/** Face order: +x side, −x, +y top, −y, +z front, −z. */
-const faces = (top: Rgb, side: Rgb, front: Rgb): FaceColours => {
-  const hidden = mix(front, INK, 0.4);
-  return [side, hidden, top, hidden, front, hidden];
-};
+/** Face order: ±x side, ±y top, ±z front (opposite faces share a colour). */
+const faces = (top: Rgb, side: Rgb, front: Rgb): FaceColours => [
+  side,
+  side,
+  top,
+  top,
+  front,
+  front,
+];
 const fromAccent = (accent: string): FaceColours => {
   const c = hex(accent);
   return faces(mix(c, WHITE, 0.35), c, mix(c, INK, 0.55));

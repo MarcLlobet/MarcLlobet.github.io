@@ -26,19 +26,19 @@ export const BEAMS: {
     size: [L + T, T, T],
     home: [L / 2, 0, 0],
     from: [-2.2, 1.1],
-    spin: [0, 0, 140],
+    spin: [0, 0, 2.4],
   },
   {
     size: [T, L + T, T],
     home: [L, L / 2, 0],
     from: [2.4, 0.8],
-    spin: [130, 0, 0],
+    spin: [2.2, 0, 0],
   },
   {
     size: [T, T, L + T],
     home: [L, L, L / 2],
     from: [0.2, -2.6],
-    spin: [0, 150, 0],
+    spin: [0, 2.6, 0],
   },
 ];
 
@@ -54,14 +54,10 @@ export const UP: Vec3 = [-1 / s6, 2 / s6, -1 / s6];
 const BACK: Vec3 = [1 / s3, 1 / s3, 1 / s3];
 
 /**
- * World → screen pixels (x right, y down, z towards the viewer), orthographic.
- * The rows form a proper rotation.
+ * World → screen pixels (x right, y down, z towards the viewer), orthographic:
+ * the camera's right is screen right, its up is screen up.
  */
-const VIEW: Mat3 = [
-  [-RIGHT[0], -RIGHT[1], -RIGHT[2]],
-  [-UP[0], -UP[1], -UP[2]],
-  BACK,
-];
+const VIEW: Mat3 = [RIGHT, [-UP[0], -UP[1], -UP[2]], BACK];
 
 const normalize = (v: Vec3): Vec3 => {
   const length = Math.hypot(...v);
@@ -165,13 +161,11 @@ export const pixelsToClip = (width: number, height: number): Mat4 => [
   1,
 ];
 
-const rad = (deg: number) => (deg * Math.PI) / 180;
-
-/** A beam's own placement: translate, then rotate X, Y and Z (degrees). */
+/** A beam's own placement: translate, then rotate X, Y and Z (radians, XYZ order). */
 export const beamMatrix = (position: Vec3, [ax, ay, az]: Vec3): Mat4 => {
-  const [cx, sx] = [Math.cos(rad(ax)), Math.sin(rad(ax))];
-  const [cy, sy] = [Math.cos(rad(ay)), Math.sin(rad(ay))];
-  const [cz, sz] = [Math.cos(rad(az)), Math.sin(rad(az))];
+  const [cx, sx] = [Math.cos(ax), Math.sin(ax)];
+  const [cy, sy] = [Math.cos(ay), Math.sin(ay)];
+  const [cz, sz] = [Math.cos(az), Math.sin(az)];
   const rx: Mat3 = [
     [1, 0, 0],
     [0, cx, -sx],

@@ -116,7 +116,7 @@ export const ShapeSlot = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  inline-size: clamp(8rem, 26vw, 22rem);
+  inline-size: clamp(150px, 26vw, 360px);
   aspect-ratio: 1.1 / 1;
   flex: none;
 

@@ -68,7 +68,7 @@ const Hello = styled.a`
 
 /* The impossible triangle lands here at the end of the page */
 const Slot = styled.div`
-  inline-size: clamp(8rem, 22vw, 18rem);
+  inline-size: clamp(150px, 26vw, 360px);
   aspect-ratio: 1.1 / 1;
   flex: none;
 `;
