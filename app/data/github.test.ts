@@ -38,6 +38,23 @@ describe("getPortfolioData", () => {
     request.mockResolvedValue({
       user: {
         bio: "Frontend developer",
+        contributionsCollection: {
+          contributionCalendar: {
+            weeks: [
+              {
+                contributionDays: [
+                  { date: "2026-01-01", contributionCount: 2 },
+                  { date: "2026-01-02", contributionCount: 0 },
+                ],
+              },
+              {
+                contributionDays: [
+                  { date: "2026-01-03", contributionCount: 5 },
+                ],
+              },
+            ],
+          },
+        },
         pinnedItems: { nodes: [{ name: "mobile-store" }, {}, null] },
         repositories: {
           nodes: [
@@ -61,6 +78,19 @@ describe("getPortfolioData", () => {
       preview:
         "https://raw.githubusercontent.com/MarcLlobet/mobile-store/main/.github/preview.png",
     });
+    expect(data.contributions).toEqual([
+      { date: "2026-01-01", count: 2 },
+      { date: "2026-01-02", count: 0 },
+      { date: "2026-01-03", count: 5 },
+    ]);
+    expect(request).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        login: "MarcLlobet",
+        from: expect.any(String),
+        to: expect.any(String),
+      }),
+    );
   });
 
   it("falls back to fixtures when there is no token", async () => {
@@ -72,6 +102,11 @@ describe("getPortfolioData", () => {
     expect(data.source).toBe("fixtures");
     expect(data.repositories.length).toBeGreaterThan(0);
     expect(Array.isArray(data.pinned)).toBe(true);
+    expect(data.contributions).toHaveLength(365);
+    expect(data.contributions[0]).toMatchObject({
+      date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+      count: expect.any(Number),
+    });
     expect(request).not.toHaveBeenCalled();
   });
 

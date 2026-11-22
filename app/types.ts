@@ -13,4 +13,8 @@ export type Repository = {
   preview: string;
 };
 
-export type Bio = string;
+/** One day of the GitHub contribution calendar: an ISO date and its commit count. */
+export type ContributionDay = {
+  date: string;
+  count: number;
+};
