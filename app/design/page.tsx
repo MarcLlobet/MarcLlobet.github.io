@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { Mockup } from "../components/Mockup";
 import { ProjectCase } from "../components/ProjectCase";
 import { ScrollScene, SCENE } from "../components/ScrollScene";
@@ -213,12 +214,14 @@ export default function DesignPage() {
   return (
     <Page>
       <Header>
-        <Brand href="/">Marc Llobet</Brand>
+        <Brand as={Link} href="/">
+          Marc Llobet
+        </Brand>
         <Nav>
           <button type="button" onClick={toggleTheme}>
             {light ? "Dark" : "Light"}
           </button>
-          <a href="/">Back to work ↗</a>
+          <Link href="/">Back to work ↗</Link>
         </Nav>
       </Header>
 

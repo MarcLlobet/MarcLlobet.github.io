@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense, lazy, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import { StyledNavWrapper, Button, LinkButton } from "./NavWrapper.styles";
 import { setTransitionOrigin } from "../../utils/pageTransition";
 import { toggleTheme, useIsLightTheme } from "../../utils/theme";
@@ -77,7 +78,7 @@ export const NavWrapper = ({
     <StyledNavWrapper>
       <LinkButton href="#work">Work</LinkButton>
       {hasArchive && <LinkButton href="#archive">Archive</LinkButton>}
-      <Button as="a" href="/about" onClick={openAbout}>
+      <Button as={Link} href="/about" onClick={openAbout}>
         About
       </Button>
       <Button type="button" onClick={toggleTheme} aria-pressed={isLight}>

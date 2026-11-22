@@ -16,10 +16,14 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/about" },
+  // Relative (no leading slash): resolved against the root layout's
+  // metadataBase, which already carries the PR-preview basePath if any —
+  // a leading-slash string would resolve from the domain root instead and
+  // silently drop a preview's /PR-123 segment.
+  alternates: { canonical: "about" },
   openGraph: {
     type: "profile",
-    url: "/about",
+    url: "about",
     title: TITLE,
     description: DESCRIPTION,
     siteName: "Marc Llobet Portfolio",
