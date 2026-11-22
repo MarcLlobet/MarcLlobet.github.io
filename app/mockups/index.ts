@@ -45,6 +45,3 @@ export const mockupFor = (repository: Repository): MockupKind => {
   if (fromTopic && isKind(fromTopic)) return fromTopic;
   return MOCKUP_KINDS[Math.abs(hash(repository.name)) % MOCKUP_KINDS.length];
 };
-
-export const hasOwnMockup = (repository: Repository) =>
-  repository.name in MOCKUP_BY_REPOSITORY;

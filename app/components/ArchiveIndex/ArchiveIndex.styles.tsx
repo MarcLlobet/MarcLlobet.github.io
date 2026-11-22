@@ -1,13 +1,7 @@
 "use client";
 
-import styled, { css } from "styled-components";
-
-const mono = css`
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-`;
+import styled from "styled-components";
+import { mono } from "../../styles";
 
 const NO_HOVER = "(hover: none), (max-width: 760px)";
 

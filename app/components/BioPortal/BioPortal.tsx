@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useCallback } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { getSentenceList } from "../../utils/getSentenceList";
 import { getAllLanguages } from "../../utils/getAllLanguages";
+import { useFocusTrap } from "../../utils/useFocusTrap";
 import {
   BioPortalWrapper,
   CloseButton,
   TextWrapper,
   StyledAboutNav,
 } from "./BioPortal.styles";
-import type { Repository, Bio } from "../../types";
+import type { Repository } from "../../types";
 
 export type BioPortalProps = {
-  bio: Bio;
+  bio: string;
   repositories: Repository[];
   showBio: boolean;
   onClose: () => void;
@@ -37,38 +38,7 @@ export const BioPortal = ({
     onClose();
   };
 
-  // Focus trap implementation
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      if (!showBio) return;
-
-      if (event.key === "Escape") {
-        onClose();
-        return;
-      }
-
-      if (event.key === "Tab") {
-        const focusableElements =
-          wrapperRef.current?.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-          );
-
-        if (!focusableElements || focusableElements.length === 0) return;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (event.shiftKey && document.activeElement === firstElement) {
-          event.preventDefault();
-          lastElement.focus();
-        } else if (!event.shiftKey && document.activeElement === lastElement) {
-          event.preventDefault();
-          firstElement.focus();
-        }
-      }
-    },
-    [onClose, showBio],
-  );
+  useFocusTrap(wrapperRef, onClose, showBio);
 
   // Set focus when modal opens, restore when it closes
   useEffect(() => {
@@ -79,13 +49,6 @@ export const BioPortal = ({
       previousActiveElement.current.focus();
     }
   }, [showBio]);
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleKeyDown]);
 
   return (
     <BioPortalWrapper

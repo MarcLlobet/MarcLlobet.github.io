@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, Suspense, lazy } from "react";
+import { useState, Suspense, lazy } from "react";
 import { createPortal } from "react-dom";
 import { StyledNavWrapper, Button, LinkButton } from "./NavWrapper.styles";
-import type { Repository, Bio } from "../../types";
+import type { Repository } from "../../types";
 
 const LazyBioPortal = lazy(() =>
   import("../BioPortal").then((mod) => ({ default: mod.BioPortal })),
 );
 
 export type NavWrapperProps = {
-  bio: Bio;
+  bio: string;
   repositories: Repository[];
   /** Show the Archive link (only when the page has an archive). */
   hasArchive?: boolean;

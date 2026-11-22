@@ -31,7 +31,7 @@ import {
   ShapeSlot,
   Work,
 } from "./App.styles";
-import type { Repository, Bio } from "./types";
+import type { Repository } from "./types";
 
 const GITHUB_URL = "https://github.com/MarcLlobet";
 const NO_PINS: string[] = [];
@@ -53,7 +53,7 @@ const list = (items: string[]) => items.join("\u00a0· ");
 
 type HeroProps = {
   /** The GitHub bio: its opening sentence is the pitch. */
-  bio: Bio;
+  bio: string;
   featured: number;
   archived: number;
   languages: string[];
@@ -89,7 +89,7 @@ const canTransition = () =>
 
 type AppProps = {
   repositories: Repository[];
-  bio: Bio;
+  bio: string;
   /** Pinned repositories become the featured projects. */
   pinned?: string[];
 };
