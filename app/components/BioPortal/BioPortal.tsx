@@ -1,93 +1,79 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { getSentenceList } from "../../utils/getSentenceList";
-import { getAllLanguages } from "../../utils/getAllLanguages";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "../../utils/useFocusTrap";
+import { setTransitionOrigin, revealDelay } from "../../utils/pageTransition";
+import { AboutContent } from "../AboutContent";
 import {
   BioPortalWrapper,
   CloseButton,
-  TextWrapper,
   StyledAboutNav,
+  NavLabel,
+  CloseGroup,
+  EscHint,
 } from "./BioPortal.styles";
 import type { Repository } from "../../types";
 
 export type BioPortalProps = {
   bio: string;
   repositories: Repository[];
-  showBio: boolean;
+  githubUrl: string;
+  /** Called once the collapse animation has finished — navigate away here. */
   onClose: () => void;
 };
 
+/**
+ * The About screen: a circle reveals it on mount and collapses it before
+ * `onClose` fires, so it works equally as a routed page (reveals from a
+ * neutral corner) or an intercepted modal (reveals from whichever link was
+ * clicked, via setTransitionOrigin called by the caller beforehand).
+ */
 export const BioPortal = ({
   bio,
   repositories,
-  showBio,
+  githubUrl,
   onClose,
 }: BioPortalProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const previousActiveElement = useRef<HTMLElement | null>(null);
+  const [revealed, setRevealed] = useState(false);
 
-  const technologiesSentence = useMemo(() => {
-    const allLanguages = getAllLanguages(repositories);
-    return getSentenceList(allLanguages);
-  }, [repositories]);
-
-  const handleClick = () => {
-    onClose();
-  };
-
-  useFocusTrap(wrapperRef, onClose, showBio);
-
-  // Set focus when modal opens, restore when it closes
   useEffect(() => {
-    if (showBio) {
-      previousActiveElement.current = document.activeElement as HTMLElement;
-      closeButtonRef.current?.focus();
-    } else if (previousActiveElement.current) {
-      previousActiveElement.current.focus();
-    }
-  }, [showBio]);
+    closeButtonRef.current?.focus();
+    const frame = requestAnimationFrame(() => setRevealed(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  const close = useCallback(() => {
+    setTransitionOrigin(closeButtonRef.current);
+    setRevealed(false);
+    window.setTimeout(onClose, revealDelay());
+  }, [onClose]);
+
+  useFocusTrap(wrapperRef, close);
 
   return (
     <BioPortalWrapper
-      $showBio={showBio}
+      $revealed={revealed}
       ref={wrapperRef}
       role="dialog"
       aria-modal="true"
-      aria-label="About me"
+      aria-label="About"
     >
       <StyledAboutNav>
-        <CloseButton
-          type="button"
-          ref={closeButtonRef}
-          onClick={handleClick}
-          aria-label="Close"
-          $showBio={showBio}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </CloseButton>
+        <NavLabel>About</NavLabel>
+        <CloseGroup>
+          <EscHint>ESC</EscHint>
+          <CloseButton type="button" ref={closeButtonRef} onClick={close}>
+            Close
+          </CloseButton>
+        </CloseGroup>
       </StyledAboutNav>
-      <TextWrapper>
-        <p>{bio}</p>
-        <p>
-          The list of technologies I used to build my projects, from more used
-          to less used, is the following: {technologiesSentence}.
-        </p>
-      </TextWrapper>
+      <AboutContent
+        bio={bio}
+        repositories={repositories}
+        githubUrl={githubUrl}
+      />
     </BioPortalWrapper>
   );
 };

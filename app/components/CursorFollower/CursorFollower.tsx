@@ -8,7 +8,8 @@ const Dot = styled.div`
   position: fixed;
   inset-block-start: 0;
   inset-inline-start: 0;
-  z-index: 70;
+  /* Above every overlay, including the About portal and the demo viewer */
+  z-index: 1100;
   display: flex;
   align-items: center;
   justify-content: center;

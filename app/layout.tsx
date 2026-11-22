@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import StyledComponentsRegistry from "./registry";
 import { GlobalStyles } from "./GlobalStyles";
+import { spaceGrotesk, jetbrainsMono } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Marc Llobet | Frontend Developer",
@@ -47,7 +48,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+    >
       <body>
         <StyledComponentsRegistry>
           <GlobalStyles />

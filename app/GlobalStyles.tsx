@@ -4,30 +4,12 @@ import { createGlobalStyle } from "styled-components";
 
 /*
  * Typography: Space Grotesk for everything you read, JetBrains Mono for
- * labels, counters and metadata. Both are variable fonts served from /fonts.
+ * labels, counters and metadata. Both are variable fonts, self-hosted and
+ * loaded via next/font/local (app/fonts.ts), which sets --font-sans and
+ * --font-mono on <html> — so they're not redeclared here.
  */
-const Fonts = `
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/space-grotesk/SpaceGrotesk-Variable.woff2') format('woff2');
-  font-weight: 300 700;
-  font-display: swap;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2');
-  font-weight: 100 800;
-  font-display: swap;
-  font-style: normal;
-}
-
+const FontWeights = `
 :root {
-  --font-sans: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo,
-    Consolas, 'Liberation Mono', monospace;
   --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -58,6 +40,8 @@ const GenericStyles = `
   --tap-target: 2.75rem;
   --shape-size: clamp(64px, 10vmin + 2rem, 180px);
   --selector-size: 20px;
+  --vt-x: 100%;
+  --vt-y: 0%;
   font-family: var(--font-sans);
   line-height: 1.5;
   font-weight: 400;
@@ -79,6 +63,8 @@ const GenericStyles = `
   /* No brand red: the accent is the project in view */
   --color-accent: var(--scene-accent);
   --color-accent-text: var(--color-heading);
+  /* Focus/hover highlight: the page's own ink, not the scrolling project accent */
+  --color-focus: var(--color-heading);
 
   /* Project accents, for frames, mockups and the triangle */
   --accent-1: #5B9BFF;
@@ -129,7 +115,6 @@ html.light-theme {
   inherits: true;
   initial-value: #5B9BFF;
 }
-
 
 /*
  * The dot is the pointer: while it follows, nothing draws a cursor. It only
@@ -225,15 +210,19 @@ button:focus-visible:dir(rtl)::after {
   transform-origin: 100% 50%;
 }
 
-/* Focus styles for accessibility */
+/*
+ * Focus styles for accessibility: a stable ink colour, not the scrolling
+ * project accent, so the ring reads the same no matter where on the page
+ * (or in which theme) it appears.
+ */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -341,6 +330,6 @@ h6 {
 `;
 
 export const GlobalStyles = createGlobalStyle`
-  ${Fonts}
+  ${FontWeights}
   ${GenericStyles}
 `;
