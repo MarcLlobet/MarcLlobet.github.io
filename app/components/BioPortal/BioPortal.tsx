@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "../../utils/useFocusTrap";
 import { setTransitionOrigin, revealDelay } from "../../utils/pageTransition";
+import { useMediaQuery } from "../../utils/useMediaQuery";
 import { AboutContent } from "../AboutContent";
 import {
   BioPortalWrapper,
@@ -37,6 +38,9 @@ export const BioPortal = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [revealed, setRevealed] = useState(false);
+  /* A fine pointer is the closest signal CSS has for "probably has a keyboard" —
+     showing an Escape hint on a touch-only device would just be misleading. */
+  const hasKeyboard = useMediaQuery("(pointer: fine)");
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -63,7 +67,7 @@ export const BioPortal = ({
       <StyledAboutNav>
         <NavLabel>About</NavLabel>
         <CloseGroup>
-          <EscHint>ESC</EscHint>
+          {hasKeyboard && <EscHint>ESC</EscHint>}
           <CloseButton type="button" ref={closeButtonRef} onClick={close}>
             Close
           </CloseButton>

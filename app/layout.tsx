@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import StyledComponentsRegistry from "./registry";
 import { GlobalStyles } from "./GlobalStyles";
 import { spaceGrotesk, jetbrainsMono } from "./fonts";
+import { THEME_INIT_SCRIPT } from "./theme-init-script";
 
 export const metadata: Metadata = {
   title: "Marc Llobet | Frontend Developer",
@@ -53,6 +54,10 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <script
+          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+          suppressHydrationWarning
+        />
         <StyledComponentsRegistry>
           <GlobalStyles />
           <div id="root">{children}</div>

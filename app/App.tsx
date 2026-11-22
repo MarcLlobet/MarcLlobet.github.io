@@ -190,7 +190,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
 
   return (
     <Page data-testid="app-root" id="top">
-      <a className="skip-to-content" href="#main-content">
+      <a className="skip-to-content" href="#work">
         Skip to projects
       </a>
       <Header>

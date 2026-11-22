@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense, lazy, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 import { StyledNavWrapper, Button, LinkButton } from "./NavWrapper.styles";
 import { setTransitionOrigin } from "../../utils/pageTransition";
+import { toggleTheme, useIsLightTheme } from "../../utils/theme";
 import type { Repository } from "../../types";
 
 const loadBioPortal = () =>
@@ -33,6 +34,7 @@ export const NavWrapper = ({
   hasArchive = false,
 }: NavWrapperProps) => {
   const [showBio, setShowBio] = useState(false);
+  const isLight = useIsLightTheme();
 
   // Idle-preload the bio bundle so opening it never has to wait on the network.
   useEffect(() => {
@@ -71,18 +73,14 @@ export const NavWrapper = ({
     if (window.location.pathname === "/about") window.history.back();
   };
 
-  const handleTheme = () => {
-    document.documentElement.classList.toggle("light-theme");
-  };
-
   return (
     <StyledNavWrapper>
-      <LinkButton href="#main-content">Work</LinkButton>
+      <LinkButton href="#work">Work</LinkButton>
       {hasArchive && <LinkButton href="#archive">Archive</LinkButton>}
       <Button as="a" href="/about" onClick={openAbout}>
         About
       </Button>
-      <Button type="button" onClick={handleTheme}>
+      <Button type="button" onClick={toggleTheme} aria-pressed={isLight}>
         Theme
       </Button>
       <LinkButton href="design">Design ↗</LinkButton>

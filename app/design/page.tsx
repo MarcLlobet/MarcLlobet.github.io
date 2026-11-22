@@ -1,10 +1,16 @@
 "use client";
 
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Mockup } from "../components/Mockup";
 import { ProjectCase } from "../components/ProjectCase";
 import { ScrollScene, SCENE } from "../components/ScrollScene";
 import { CursorFollower } from "../components/CursorFollower";
+import {
+  isLightTheme,
+  subscribeToTheme,
+  toggleTheme,
+  useIsLightTheme,
+} from "../utils/theme";
 import {
   Row,
   RowGo,
@@ -159,23 +165,6 @@ const SAMPLE_CASE: Repository = {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-const isLight = () =>
-  document.documentElement.classList.contains("light-theme");
-
-/** The page reads the theme off the document, so the header toggle, the one
- * in the main nav and a reload all agree on what is on. */
-const watchTheme = (onChange: () => void) => {
-  const observer = new MutationObserver(onChange);
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["class"],
-  });
-  return () => observer.disconnect();
-};
-
-const useLightTheme = () =>
-  useSyncExternalStore(watchTheme, isLight, () => false);
-
 /* What a token resolves to can only be read from the document, and it changes
  * with the theme: the snapshot is cached per theme so it stays stable. */
 type Tokens = Record<string, string>;
@@ -183,7 +172,7 @@ const NO_TOKENS: Tokens = {};
 let cache: { light: boolean; tokens: Tokens } | null = null;
 
 const readTokens = (): Tokens => {
-  const light = isLight();
+  const light = isLightTheme();
   if (!cache || cache.light !== light) {
     const style = getComputedStyle(document.documentElement);
     cache = {
@@ -200,7 +189,7 @@ const readTokens = (): Tokens => {
 };
 
 const useTokenValues = () =>
-  useSyncExternalStore(watchTheme, readTokens, () => NO_TOKENS);
+  useSyncExternalStore(subscribeToTheme, readTokens, () => NO_TOKENS);
 
 /**
  * The design page is the portfolio explaining itself: the same colours, type
@@ -209,13 +198,9 @@ const useTokenValues = () =>
  */
 export default function DesignPage() {
   const [box, setBox] = useState<BoxId>("frame");
-  const light = useLightTheme();
+  const light = useIsLightTheme();
   const values = useTokenValues();
   const ratio = BOXES.find(({ id }) => id === box)!.ratio;
-
-  const toggleTheme = useCallback(() => {
-    document.documentElement.classList.toggle("light-theme", !isLight());
-  }, []);
 
   const swatch = (token: string) => (
     <Swatch key={token}>

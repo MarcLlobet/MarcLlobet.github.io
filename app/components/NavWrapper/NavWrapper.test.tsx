@@ -10,6 +10,8 @@ const GITHUB_URL = "https://github.com/MarcLlobet";
 describe("NavWrapper", () => {
   afterEach(() => {
     window.history.replaceState(null, "", "/");
+    window.localStorage.clear();
+    document.documentElement.classList.remove("light-theme");
   });
 
   it("renders Theme and About links", () => {
@@ -38,7 +40,7 @@ describe("NavWrapper", () => {
     );
     expect(screen.getByRole("link", { name: "Work" })).toHaveAttribute(
       "href",
-      "#main-content",
+      "#work",
     );
     expect(screen.getByRole("link", { name: "Archive" })).toHaveAttribute(
       "href",
@@ -57,7 +59,7 @@ describe("NavWrapper", () => {
     expect(screen.queryByRole("link", { name: "Archive" })).toBeNull();
   });
 
-  it("toggles theme on click", () => {
+  it("toggles theme on click, announces it, and remembers the choice", async () => {
     render(
       <NavWrapper
         bio={mockBio}
@@ -66,10 +68,16 @@ describe("NavWrapper", () => {
       />,
     );
     const btn = screen.getByText("Theme");
+    expect(btn).toHaveAttribute("aria-pressed", "false");
+
     fireEvent.click(btn);
+
     expect(document.documentElement.classList.contains("light-theme")).toBe(
       true,
     );
+    expect(window.localStorage.getItem("theme")).toBe("light");
+    // The MutationObserver behind aria-pressed notifies asynchronously.
+    await waitFor(() => expect(btn).toHaveAttribute("aria-pressed", "true"));
   });
 
   it("opens About as an overlay and moves the address bar to /about", async () => {
