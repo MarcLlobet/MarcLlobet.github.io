@@ -89,9 +89,6 @@ export const Pitch = styled.p`
 `;
 
 export const PitchDetail = styled.p`
-  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
   color: var(--color-muted);
   text-wrap: balance;
 `;
