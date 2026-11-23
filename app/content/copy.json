@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "siteName": "Marc Llobet Portfolio",
+    "siteTitle": "Marc Llobet | Frontend Developer",
+    "siteDescription": "Portfolio of Marc Llobet, a frontend developer specializing in React, TypeScript, and modern web technologies. View my projects and get in touch.",
+    "ogDescription": "Portfolio of Marc Llobet, a frontend developer specializing in React, TypeScript, and modern web technologies.",
+    "keywords": [
+      "frontend developer",
+      "React",
+      "TypeScript",
+      "web developer",
+      "portfolio",
+      "Marc Llobet"
+    ]
+  },
+  "brand": {
+    "name": "Marc Llobet"
+  },
+  "nav": {
+    "projects": "Projects",
+    "archive": "Archive",
+    "theme": "Theme",
+    "design": "Design ↗"
+  },
+  "home": {
+    "skipToContent": "Skip to projects",
+    "factsProjectsLabel": "Projects",
+    "factsBuiltWith": "Built with",
+    "factsFeaturedSuffix": "featured",
+    "factsArchivedSuffix": "archived",
+    "selectedProjectsHeading": "Selected projects",
+    "pinnedOnGithubSuffix": "· Pinned on GitHub",
+    "emptyProjects": "No pinned projects yet. Pin repositories tagged “demo” on the GitHub profile to feature them here."
+  },
+  "archive": {
+    "eyebrow": "Other experiments",
+    "taggedDemoSuffix": "· Tagged “demo”",
+    "title": "Archive"
+  },
+  "projectCase": {
+    "viewAriaLabelPrefix": "View ",
+    "liveDemoAriaLabelPrefix": "Live demo of ",
+    "codeAriaLabelPrefix": "Code of ",
+    "liveDemoLabel": "Live demo ↗",
+    "codeLabel": "Code ↗",
+    "viewCursorLabel": "View project ↗"
+  },
+  "projectContent": {
+    "topicsAriaLabel": "Topics",
+    "languagesAriaLabel": "Languages",
+    "stars": "Stars",
+    "created": "Created",
+    "lastPushed": "Last pushed",
+    "liveDemoLabel": "Live demo ↗",
+    "codeLabel": "Code ↗",
+    "screenshotAltPrefix": "Screenshot of "
+  },
+  "footer": {
+    "getInTouch": "Get in touch",
+    "hello": "Say hello",
+    "githubLabel": "GitHub ↗",
+    "backToTop": "Back to top ↑",
+    "dataFrom": "Data from the GitHub API · Next.js"
+  },
+  "design": {
+    "intro": {
+      "eyebrowLeft": "Design system",
+      "eyebrowRight": "(06) · Built from the live components",
+      "title": "Design",
+      "lead": "One accent per project, two typefaces, a hairline between everything and a line that wipes across on hover. Every sample below is the component the site itself renders."
+    },
+    "colour": {
+      "title": "Colour",
+      "note": "No brand colour: the page is paper and ink, and the accent is whichever project is on screen. Switch the theme in the header to read the other set of values.",
+      "paperAndInk": "Paper and ink",
+      "projectAccents": "Project accents · frame, mockup, counter and triangle",
+      "mockupRoles": "Mockup roles · the tones a drawn page is made of"
+    },
+    "type": {
+      "title": "Type",
+      "note": "Space Grotesk for everything you read, JetBrains Mono for counters, languages and links. Sizes are fluid: every step is a clamp of the viewport, so a short screen gets smaller headings, not a scrollbar."
+    },
+    "line": {
+      "title": "The line",
+      "note": "Nothing changes colour on hover. A 2px line wipes in from the start of the word and leaves through its end; where a project owns the element, the line takes its accent.",
+      "codeLabel": "Code ↗",
+      "liveDemoLabel": "Live demo ↗",
+      "themeLabel": "Theme",
+      "archiveRowNote": "An archive row is the same gesture at the width of the page, with the arrow coming out of the name.",
+      "archiveRowTagline": "The tagline, up to the first full stop"
+    },
+    "mockups": {
+      "title": "Mockups",
+      "note": "Each project is drawn, not screenshotted: an SVG page built at the exact pixel size of its box. Change the shape of the box and the columns, rows and lines are counted again to fill it. Point at one to see the loop it plays."
+    },
+    "case": {
+      "title": "One project, one screen",
+      "note": "A case is a counter, the name, the frame and the text, and it is at least as tall as the viewport: the frame takes whatever the words leave. This is the real component, boxed so you can see where it ends."
+    },
+    "triangle": {
+      "title": "The impossible triangle",
+      "note": "The mark is a Penrose triangle drawn in WebGL. On the home page it flies from the hero to the counter, through every project and into the footer, taking the accent of the one it is passing. Here it docks in the slot below: the same renderer, the same model.",
+      "noteContinuedPrefix": "Three beams fly in and lock on load and the pointer tilts them. At ",
+      "noteContinuedSuffix": " the model is still the model: built, still, and never swapped for a flat drawing."
+    }
+  }
+}

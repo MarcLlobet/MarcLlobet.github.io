@@ -16,8 +16,16 @@ const node = (name: string, topics: string[]) => ({
   url: `https://github.com/MarcLlobet/${name}`,
   description: `About ${name}`,
   primaryLanguage: { name: "TypeScript" },
-  languages: { nodes: [{ name: "TypeScript" }, { name: "CSS" }] },
+  languages: {
+    edges: [
+      { size: 1000, node: { name: "TypeScript", color: "#3178c6" } },
+      { size: 200, node: { name: "CSS", color: null } },
+    ],
+  },
   repositoryTopics: { nodes: topics.map((name) => ({ topic: { name } })) },
+  stargazerCount: 3,
+  createdAt: "2024-01-01T00:00:00Z",
+  pushedAt: "2026-06-01T00:00:00Z",
 });
 
 describe("getPortfolioData", () => {
@@ -73,10 +81,16 @@ describe("getPortfolioData", () => {
     expect(data.repositories.map(({ name }) => name)).toEqual(["mobile-store"]);
     expect(data.pinned).toEqual(["mobile-store"]);
     expect(data.repositories[0]).toMatchObject({
-      languages: [{ name: "TypeScript" }, { name: "CSS" }],
+      languages: [
+        { name: "TypeScript", color: "#3178c6", bytes: 1000 },
+        { name: "CSS", bytes: 200 },
+      ],
       topics: ["demo", "nextjs"],
       preview:
         "https://raw.githubusercontent.com/MarcLlobet/mobile-store/main/.github/preview.png",
+      stars: 3,
+      createdAt: "2024-01-01T00:00:00Z",
+      pushedAt: "2026-06-01T00:00:00Z",
     });
     expect(data.contributions).toEqual([
       { date: "2026-01-01", count: 2 },

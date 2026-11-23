@@ -33,17 +33,29 @@ export const visibleLanguages = (repository: Repository): string[] => {
   );
 };
 
+/** Topics that describe the portfolio's own bookkeeping, not the project. */
+const INTERNAL_TOPIC_PREFIXES = ["demo", "mockup-"];
+
+/** A repository's GitHub topics, minus the ones used to drive this site itself. */
+export const visibleTopics = (repository: Repository): string[] =>
+  repository.topics.filter(
+    (topic) =>
+      !INTERNAL_TOPIC_PREFIXES.some((prefix) => topic.startsWith(prefix)),
+  );
+
+/** A GitHub timestamp, as "Jan 2026" — enough to place a project in time. */
+export const formatMonthYear = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
+
 /**
  * A sentence ends at a full stop followed by a capital, so "Next.js" and
- * "No. 5" stay whole.
+ * "No. 5" stay whole. Used as splitDescription's fallback when there's no
+ * dash separator.
  */
 const SENTENCE = /^([\s\S]+?[.!?])\s+([A-Z][\s\S]*)$/;
-
-/** The opening sentence of a text, or all of it when it is only one. */
-export const firstSentence = (text: string) => {
-  const trimmed = text.trim();
-  return trimmed.match(SENTENCE)?.[1] ?? trimmed;
-};
 
 /**
  * The GitHub description holds both texts: "Tagline — detail". The first em

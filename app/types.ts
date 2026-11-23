@@ -8,9 +8,14 @@ export type Repository = {
   url: string;
   description: string;
   primaryLanguage: { name: string };
-  languages: { name: string; color?: string }[];
+  languages: { name: string; color?: string; bytes?: number }[];
   topics: string[];
   preview: string;
+  /** GitHub star count. */
+  stars: number;
+  /** ISO timestamps, straight from the GitHub API. */
+  createdAt: string;
+  pushedAt: string;
 };
 
 /** One day of the GitHub contribution calendar: an ISO date and its commit count. */

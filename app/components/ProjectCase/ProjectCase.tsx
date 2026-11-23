@@ -1,6 +1,7 @@
 "use client";
 
 import type { MouseEvent } from "react";
+import Link from "next/link";
 import { Mockup } from "../Mockup";
 import type { MockupKind } from "../../mockups";
 import {
@@ -8,6 +9,8 @@ import {
   splitDescription,
   visibleLanguages,
 } from "../../utils/projects";
+import { setTransitionOrigin } from "../../utils/pageTransition";
+import copy from "../../content/copy.json";
 import type { Repository } from "../../types";
 import {
   Body,
@@ -31,8 +34,6 @@ export type ProjectCaseProps = {
   total: number;
   accent: string;
   kind: MockupKind;
-  /** Opens the demo in place; without it the frame is a plain link. */
-  onOpen?: (repository: Repository, frame: HTMLAnchorElement) => void;
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -50,7 +51,6 @@ export const ProjectCase = ({
   total,
   accent,
   kind,
-  onOpen,
 }: ProjectCaseProps) => {
   const titleId = `title-${repository.name}`;
   const even = index % 2 === 1;
@@ -59,9 +59,7 @@ export const ProjectCase = ({
   const demo = repository.homepageUrl;
 
   const handleFrameClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!demo || !onOpen || !isPlainClick(event)) return;
-    event.preventDefault();
-    onOpen(repository, event.currentTarget);
+    if (isPlainClick(event)) setTransitionOrigin(event.currentTarget);
   };
 
   return (
@@ -90,13 +88,12 @@ export const ProjectCase = ({
       </Name>
       <Body>
         <Frame
-          href={demo || repository.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={demo ? `Open the ${name} demo` : `Code of ${name}`}
+          as={Link}
+          href={`/projects/${repository.name}`}
+          aria-label={`${copy.projectCase.viewAriaLabelPrefix}${name}`}
           data-frame="true"
           data-play="hover"
-          data-cursor={demo ? "View demo ↗" : "View code ↗"}
+          data-cursor={copy.projectCase.viewCursorLabel}
           onClick={handleFrameClick}
           $even={even}
         >
@@ -113,18 +110,18 @@ export const ProjectCase = ({
                 href={demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Live demo of ${name}`}
+                aria-label={`${copy.projectCase.liveDemoAriaLabelPrefix}${name}`}
               >
-                Live demo ↗
+                {copy.projectCase.liveDemoLabel}
               </a>
             )}
             <a
               href={repository.url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Code of ${name}`}
+              aria-label={`${copy.projectCase.codeAriaLabelPrefix}${name}`}
             >
-              Code ↗
+              {copy.projectCase.codeLabel}
             </a>
           </Links>
         </Text>

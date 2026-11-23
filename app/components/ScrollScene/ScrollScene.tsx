@@ -183,12 +183,17 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
             )
           : 0;
 
-      /* Counter and accent while the work section is in view */
-      const work = document.getElementById(SCENE.work)?.getBoundingClientRect();
-      const inWork = !!work && work.top < vh / 2 && work.bottom > vh / 2;
+      /* Counter and accent while the projects section is in view */
+      const projects = document
+        .getElementById(SCENE.projects)
+        ?.getBoundingClientRect();
+      const inProjects =
+        !!projects && projects.top < vh / 2 && projects.bottom > vh / 2;
       const hud = hudRef.current;
-      hud?.toggleAttribute("data-on", inWork);
-      const active = inWork ? Math.max(0, frac < 0.5 ? index : index + 1) : -1;
+      hud?.toggleAttribute("data-on", inProjects);
+      const active = inProjects
+        ? Math.max(0, frac < 0.5 ? index : index + 1)
+        : -1;
       if (active !== lastActive) {
         lastActive = active;
         if (active >= 0 && cases[active]) {
@@ -222,11 +227,14 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
         return;
       }
 
-      const workTop = document.getElementById(SCENE.work)?.offsetTop ?? vh;
+      const projectsTop =
+        document.getElementById(SCENE.projects)?.offsetTop ?? vh;
       const s =
         reduced || !hudAnchor
           ? 0
-          : easeInOut(clamp(window.scrollY / Math.max(1, workTop - vh * 0.35)));
+          : easeInOut(
+              clamp(window.scrollY / Math.max(1, projectsTop - vh * 0.35)),
+            );
       const footerTop =
         document.getElementById(SCENE.footer)?.getBoundingClientRect().top ??
         Infinity;

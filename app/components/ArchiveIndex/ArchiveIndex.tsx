@@ -1,11 +1,15 @@
 "use client";
 
+import type { MouseEvent } from "react";
+import Link from "next/link";
 import {
   accentFor,
   displayName,
   splitDescription,
   visibleLanguages,
 } from "../../utils/projects";
+import { setTransitionOrigin } from "../../utils/pageTransition";
+import copy from "../../content/copy.json";
 import type { Repository } from "../../types";
 import {
   Head,
@@ -26,21 +30,32 @@ export type ArchiveIndexProps = {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** Every other "demo" project, as a typographic index linking to its code. */
+const isPlainClick = (event: MouseEvent) =>
+  event.button === 0 &&
+  !event.metaKey &&
+  !event.ctrlKey &&
+  !event.shiftKey &&
+  !event.altKey;
+
+/** Every other "demo" project, as a typographic index linking to its own page. */
 export const ArchiveIndex = ({ repositories }: ArchiveIndexProps) => (
   <Section id="archive" aria-labelledby="archive-title">
     <Head>
-      <span>Other experiments</span>
-      <span>({pad(repositories.length)}) · Tagged “demo”</span>
+      <span>{copy.archive.eyebrow}</span>
+      <span>
+        ({pad(repositories.length)}) {copy.archive.taggedDemoSuffix}
+      </span>
     </Head>
-    <Title id="archive-title">Archive</Title>
+    <Title id="archive-title">{copy.archive.title}</Title>
     <List>
       {repositories.map((repository, index) => (
         <li key={repository.id}>
           <Row
-            href={repository.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            as={Link}
+            href={`/projects/${repository.name}`}
+            onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+              if (isPlainClick(event)) setTransitionOrigin(event.currentTarget);
+            }}
             $accent={accentFor(index)}
           >
             <RowNumber>{pad(index + 1)}</RowNumber>

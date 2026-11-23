@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { mockRepos } from "../mocks/repos";
 import {
   accentFor,
-  firstSentence,
   ACCENTS,
   displayName,
   selectProjects,
@@ -77,20 +76,6 @@ describe("splitDescription", () => {
 
   it("does not split hyphenated words", () => {
     expect(splitDescription("TypeScript-only CLI").detail).toBe("");
-  });
-});
-
-describe("firstSentence", () => {
-  it("stops at the first full stop", () => {
-    expect(firstSentence("One thing. And another. And more.")).toBe(
-      "One thing.",
-    );
-  });
-
-  it("keeps a single sentence, abbreviations and all", () => {
-    expect(firstSentence("Apps with HTML, SVG and Next.js")).toBe(
-      "Apps with HTML, SVG and Next.js",
-    );
   });
 });
 

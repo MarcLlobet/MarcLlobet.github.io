@@ -3,28 +3,6 @@
 import styled, { keyframes } from "styled-components";
 import { mono } from "./styles";
 
-export const Page = styled.div`
-  inline-size: 100%;
-  min-inline-size: 0;
-  max-inline-size: 90rem;
-  margin-inline: auto;
-`;
-
-export const Header = styled.header`
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: var(--space-s);
-`;
-
-export const Brand = styled.a`
-  ${mono}
-  display: inline-flex;
-  align-items: center;
-  min-block-size: var(--tap-target);
-  color: var(--color-text);
-`;
-
 export const HeroSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -93,12 +71,28 @@ export const HeroBottom = styled.div`
   animation: ${fade} 1s ease 0.7s both;
 `;
 
-export const Pitch = styled.p`
+/* The bio's tagline (bold) and detail (muted) stack together, the same
+   split and treatment splitDescription already gives a project's own text. */
+export const PitchGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   max-inline-size: 34ch;
+`;
+
+export const Pitch = styled.p`
   font-size: clamp(1.375rem, 2.2vw, 1.875rem);
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: var(--color-heading);
+  text-wrap: balance;
+`;
+
+export const PitchDetail = styled.p`
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-muted);
   text-wrap: balance;
 `;
 
@@ -126,7 +120,7 @@ export const Facts = styled.dl`
  * has not arrived yet sits outside the column: clipped here, it never widens
  * the page.
  */
-export const Work = styled.main`
+export const Projects = styled.main`
   display: flex;
   flex-direction: column;
   overflow: clip visible;
@@ -142,7 +136,7 @@ export const SectionHead = styled.p`
   color: var(--color-muted);
 `;
 
-export const EmptyWork = styled.p`
+export const EmptyProjects = styled.p`
   border-block-start: 1px solid var(--color-line);
   padding-block: clamp(2rem, 8svh, 4rem);
   max-inline-size: 46ch;

@@ -1,8 +1,6 @@
 "use client";
 
-import { prefersReducedMotion } from "./useMediaQuery";
-
-/** How long the reveal/collapse clip-path transition takes (BioPortal.styles.tsx uses the same value). */
+/** How long PageReveal's clip-path transition takes. */
 export const REVEAL_MS = 600;
 
 const originOf = (element: HTMLElement | null) => {
@@ -22,6 +20,3 @@ export const setTransitionOrigin = (anchor: HTMLElement | null) => {
   html.style.setProperty("--vt-x", `${x}px`);
   html.style.setProperty("--vt-y", `${y}px`);
 };
-
-/** REVEAL_MS, or near-instant for a visitor who prefers reduced motion. */
-export const revealDelay = () => (prefersReducedMotion() ? 0 : REVEAL_MS);

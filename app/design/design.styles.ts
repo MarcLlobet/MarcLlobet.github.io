@@ -3,51 +3,6 @@
 import styled, { css } from "styled-components";
 import { mono } from "../styles";
 
-export const Page = styled.div`
-  inline-size: 100%;
-  min-inline-size: 0;
-  max-inline-size: 90rem;
-  margin-inline: auto;
-`;
-
-export const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-s);
-`;
-
-export const Brand = styled.a`
-  ${mono}
-  display: inline-flex;
-  align-items: center;
-  min-block-size: var(--tap-target);
-  color: var(--color-text);
-`;
-
-export const Nav = styled.nav`
-  ${mono}
-  display: flex;
-  align-items: center;
-  gap: 1.75rem;
-
-  a,
-  button {
-    display: inline-flex;
-    align-items: center;
-    min-block-size: var(--tap-target);
-    padding: 0;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    color: var(--color-muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-`;
-
 export const Intro = styled.div`
   display: flex;
   flex-direction: column;
