@@ -2,6 +2,7 @@
 
 import styled, { css } from "styled-components";
 import { mono } from "../../styles";
+import copy from "../../content/copy.json";
 
 const Footer = styled.footer`
   display: flex;
@@ -24,7 +25,7 @@ const Eyebrow = styled.p`
   color: var(--color-muted);
 `;
 
-const HELLO = "Say hello";
+const HELLO = copy.footer.hello;
 
 const Hello = styled.a`
   display: block;
@@ -103,7 +104,7 @@ export const SiteFooter = ({ id, slotId, githubUrl }: SiteFooterProps) => (
   <Footer id={id}>
     <Top>
       <div>
-        <Eyebrow>Get in touch</Eyebrow>
+        <Eyebrow>{copy.footer.getInTouch}</Eyebrow>
         <Hello href={githubUrl} target="_blank" rel="noopener noreferrer">
           {[...HELLO].map((letter, i) => (
             <span key={i}>{letter === " " ? " " : letter}</span>
@@ -113,12 +114,12 @@ export const SiteFooter = ({ id, slotId, githubUrl }: SiteFooterProps) => (
       <Slot id={slotId} aria-hidden="true" />
     </Top>
     <Bottom>
-      <span>Data from the GitHub API · Next.js</span>
+      <span>{copy.footer.dataFrom}</span>
       <Links>
         <a href={githubUrl} target="_blank" rel="noopener noreferrer">
-          GitHub ↗
+          {copy.footer.githubLabel}
         </a>
-        <a href="#top">Back to top ↑</a>
+        <a href="#top">{copy.footer.backToTop}</a>
       </Links>
     </Bottom>
   </Footer>

@@ -8,20 +8,16 @@ describe("NavWrapper", () => {
     document.documentElement.classList.remove("light-theme");
   });
 
-  it("renders Theme and About links", () => {
+  it("renders the Theme toggle", () => {
     render(<NavWrapper />);
     expect(screen.getByText("Theme")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
-      "href",
-      "/about",
-    );
   });
 
   it("links to the sections of the home page", () => {
     render(<NavWrapper hasArchive />);
-    expect(screen.getByRole("link", { name: "Work" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute(
       "href",
-      "/#work",
+      "/#projects",
     );
     expect(screen.getByRole("link", { name: "Archive" })).toHaveAttribute(
       "href",
@@ -59,7 +55,7 @@ describe("NavWrapper", () => {
 
   it("records the click's position for the next page's reveal", () => {
     render(<NavWrapper />);
-    fireEvent.click(screen.getByRole("link", { name: "About" }));
+    fireEvent.click(screen.getByRole("link", { name: "Design ↗" }));
     const style = document.documentElement.style;
     expect(style.getPropertyValue("--vt-x")).not.toBe("");
     expect(style.getPropertyValue("--vt-y")).not.toBe("");

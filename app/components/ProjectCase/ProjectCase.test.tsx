@@ -45,7 +45,7 @@ describe("ProjectCase", () => {
     );
     expect(
       screen.getByRole("link", { name: "View mobile store" }),
-    ).toHaveAttribute("href", "/work/mobile-store");
+    ).toHaveAttribute("href", "/projects/mobile-store");
   });
 
   it("has valid HTML", () => {

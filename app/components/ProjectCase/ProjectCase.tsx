@@ -10,6 +10,7 @@ import {
   visibleLanguages,
 } from "../../utils/projects";
 import { setTransitionOrigin } from "../../utils/pageTransition";
+import copy from "../../content/copy.json";
 import type { Repository } from "../../types";
 import {
   Body,
@@ -88,11 +89,11 @@ export const ProjectCase = ({
       <Body>
         <Frame
           as={Link}
-          href={`/work/${repository.name}`}
-          aria-label={`View ${name}`}
+          href={`/projects/${repository.name}`}
+          aria-label={`${copy.projectCase.viewAriaLabelPrefix}${name}`}
           data-frame="true"
           data-play="hover"
-          data-cursor="View project ↗"
+          data-cursor={copy.projectCase.viewCursorLabel}
           onClick={handleFrameClick}
           $even={even}
         >
@@ -109,18 +110,18 @@ export const ProjectCase = ({
                 href={demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Live demo of ${name}`}
+                aria-label={`${copy.projectCase.liveDemoAriaLabelPrefix}${name}`}
               >
-                Live demo ↗
+                {copy.projectCase.liveDemoLabel}
               </a>
             )}
             <a
               href={repository.url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Code of ${name}`}
+              aria-label={`${copy.projectCase.codeAriaLabelPrefix}${name}`}
             >
-              Code ↗
+              {copy.projectCase.codeLabel}
             </a>
           </Links>
         </Text>

@@ -30,10 +30,10 @@ export async function generateMetadata({
     description: tagline,
     // Relative (no leading slash): resolved against the root layout's
     // metadataBase, which already carries a PR preview's basePath if any.
-    alternates: { canonical: `work/${name}` },
+    alternates: { canonical: `projects/${name}` },
     openGraph: {
       type: "website",
-      url: `work/${name}`,
+      url: `projects/${name}`,
       title,
       description: tagline,
       siteName: "Marc Llobet Portfolio",

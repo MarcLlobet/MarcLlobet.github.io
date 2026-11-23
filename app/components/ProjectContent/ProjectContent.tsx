@@ -10,6 +10,7 @@ import {
   visibleTopics,
 } from "../../utils/projects";
 import type { Repository } from "../../types";
+import copy from "../../content/copy.json";
 import {
   Detail,
   Languages,
@@ -57,7 +58,7 @@ export const ProjectContent = ({
         {repository.preview && !imageFailed ? (
           <ShotImage
             src={repository.preview}
-            alt={`Screenshot of ${name}`}
+            alt={`${copy.projectContent.screenshotAltPrefix}${name}`}
             loading="lazy"
             onError={() => setImageFailed(true)}
           />
@@ -70,22 +71,25 @@ export const ProjectContent = ({
       <Tagline>{tagline}</Tagline>
       {detail && <Detail>{detail}</Detail>}
       {tags.length > 0 && (
-        <Tags role="group" aria-label="Topics">
+        <Tags role="group" aria-label={copy.projectContent.topicsAriaLabel}>
           {tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}
         </Tags>
       )}
       <Stats>
-        <dt>Stars</dt>
+        <dt>{copy.projectContent.stars}</dt>
         <dd>{repository.stars}</dd>
-        <dt>Created</dt>
+        <dt>{copy.projectContent.created}</dt>
         <dd>{formatMonthYear(repository.createdAt)}</dd>
-        <dt>Last pushed</dt>
+        <dt>{copy.projectContent.lastPushed}</dt>
         <dd>{formatMonthYear(repository.pushedAt)}</dd>
       </Stats>
       {totalBytes > 0 && (
-        <Languages role="group" aria-label="Languages">
+        <Languages
+          role="group"
+          aria-label={copy.projectContent.languagesAriaLabel}
+        >
           <LanguageBar>
             {repository.languages.map(({ name: lang, color, bytes }) => (
               <LanguageSegment key={lang} $grow={bytes ?? 0} $color={color} />
@@ -107,11 +111,11 @@ export const ProjectContent = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Live demo ↗
+            {copy.projectContent.liveDemoLabel}
           </a>
         )}
         <a href={repository.url} target="_blank" rel="noopener noreferrer">
-          Code ↗
+          {copy.projectContent.codeLabel}
         </a>
       </Links>
     </article>

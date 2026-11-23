@@ -52,15 +52,10 @@ export const formatMonthYear = (iso: string) =>
 
 /**
  * A sentence ends at a full stop followed by a capital, so "Next.js" and
- * "No. 5" stay whole.
+ * "No. 5" stay whole. Used as splitDescription's fallback when there's no
+ * dash separator.
  */
 const SENTENCE = /^([\s\S]+?[.!?])\s+([A-Z][\s\S]*)$/;
-
-/** The opening sentence of a text, or all of it when it is only one. */
-export const firstSentence = (text: string) => {
-  const trimmed = text.trim();
-  return trimmed.match(SENTENCE)?.[1] ?? trimmed;
-};
 
 /**
  * The GitHub description holds both texts: "Tagline — detail". The first em
