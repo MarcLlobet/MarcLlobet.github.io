@@ -1,17 +1,10 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import Link from "next/link";
 import { Mockup } from "../components/Mockup";
 import { ProjectCase } from "../components/ProjectCase";
 import { ScrollScene, SCENE } from "../components/ScrollScene";
-import { CursorFollower } from "../components/CursorFollower";
-import {
-  isLightTheme,
-  subscribeToTheme,
-  toggleTheme,
-  useIsLightTheme,
-} from "../utils/theme";
+import { isLightTheme, subscribeToTheme } from "../utils/theme";
 import {
   Row,
   RowGo,
@@ -25,17 +18,13 @@ import { accentFor } from "../utils/projects";
 import type { Repository } from "../types";
 import {
   Board,
-  Brand,
   CaseFrame,
   Chip,
   Eyebrow,
-  Header,
   Intro,
   Lead,
   LineRow,
-  Nav,
   Note,
-  Page,
   PageTitle,
   Sample,
   Section,
@@ -162,6 +151,9 @@ const SAMPLE_CASE: Repository = {
   languages: [{ name: "TypeScript" }, { name: "CSS" }, { name: "HTML" }],
   topics: ["demo"],
   preview: "",
+  stars: 8,
+  createdAt: "2024-02-01T00:00:00Z",
+  pushedAt: "2026-04-01T00:00:00Z",
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -199,7 +191,6 @@ const useTokenValues = () =>
  */
 export default function DesignPage() {
   const [box, setBox] = useState<BoxId>("frame");
-  const light = useIsLightTheme();
   const values = useTokenValues();
   const ratio = BOXES.find(({ id }) => id === box)!.ratio;
 
@@ -212,19 +203,7 @@ export default function DesignPage() {
   );
 
   return (
-    <Page>
-      <Header>
-        <Brand as={Link} href="/">
-          Marc Llobet
-        </Brand>
-        <Nav>
-          <button type="button" onClick={toggleTheme}>
-            {light ? "Dark" : "Light"}
-          </button>
-          <Link href="/">Back to work ↗</Link>
-        </Nav>
-      </Header>
-
+    <>
       <Intro>
         <Eyebrow>
           <span>Design system</span>
@@ -411,7 +390,6 @@ export default function DesignPage() {
 
       {/* The scene draws the triangle over the page, into the slot above */}
       <ScrollScene total={0} />
-      <CursorFollower />
-    </Page>
+    </>
   );
 }

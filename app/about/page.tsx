@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getPortfolioData } from "../data/github";
 import { GITHUB_URL } from "../constants";
-import { AboutRoute } from "../components/AboutRoute";
+import { AboutContent } from "../components/AboutContent";
 
 const TITLE = "About | Marc Llobet";
 const DESCRIPTION =
@@ -38,6 +38,10 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const { bio, repositories } = await getPortfolioData();
   return (
-    <AboutRoute bio={bio} repositories={repositories} githubUrl={GITHUB_URL} />
+    <AboutContent
+      bio={bio}
+      repositories={repositories}
+      githubUrl={GITHUB_URL}
+    />
   );
 }

@@ -3,9 +3,19 @@
 import styled from "styled-components";
 import { mono } from "../../styles";
 
+export const Title = styled.h1`
+  margin: 0;
+  padding-block: clamp(2rem, 9svh, 6rem) 0;
+  font-family: var(--font-sans);
+  font-size: clamp(3.5rem, min(13vw, 20svh), 12rem);
+  line-height: 0.86;
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  color: var(--color-heading);
+`;
+
 /* Bio on the left, the repo texture docked to the right; wraps on narrow screens */
 export const Layout = styled.div`
-  flex: 1;
   display: flex;
   align-items: center;
   flex-wrap: wrap;

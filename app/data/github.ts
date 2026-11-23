@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { graphql } from "@octokit/graphql";
 import type { ContributionDay, Repository } from "../types";
 import fixtures from "./fixtures/portfolio.json";
@@ -26,8 +27,13 @@ type RepositoryNode = {
   url: string;
   description: string | null;
   primaryLanguage: { name: string } | null;
-  languages: { nodes: { name: string }[] } | null;
+  languages: {
+    edges: { size: number; node: { name: string; color: string | null } }[];
+  } | null;
   repositoryTopics: { nodes: { topic: { name: string } }[] } | null;
+  stargazerCount: number;
+  createdAt: string;
+  pushedAt: string;
 };
 
 type PortfolioQueryResponse = {
@@ -79,8 +85,13 @@ const QUERY = `
           homepageUrl
           description
           primaryLanguage { name }
-          languages(first: 5) { nodes { name } }
+          languages(first: 10) {
+            edges { size node { name color } }
+          }
           repositoryTopics(first: 10) { nodes { topic { name } } }
+          stargazerCount
+          createdAt
+          pushedAt
         }
       }
     }
@@ -99,9 +110,16 @@ const toRepository = (node: RepositoryNode): Repository => {
     url: node.url,
     description: node.description ?? "",
     primaryLanguage: node.primaryLanguage ?? { name: "" },
-    languages: node.languages?.nodes ?? [],
+    languages: (node.languages?.edges ?? []).map(({ size, node: lang }) => ({
+      name: lang.name,
+      color: lang.color ?? undefined,
+      bytes: size,
+    })),
     topics: node.repositoryTopics?.nodes.map(({ topic }) => topic.name) ?? [],
     preview: `https://raw.githubusercontent.com/${node.owner.login}/${node.name}/${branch}/.github/preview.png`,
+    stars: node.stargazerCount,
+    createdAt: node.createdAt,
+    pushedAt: node.pushedAt,
   };
 };
 
@@ -142,7 +160,13 @@ const fixtureContributions = (): ContributionDay[] => {
   });
 };
 
-export const getPortfolioData = async (): Promise<PortfolioData> => {
+/*
+ * The layout and every page now call this independently during the same
+ * static build (the persistent shell needs `pinned`/`repositories` for
+ * hasArchive, each page needs its own slice) — cache() dedupes the
+ * underlying GitHub call within that single render pass.
+ */
+export const getPortfolioData = cache(async (): Promise<PortfolioData> => {
   const token = process.env.GH_API_TOKEN;
 
   if (!token) {
@@ -188,4 +212,4 @@ export const getPortfolioData = async (): Promise<PortfolioData> => {
     );
   }
   return data;
-};
+});

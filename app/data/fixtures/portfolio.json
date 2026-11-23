@@ -27,17 +27,23 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         },
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/gryphon/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/gryphon/main/.github/preview.png",
+      "stars": 4,
+      "createdAt": "2026-05-07T00:20:14.951Z",
+      "pushedAt": "2026-10-19T00:20:14.951Z"
     },
     {
       "id": "R_kgDOUsHmvw",
@@ -57,23 +63,31 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "Bru"
+          "name": "Bru",
+          "bytes": 1500
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/mobile-store/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/mobile-store/main/.github/preview.png",
+      "stars": 6,
+      "createdAt": "2026-03-04T00:20:14.952Z",
+      "pushedAt": "2026-10-08T00:20:14.952Z"
     },
     {
       "id": "R_kgDOQrH-Zg",
@@ -93,20 +107,27 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/gym-grid/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/gym-grid/main/.github/preview.png",
+      "stars": 16,
+      "createdAt": "2025-12-24T00:20:14.952Z",
+      "pushedAt": "2026-10-07T00:20:14.952Z"
     },
     {
       "id": "R_kgDOQn0Mkw",
@@ -126,14 +147,19 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/adventofcode/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/adventofcode/main/.github/preview.png",
+      "stars": 18,
+      "createdAt": "2025-11-15T00:20:14.952Z",
+      "pushedAt": "2026-10-17T00:20:14.952Z"
     },
     {
       "id": "R_kgDOPes8nw",
@@ -153,14 +179,19 @@
       },
       "languages": [
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "Shell"
+          "name": "Shell",
+          "bytes": 2000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/semantic-git/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/semantic-git/main/.github/preview.png",
+      "stars": 2,
+      "createdAt": "2025-09-26T00:20:14.952Z",
+      "pushedAt": "2026-10-14T00:20:14.952Z"
     },
     {
       "id": "R_kgDOPSng2Q",
@@ -180,17 +211,23 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/accordion-progress/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/accordion-progress/main/.github/preview.png",
+      "stars": 19,
+      "createdAt": "2025-07-13T00:20:14.952Z",
+      "pushedAt": "2026-11-15T00:20:14.952Z"
     },
     {
       "id": "R_kgDOPCL9Vw",
@@ -210,23 +247,31 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "Go"
+          "name": "Go",
+          "bytes": 15000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         },
         {
-          "name": "Bru"
+          "name": "Bru",
+          "bytes": 1500
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/vanilla-documents/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/vanilla-documents/main/.github/preview.png",
+      "stars": 1,
+      "createdAt": "2025-06-08T00:20:14.952Z",
+      "pushedAt": "2026-10-09T00:20:14.952Z"
     },
     {
       "id": "R_kgDOO7M_Sg",
@@ -246,20 +291,27 @@
       },
       "languages": [
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         },
         {
-          "name": "Bru"
+          "name": "Bru",
+          "bytes": 1500
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/pet-manager/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/pet-manager/main/.github/preview.png",
+      "stars": 11,
+      "createdAt": "2025-03-09T00:20:14.952Z",
+      "pushedAt": "2026-11-06T00:20:14.952Z"
     },
     {
       "id": "R_kgDOOu6ixQ",
@@ -279,14 +331,19 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/ts-only/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/ts-only/main/.github/preview.png",
+      "stars": 3,
+      "createdAt": "2025-02-09T00:20:14.952Z",
+      "pushedAt": "2026-10-11T00:20:14.952Z"
     },
     {
       "id": "R_kgDOOZABaw",
@@ -306,17 +363,23 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/wordle-app/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/wordle-app/main/.github/preview.png",
+      "stars": 1,
+      "createdAt": "2024-12-28T00:20:14.952Z",
+      "pushedAt": "2026-11-03T00:20:14.952Z"
     },
     {
       "id": "R_kgDONg1tw",
@@ -336,11 +399,15 @@
       },
       "languages": [
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/atlesdevidessecretes/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/atlesdevidessecretes/main/.github/preview.png",
+      "stars": 3,
+      "createdAt": "2024-10-12T00:20:14.952Z",
+      "pushedAt": "2026-09-30T00:20:14.952Z"
     },
     {
       "id": "R_kgDOIq-vMg",
@@ -360,20 +427,27 @@
       },
       "languages": [
         {
-          "name": "TypeScript"
+          "name": "TypeScript",
+          "bytes": 42000
         },
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/users-by-colors/main/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/users-by-colors/main/.github/preview.png",
+      "stars": 10,
+      "createdAt": "2024-08-16T00:20:14.952Z",
+      "pushedAt": "2026-10-08T00:20:14.952Z"
     },
     {
       "id": "MDEwOlJlcG9zaXRvcnkyODI4MjIxMDg=",
@@ -393,17 +467,23 @@
       },
       "languages": [
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "CSS"
+          "name": "CSS",
+          "bytes": 7000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/scheduling-ui/master/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/scheduling-ui/master/.github/preview.png",
+      "stars": 2,
+      "createdAt": "2024-06-14T00:20:14.952Z",
+      "pushedAt": "2026-10-06T00:20:14.952Z"
     },
     {
       "id": "MDEwOlJlcG9zaXRvcnkyNjYwNTc5NDE=",
@@ -423,14 +503,19 @@
       },
       "languages": [
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         },
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/image-gallery/master/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/image-gallery/master/.github/preview.png",
+      "stars": 0,
+      "createdAt": "2024-04-26T00:20:14.952Z",
+      "pushedAt": "2026-11-08T00:20:14.952Z"
     },
     {
       "id": "MDEwOlJlcG9zaXRvcnkyNTE3MjQyNjc=",
@@ -450,17 +535,23 @@
       },
       "languages": [
         {
-          "name": "HTML"
+          "name": "HTML",
+          "bytes": 9000
         },
         {
-          "name": "JavaScript"
+          "name": "JavaScript",
+          "bytes": 18000
         },
         {
-          "name": "SCSS"
+          "name": "SCSS",
+          "bytes": 4000
         }
       ],
       "topics": ["demo"],
-      "preview": "https://raw.githubusercontent.com/MarcLlobet/scss-helpers/master/.github/preview.png"
+      "preview": "https://raw.githubusercontent.com/MarcLlobet/scss-helpers/master/.github/preview.png",
+      "stars": 8,
+      "createdAt": "2024-03-21T00:20:14.952Z",
+      "pushedAt": "2026-09-30T00:20:14.952Z"
     }
   ]
 }

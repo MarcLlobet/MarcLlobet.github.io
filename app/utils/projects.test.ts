@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { mockRepos } from "../mocks/repos";
 import {
   accentFor,
-  firstSentence,
   ACCENTS,
   displayName,
+  firstSentence,
   selectProjects,
   splitDescription,
   unmatchedPins,
