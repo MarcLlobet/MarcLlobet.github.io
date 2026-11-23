@@ -10,43 +10,64 @@ on:
   repository_dispatch:
     types: [refresh-portfolio]
 
+# Every deploy reassembles and redeploys the *whole* site (production +
+# every open PR's preview — see assemble-pages.sh), so two of these can
+# never safely run at once: a single global, strictly-queued lane avoids
+# one run's deploy overwriting another's with a stale assembly.
 concurrency:
-  group: pages-${{ github.event.pull_request.number || 'production' }}
-  cancel-in-progress: true
+  group: pages-deploy
+  cancel-in-progress: false
 
 jobs:
-  build:
-    if: github.event.action != 'closed'
+  deploy:
+    permissions:
+      contents: write
+      pull-requests: write
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    env:
+      IS_CLOSED: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+      SLOT: ${{ (github.event_name == 'pull_request' && format('PR-{0}', github.event.pull_request.number)) || 'production' }}
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
       - name: Setup pnpm
+        if: env.IS_CLOSED != 'true'
         uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
+        if: env.IS_CLOSED != 'true'
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: "pnpm"
 
       - name: Install dependencies
+        if: env.IS_CLOSED != 'true'
         run: pnpm install
 
       - name: Build project
+        if: env.IS_CLOSED != 'true'
         run: pnpm run build 2>&1 | tee build-output.log
         env:
           GH_API_TOKEN: ${{ secrets.API_TOKEN }}
           GH_API_USERNAME: ${{ secrets.API_USERNAME }}
           PORTFOLIO_REQUIRE_LIVE_DATA: "true"
           # A PR preview is served at marcllobet.github.io/PR-<number>/,
-          # production at the domain root — empty for every other trigger.
+          # production at the domain root.
           NEXT_PUBLIC_BASE_PATH: ${{ github.event_name == 'pull_request' && format('/PR-{0}', github.event.pull_request.number) || '' }}
           NO_COLOR: "1"
 
       - name: Bundle size summary
-        if: always()
+        if: always() && env.IS_CLOSED != 'true'
         run: |
           {
             echo "## Bundle size"
@@ -56,44 +77,29 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload build output
-        uses: actions/upload-artifact@v4
-        with:
-          name: site
-          path: ./out
-          retention-days: 1
-
-  deploy:
-    needs: build
-
-    permissions:
-      contents: write
-      pull-requests: write
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Download build output
-        uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: ./out
-
-      - name: Deploy to gh-pages
+      - name: Update this slot on the pages-store branch
         env:
-          MODE: publish
+          MODE: ${{ env.IS_CLOSED == 'true' && 'cleanup' || 'publish' }}
           SOURCE_DIR: ./out
-          DEST_DIR: ${{ github.event_name == 'pull_request' && format('PR-{0}', github.event.pull_request.number) || '.' }}
-          COMMIT_MESSAGE: >-
-            ${{ github.event_name == 'pull_request'
-              && format('Deploy preview for PR #{0} ({1})', github.event.pull_request.number, github.sha)
-              || format('Deploy production ({0})', github.sha) }}
-        run: .github/scripts/deploy-gh-pages.sh
+          COMMIT_MESSAGE: ${{ env.IS_CLOSED == 'true' && format('Remove preview for PR #{0}', github.event.pull_request.number) || format('Update {0} ({1})', env.SLOT, github.sha) }}
+        run: .github/scripts/update-pages-store.sh
+
+      - name: Assemble the combined site
+        env:
+          OUT_DIR: ./combined
+        run: .github/scripts/assemble-pages.sh
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./combined
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
 
       - name: Comment preview link on the PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && env.IS_CLOSED != 'true'
         uses: actions/github-script@v8
         with:
           script: |
@@ -124,21 +130,3 @@ jobs:
                 body,
               });
             }
-
-  cleanup:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-
-    permissions:
-      contents: write
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Remove the PR's preview folder
-        env:
-          MODE: cleanup
-          DEST_DIR: PR-${{ github.event.pull_request.number }}
-          COMMIT_MESSAGE: Remove preview for PR #${{ github.event.pull_request.number }}
-        run: .github/scripts/deploy-gh-pages.sh
