@@ -4,17 +4,34 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
   repository_dispatch:
     types: [refresh-portfolio]
 
+# Every deploy reassembles and redeploys the *whole* site (production +
+# every open PR's preview — see scripts/deploy-pages.ts), so this and
+# cleanup-preview.yml share one strictly-queued lane: a stale assembly
+# could otherwise overwrite a newer one.
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -30,6 +47,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Set NEXT_PUBLIC_BASE_PATH for this deploy
+        run: pnpm tsx scripts/deploy-pages.ts base-path
 
       - name: Build project
         run: pnpm run build 2>&1 | tee build-output.log
@@ -50,24 +70,20 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload artifact
+      - name: Store this build and assemble the combined site
+        run: pnpm tsx scripts/deploy-pages.ts publish
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: ./out
+          path: ./combined
 
-  deploy:
-    needs: build
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Comment preview link on the PR
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm tsx scripts/comment-preview-link.ts
