@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ProjectCase } from "./components/ProjectCase";
 import { ArchiveIndex } from "./components/ArchiveIndex";
+import { AboutSection } from "./components/AboutSection";
 import { SCENE } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
 import { mockupFor, type MockupKind } from "./mockups";
@@ -146,6 +147,11 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
         featured={total}
         archived={archive.length}
         languages={languages}
+      />
+      <AboutSection
+        bio={bio}
+        repositories={repositories}
+        githubUrl={GITHUB_URL}
       />
       <Projects
         id={SCENE.projects}
