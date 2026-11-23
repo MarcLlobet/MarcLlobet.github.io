@@ -16,15 +16,7 @@ import {
 } from "./triangle";
 import { createRenderer, type FaceColours, type Rgb } from "./renderer";
 import { Canvas, Count, Digits, Hud } from "./ScrollScene.styles";
-
-/** Ids of the elements the scene reads; the page renders them. */
-export const SCENE = {
-  heroSlot: "scene-slot-hero",
-  endSlot: "scene-slot-end",
-  work: "main-content",
-  footer: "site-footer",
-  hud: "scene-hud",
-} as const;
+import { SCENE } from "./scene-ids";
 
 const INTRO_DELAY = 0.35;
 const INTRO_STAGGER = 0.18;

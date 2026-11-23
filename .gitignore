@@ -28,10 +28,6 @@ out
 # Environment and secrets
 .env
 
-# Storybook
-*storybook.log
-storybook-static
-
 # TypeScript build cache
 tsconfig.tsbuildinfo
 

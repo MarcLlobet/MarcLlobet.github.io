@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Link from "next/link";
+import { mono } from "./styles";
 
 const Container = styled.main`
   display: flex;
@@ -15,10 +16,7 @@ const Container = styled.main`
 `;
 
 const Label = styled.p`
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  ${mono}
   color: var(--color-muted);
 `;
 
@@ -40,14 +38,11 @@ const Message = styled.p`
 `;
 
 const Home = styled(Link)`
+  ${mono}
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
   min-block-size: var(--tap-target);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--color-text);
 `;
 

@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { Mockup } from "../Mockup";
 import type { MockupKind } from "../../mockups";
 import { displayName } from "../../utils/projects";
+import { useFocusTrap } from "../../utils/useFocusTrap";
+import { mono } from "../../styles";
 import type { Repository } from "../../types";
 
 export type DemoViewerProps = {
@@ -30,15 +32,12 @@ const Dialog = styled.div<{ $accent: string }>`
 `;
 
 const Bar = styled.div`
+  ${mono}
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--color-text);
 `;
 
@@ -101,29 +100,12 @@ export const DemoViewer = ({
     const html = document.documentElement;
     const overflow = html.style.overflow;
     html.style.overflow = "hidden";
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-      if (event.key !== "Tab") return;
-      const focusable = [
-        ...(dialogRef.current?.querySelectorAll<HTMLElement>("a, button") ??
-          []),
-      ];
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first?.focus();
-      }
-    };
-    document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("keydown", onKey);
       html.style.overflow = overflow;
     };
-  }, [onClose]);
+  }, []);
+
+  useFocusTrap(dialogRef, onClose);
 
   return (
     <Dialog

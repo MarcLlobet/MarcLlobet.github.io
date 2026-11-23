@@ -1,2 +1,3 @@
-export { ScrollScene, SCENE } from "./ScrollScene";
+export { ScrollScene } from "./ScrollScene";
 export type { ScrollSceneProps } from "./ScrollScene";
+export { SCENE } from "./scene-ids";

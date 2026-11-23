@@ -1,3 +1,1 @@
-import type { Bio } from "../types";
-
-export const mockBio: Bio = "Test bio";
+export const mockBio: string = "Test bio";

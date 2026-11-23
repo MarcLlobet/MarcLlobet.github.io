@@ -1,6 +1,7 @@
 "use client";
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { mono } from "../../styles";
 
 /* Fixed WebGL layer over the page, where the triangle is drawn */
 export const Canvas = styled.canvas`
@@ -17,13 +18,6 @@ export const Canvas = styled.canvas`
   &[data-ready] {
     opacity: 1;
   }
-`;
-
-const mono = css`
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 `;
 
 /* Counter of the project in view; the triangle docks in its empty start */

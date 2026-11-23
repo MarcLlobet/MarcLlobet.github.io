@@ -1,17 +1,11 @@
 "use client";
 
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { mono } from "../../styles";
 
 const TWO_COLUMNS =
   "(min-width: 900px), (min-width: 600px) and (orientation: landscape)";
 const WIDE = "(min-width: 1100px)";
-
-const mono = css`
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-`;
 
 type Side = { $even: boolean };
 

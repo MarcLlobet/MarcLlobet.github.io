@@ -2,17 +2,18 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { flushSync } from "react-dom";
+import dynamic from "next/dynamic";
 import { NavWrapper } from "./components/NavWrapper";
 import { ProjectCase } from "./components/ProjectCase";
 import { ArchiveIndex } from "./components/ArchiveIndex";
-import { ScrollScene, SCENE } from "./components/ScrollScene";
-import { DemoViewer } from "./components/DemoViewer";
-import { CursorFollower } from "./components/CursorFollower";
+import { SCENE } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
 import { mockupFor, type MockupKind } from "./mockups";
 import { accentFor, firstSentence, selectProjects } from "./utils/projects";
 import { getAllLanguages } from "./utils/getAllLanguages";
-import { prefersReducedMotion } from "./utils/useMediaQuery";
+import { canStartViewTransition } from "./utils/useMediaQuery";
+import { useSectionHash } from "./utils/useSectionHash";
+import { GITHUB_URL } from "./constants";
 import {
   Brand,
   EmptyWork,
@@ -31,9 +32,39 @@ import {
   ShapeSlot,
   Work,
 } from "./App.styles";
-import type { Repository, Bio } from "./types";
+import type { Repository } from "./types";
 
-const GITHUB_URL = "https://github.com/MarcLlobet";
+/*
+ * None of these three touch the hero or the work section's own content —
+ * ScrollScene and CursorFollower are purely decorative (aria-hidden; the
+ * cards already render fully revealed via ProjectCase's own --p/--q
+ * defaults until ScrollScene's JS takes over), and DemoViewer only exists
+ * once a project is actually opened. Loading them as separate, client-only
+ * chunks keeps that weight off the critical path for the hero to become
+ * interactive.
+ */
+const ScrollScene = dynamic(
+  () =>
+    import("./components/ScrollScene").then((mod) => ({
+      default: mod.ScrollScene,
+    })),
+  { ssr: false },
+);
+const CursorFollower = dynamic(
+  () =>
+    import("./components/CursorFollower").then((mod) => ({
+      default: mod.CursorFollower,
+    })),
+  { ssr: false },
+);
+const DemoViewer = dynamic(
+  () =>
+    import("./components/DemoViewer").then((mod) => ({
+      default: mod.DemoViewer,
+    })),
+  { ssr: false },
+);
+
 const NO_PINS: string[] = [];
 
 type Item = { repository: Repository; accent: string; kind: MockupKind };
@@ -53,7 +84,7 @@ const list = (items: string[]) => items.join("\u00a0· ");
 
 type HeroProps = {
   /** The GitHub bio: its opening sentence is the pitch. */
-  bio: Bio;
+  bio: string;
   featured: number;
   archived: number;
   languages: string[];
@@ -84,12 +115,9 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => (
   </HeroSection>
 );
 
-const canTransition = () =>
-  typeof document.startViewTransition === "function" && !prefersReducedMotion();
-
 type AppProps = {
   repositories: Repository[];
-  bio: Bio;
+  bio: string;
   /** Pinned repositories become the featured projects. */
   pinned?: string[];
 };
@@ -114,7 +142,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
       if (!item) return;
       const shot = frame.querySelector<HTMLElement>("[data-shot]");
       const show = () => flushSync(() => setDemo({ ...item, frame }));
-      if (!shot || !canTransition()) {
+      if (!shot || !canStartViewTransition()) {
         show();
         return;
       }
@@ -132,7 +160,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
     const { frame } = demo;
     const shot = frame.querySelector<HTMLElement>("[data-shot]");
     const hide = () => flushSync(() => setDemo(null));
-    if (!shot || !canTransition()) {
+    if (!shot || !canStartViewTransition()) {
       hide();
       frame.focus();
       return;
@@ -153,9 +181,16 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
     [repositories],
   );
 
+  /* Every section the nav already links to is shareable mid-scroll too. */
+  useSectionHash(
+    archive.length > 0
+      ? [SCENE.work, "archive", SCENE.footer]
+      : [SCENE.work, SCENE.footer],
+  );
+
   return (
     <Page data-testid="app-root" id="top">
-      <a className="skip-to-content" href="#main-content">
+      <a className="skip-to-content" href="#work">
         Skip to projects
       </a>
       <Header>
@@ -163,6 +198,7 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
         <NavWrapper
           bio={bio}
           repositories={repositories}
+          githubUrl={GITHUB_URL}
           hasArchive={archive.length > 0}
         />
       </Header>

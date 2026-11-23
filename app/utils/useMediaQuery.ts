@@ -29,3 +29,9 @@ export const RICH_POINTER =
 
 export const prefersReducedMotion = () =>
   canMatch() && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Whether this browser can animate a View Transition and the visitor allows motion. */
+export const canStartViewTransition = () =>
+  typeof document !== "undefined" &&
+  typeof document.startViewTransition === "function" &&
+  !prefersReducedMotion();

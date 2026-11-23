@@ -1,22 +1,46 @@
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { NavWrapper } from "./NavWrapper";
 import { mockBio } from "../../mocks/bio";
 import { mockRepos } from "../../mocks/repos";
-import userEvent from "@testing-library/user-event";
+
+const GITHUB_URL = "https://github.com/MarcLlobet";
 
 describe("NavWrapper", () => {
-  it("renders Theme and About buttons", () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+  afterEach(() => {
+    window.history.replaceState(null, "", "/");
+    window.localStorage.clear();
+    document.documentElement.classList.remove("light-theme");
+  });
+
+  it("renders Theme and About links", () => {
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        githubUrl={GITHUB_URL}
+      />,
+    );
     expect(screen.getByText("Theme")).toBeInTheDocument();
-    expect(screen.getByText("About")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
+      "href",
+      "/about",
+    );
   });
 
   it("links to the sections of the page", () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} hasArchive />);
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        githubUrl={GITHUB_URL}
+        hasArchive
+      />,
+    );
     expect(screen.getByRole("link", { name: "Work" })).toHaveAttribute(
       "href",
-      "#main-content",
+      "#work",
     );
     expect(screen.getByRole("link", { name: "Archive" })).toHaveAttribute(
       "href",
@@ -25,32 +49,71 @@ describe("NavWrapper", () => {
   });
 
   it("hides the Archive link without an archive", () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        githubUrl={GITHUB_URL}
+      />,
+    );
     expect(screen.queryByRole("link", { name: "Archive" })).toBeNull();
   });
 
-  it("toggles theme on click", () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
+  it("toggles theme on click, announces it, and remembers the choice", async () => {
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        githubUrl={GITHUB_URL}
+      />,
+    );
     const btn = screen.getByText("Theme");
+    expect(btn).toHaveAttribute("aria-pressed", "false");
+
     fireEvent.click(btn);
+
     expect(document.documentElement.classList.contains("light-theme")).toBe(
       true,
     );
+    expect(window.localStorage.getItem("theme")).toBe("light");
+    // The MutationObserver behind aria-pressed notifies asynchronously.
+    await waitFor(() => expect(btn).toHaveAttribute("aria-pressed", "true"));
   });
 
-  it("lazy loads bio component on hover and shows bio on click", async () => {
-    render(<NavWrapper bio={mockBio} repositories={mockRepos} />);
-    const navWrapper = screen.getByRole("navigation");
+  it("opens About as an overlay and moves the address bar to /about", async () => {
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        githubUrl={GITHUB_URL}
+      />,
+    );
 
-    const beforeBioContent = screen.queryByText(mockBio);
-    expect(beforeBioContent).not.toBeInTheDocument();
+    const aboutLink = screen.getByRole("link", { name: "About" });
+    await userEvent.click(aboutLink);
 
-    await userEvent.hover(navWrapper);
+    expect(await screen.findByText(mockBio)).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/about");
+  });
 
-    const aboutBtn = screen.getByText("About");
-    await userEvent.click(aboutBtn);
+  it("closes back to / when the browser's Back is used", async () => {
+    render(
+      <NavWrapper
+        bio={mockBio}
+        repositories={mockRepos}
+        githubUrl={GITHUB_URL}
+      />,
+    );
 
-    const bioContent = await screen.findByText(mockBio);
-    expect(bioContent).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("link", { name: "About" }));
+    expect(await screen.findByText(mockBio)).toBeInTheDocument();
+
+    // Simulate the browser's own Back: the address moves and popstate fires.
+    window.history.pushState(null, "", "/");
+    fireEvent(window, new PopStateEvent("popstate"));
+
+    await waitFor(() =>
+      expect(screen.queryByText(mockBio)).not.toBeInTheDocument(),
+    );
   });
 });

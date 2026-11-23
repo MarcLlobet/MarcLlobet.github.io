@@ -1,13 +1,7 @@
 "use client";
 
-import styled, { css, keyframes } from "styled-components";
-
-const mono = css`
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-`;
+import styled, { keyframes } from "styled-components";
+import { mono } from "./styles";
 
 export const Page = styled.div`
   inline-size: 100%;

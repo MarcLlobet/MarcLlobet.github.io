@@ -32,14 +32,23 @@ jobs:
         run: pnpm install
 
       - name: Build project
-        run: pnpm run build
+        run: pnpm run build 2>&1 | tee build-output.log
         env:
           GH_API_TOKEN: ${{ secrets.API_TOKEN }}
           GH_API_USERNAME: ${{ secrets.API_USERNAME }}
           PORTFOLIO_REQUIRE_LIVE_DATA: "true"
+          NO_COLOR: "1"
 
-      - name: Build Storybook
-        run: pnpm build-storybook --output-dir ./out/storybook
+      - name: Bundle size summary
+        if: always()
+        run: |
+          {
+            echo "## Bundle size"
+            echo
+            echo '```'
+            sed -n '/^Route (app)/,/^$/p' build-output.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
