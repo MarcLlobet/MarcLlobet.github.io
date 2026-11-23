@@ -9,6 +9,7 @@ import {
   visibleLanguages,
 } from "../../utils/projects";
 import { setTransitionOrigin } from "../../utils/pageTransition";
+import copy from "../../content/copy.json";
 import type { Repository } from "../../types";
 import {
   Head,
@@ -40,16 +41,18 @@ const isPlainClick = (event: MouseEvent) =>
 export const ArchiveIndex = ({ repositories }: ArchiveIndexProps) => (
   <Section id="archive" aria-labelledby="archive-title">
     <Head>
-      <span>Other experiments</span>
-      <span>({pad(repositories.length)}) · Tagged “demo”</span>
+      <span>{copy.archive.eyebrow}</span>
+      <span>
+        ({pad(repositories.length)}) {copy.archive.taggedDemoSuffix}
+      </span>
     </Head>
-    <Title id="archive-title">Archive</Title>
+    <Title id="archive-title">{copy.archive.title}</Title>
     <List>
       {repositories.map((repository, index) => (
         <li key={repository.id}>
           <Row
             as={Link}
-            href={`/work/${repository.name}`}
+            href={`/projects/${repository.name}`}
             onClick={(event: MouseEvent<HTMLAnchorElement>) => {
               if (isPlainClick(event)) setTransitionOrigin(event.currentTarget);
             }}

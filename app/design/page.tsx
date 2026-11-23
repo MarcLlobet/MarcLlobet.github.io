@@ -15,6 +15,7 @@ import {
 } from "../components/ArchiveIndex/ArchiveIndex.styles";
 import { MOCKUP_KINDS } from "../mockups";
 import { accentFor } from "../utils/projects";
+import copy from "../content/copy.json";
 import type { Repository } from "../types";
 import {
   Board,
@@ -206,48 +207,36 @@ export default function DesignPage() {
     <>
       <Intro>
         <Eyebrow>
-          <span>Design system</span>
-          <span>(06) · Built from the live components</span>
+          <span>{copy.design.intro.eyebrowLeft}</span>
+          <span>{copy.design.intro.eyebrowRight}</span>
         </Eyebrow>
-        <PageTitle>Design</PageTitle>
-        <Lead>
-          One accent per project, two typefaces, a hairline between everything
-          and a line that wipes across on hover. Every sample below is the
-          component the site itself renders.
-        </Lead>
+        <PageTitle>{copy.design.intro.title}</PageTitle>
+        <Lead>{copy.design.intro.lead}</Lead>
       </Intro>
 
       <Section id="colour">
         <SectionHead>
-          <SectionTitle>Colour</SectionTitle>
-          <Note>
-            No brand colour: the page is paper and ink, and the accent is
-            whichever project is on screen. Switch the theme in the header to
-            read the other set of values.
-          </Note>
+          <SectionTitle>{copy.design.colour.title}</SectionTitle>
+          <Note>{copy.design.colour.note}</Note>
         </SectionHead>
         <Eyebrow>
-          <span>Paper and ink</span>
+          <span>{copy.design.colour.paperAndInk}</span>
         </Eyebrow>
         <Swatches>{SURFACES.map(swatch)}</Swatches>
         <Eyebrow>
-          <span>Project accents · frame, mockup, counter and triangle</span>
+          <span>{copy.design.colour.projectAccents}</span>
         </Eyebrow>
         <Swatches>{ACCENT_TOKENS.map(swatch)}</Swatches>
         <Eyebrow>
-          <span>Mockup roles · the tones a drawn page is made of</span>
+          <span>{copy.design.colour.mockupRoles}</span>
         </Eyebrow>
         <Swatches>{MOCKUP_TONES.map(swatch)}</Swatches>
       </Section>
 
       <Section id="type">
         <SectionHead>
-          <SectionTitle>Type</SectionTitle>
-          <Note>
-            Space Grotesk for everything you read, JetBrains Mono for counters,
-            languages and links. Sizes are fluid: every step is a clamp of the
-            viewport, so a short screen gets smaller headings, not a scrollbar.
-          </Note>
+          <SectionTitle>{copy.design.type.title}</SectionTitle>
+          <Note>{copy.design.type.note}</Note>
         </SectionHead>
         <Specimens>
           {TYPE.map(({ kind, name, role, size, text }) => (
@@ -265,30 +254,23 @@ export default function DesignPage() {
 
       <Section id="line">
         <SectionHead>
-          <SectionTitle>The line</SectionTitle>
-          <Note>
-            Nothing changes colour on hover. A 2px line wipes in from the start
-            of the word and leaves through its end; where a project owns the
-            element, the line takes its accent.
-          </Note>
+          <SectionTitle>{copy.design.line.title}</SectionTitle>
+          <Note>{copy.design.line.note}</Note>
         </SectionHead>
         <LineRow>
-          <a href="#line">Code ↗</a>
+          <a href="#line">{copy.design.line.codeLabel}</a>
           <a href="#line" data-accent="1">
-            Live demo ↗
+            {copy.design.line.liveDemoLabel}
           </a>
           <a href="#line" data-accent="2">
-            Live demo ↗
+            {copy.design.line.liveDemoLabel}
           </a>
           <a href="#line" data-accent="3">
-            Live demo ↗
+            {copy.design.line.liveDemoLabel}
           </a>
-          <button type="button">Theme</button>
+          <button type="button">{copy.design.line.themeLabel}</button>
         </LineRow>
-        <Note>
-          An archive row is the same gesture at the width of the page, with the
-          arrow coming out of the name.
-        </Note>
+        <Note>{copy.design.line.archiveRowNote}</Note>
         <div>
           {ARCHIVE_SAMPLE.map(({ name, languages }, index) => (
             <Row key={name} href="#line" $accent={accentFor(index + 2)}>
@@ -298,7 +280,7 @@ export default function DesignPage() {
                 <RowGo aria-hidden="true">↗</RowGo>
               </RowName>
               <RowLanguages>{languages}</RowLanguages>
-              <RowTagline>The tagline, up to the first full stop</RowTagline>
+              <RowTagline>{copy.design.line.archiveRowTagline}</RowTagline>
             </Row>
           ))}
         </div>
@@ -306,13 +288,8 @@ export default function DesignPage() {
 
       <Section id="mockups">
         <SectionHead>
-          <SectionTitle>Mockups</SectionTitle>
-          <Note>
-            Each project is drawn, not screenshotted: an SVG page built at the
-            exact pixel size of its box. Change the shape of the box and the
-            columns, rows and lines are counted again to fill it. Point at one
-            to see the loop it plays.
-          </Note>
+          <SectionTitle>{copy.design.mockups.title}</SectionTitle>
+          <Note>{copy.design.mockups.note}</Note>
         </SectionHead>
         <Switch>
           {BOXES.map(({ id, label }) => (
@@ -349,13 +326,8 @@ export default function DesignPage() {
 
       <Section id="case">
         <SectionHead>
-          <SectionTitle>One project, one screen</SectionTitle>
-          <Note>
-            A case is a counter, the name, the frame and the text, and it is at
-            least as tall as the viewport: the frame takes whatever the words
-            leave. This is the real component, boxed so you can see where it
-            ends.
-          </Note>
+          <SectionTitle>{copy.design.case.title}</SectionTitle>
+          <Note>{copy.design.case.note}</Note>
         </SectionHead>
         <CaseFrame>
           <ProjectCase
@@ -370,20 +342,15 @@ export default function DesignPage() {
 
       <Section id="triangle">
         <SectionHead>
-          <SectionTitle>The impossible triangle</SectionTitle>
-          <Note>
-            The mark is a Penrose triangle drawn in WebGL. On the home page it
-            flies from the hero to the counter, through every project and into
-            the footer, taking the accent of the one it is passing. Here it
-            docks in the slot below: the same renderer, the same model.
-          </Note>
+          <SectionTitle>{copy.design.triangle.title}</SectionTitle>
+          <Note>{copy.design.triangle.note}</Note>
         </SectionHead>
         <Triangle>
           <TriangleSlot id={SCENE.heroSlot} data-testid="design-shape" />
           <Note>
-            Three beams fly in and lock on load and the pointer tilts them. At{" "}
-            <code>prefers-reduced-motion</code> the model is still the model:
-            built, still, and never swapped for a flat drawing.
+            {copy.design.triangle.noteContinuedPrefix}
+            <code>prefers-reduced-motion</code>
+            {copy.design.triangle.noteContinuedSuffix}
           </Note>
         </Triangle>
       </Section>

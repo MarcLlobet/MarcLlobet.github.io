@@ -5,6 +5,7 @@ import Link from "next/link";
 import { StyledNavWrapper, Button } from "./NavWrapper.styles";
 import { setTransitionOrigin } from "../../utils/pageTransition";
 import { toggleTheme, useIsLightTheme } from "../../utils/theme";
+import copy from "../../content/copy.json";
 
 export type NavWrapperProps = {
   /** Show the Archive link (only when the home page has an archive). */
@@ -34,22 +35,19 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
 
   return (
     <StyledNavWrapper>
-      <Button as={Link} href="/#work" onClick={recordOrigin}>
-        Work
+      <Button as={Link} href="/#projects" onClick={recordOrigin}>
+        {copy.nav.projects}
       </Button>
       {hasArchive && (
         <Button as={Link} href="/#archive" onClick={recordOrigin}>
-          Archive
+          {copy.nav.archive}
         </Button>
       )}
-      <Button as={Link} href="/about" onClick={recordOrigin}>
-        About
-      </Button>
       <Button type="button" onClick={toggleTheme} aria-pressed={isLight}>
-        Theme
+        {copy.nav.theme}
       </Button>
       <Button as={Link} href="/design" onClick={recordOrigin}>
-        Design ↗
+        {copy.nav.design}
       </Button>
     </StyledNavWrapper>
   );

@@ -11,45 +11,36 @@ import { NavWrapper } from "./components/NavWrapper";
 import { PageReveal } from "./components/PageReveal";
 import { LazyCursorFollower } from "./components/Shell/LazyCursorFollower";
 import { Page, Header, Brand } from "./components/Shell/Shell.styles";
+import copy from "./content/copy.json";
 
 /*
  * metadataBase needs a trailing slash: Next resolves a relative metadata URL
- * (e.g. an "about" string on a page's own metadata) against it, and a base
- * without one drops the last path segment per normal URL-resolution rules —
- * which would silently lose a PR preview's /PR-123 segment.
+ * (e.g. a "projects/<name>" string on a page's own metadata) against it, and
+ * a base without one drops the last path segment per normal URL-resolution
+ * rules — which would silently lose a PR preview's /PR-123 segment.
  */
 const metadataBase = new URL(`https://marcllobet.github.io${BASE_PATH}/`);
 const isPreview = BASE_PATH !== "";
 
 export const metadata: Metadata = {
-  title: "Marc Llobet | Frontend Developer",
-  description:
-    "Portfolio of Marc Llobet, a frontend developer specializing in React, TypeScript, and modern web technologies. View my projects and get in touch.",
-  keywords: [
-    "frontend developer",
-    "React",
-    "TypeScript",
-    "web developer",
-    "portfolio",
-    "Marc Llobet",
-  ],
-  authors: [{ name: "Marc Llobet" }],
-  creator: "Marc Llobet",
+  title: copy.meta.siteTitle,
+  description: copy.meta.siteDescription,
+  keywords: copy.meta.keywords,
+  authors: [{ name: copy.brand.name }],
+  creator: copy.brand.name,
   metadataBase,
   openGraph: {
     type: "website",
     locale: "en_US",
     url: ".",
-    title: "Marc Llobet | Frontend Developer",
-    description:
-      "Portfolio of Marc Llobet, a frontend developer specializing in React, TypeScript, and modern web technologies.",
-    siteName: "Marc Llobet Portfolio",
+    title: copy.meta.siteTitle,
+    description: copy.meta.ogDescription,
+    siteName: copy.meta.siteName,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Marc Llobet | Frontend Developer",
-    description:
-      "Portfolio of Marc Llobet, a frontend developer specializing in React, TypeScript, and modern web technologies.",
+    title: copy.meta.siteTitle,
+    description: copy.meta.ogDescription,
   },
   // A PR preview shouldn't show up in search results.
   robots: {
@@ -85,7 +76,7 @@ export default async function RootLayout({
             <Page>
               <Header>
                 <Brand as={Link} href="/">
-                  Marc Llobet
+                  {copy.brand.name}
                 </Brand>
                 <NavWrapper hasArchive={archive.length > 0} />
               </Header>

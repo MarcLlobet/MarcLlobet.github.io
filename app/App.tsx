@@ -7,12 +7,12 @@ import { ArchiveIndex } from "./components/ArchiveIndex";
 import { SCENE } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
 import { mockupFor, type MockupKind } from "./mockups";
-import { accentFor, firstSentence, selectProjects } from "./utils/projects";
+import { accentFor, selectProjects } from "./utils/projects";
 import { getAllLanguages } from "./utils/getAllLanguages";
 import { useSectionHash } from "./utils/useSectionHash";
 import { GITHUB_URL } from "./constants";
 import {
-  EmptyWork,
+  EmptyProjects,
   Facts,
   HeroBottom,
   HeroSection,
@@ -22,11 +22,14 @@ import {
   NameGroup,
   NameLine,
   Pitch,
+  Projects,
   SectionHead,
   ShapeSlot,
-  Work,
 } from "./App.styles";
 import type { Repository } from "./types";
+import copy from "./content/copy.json";
+
+const [FIRST_NAME, LAST_NAME] = copy.brand.name.split(" ");
 
 /*
  * Purely decorative (aria-hidden): the cards already render fully revealed
@@ -59,7 +62,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 const list = (items: string[]) => items.join(" · ");
 
 type HeroProps = {
-  /** The GitHub bio: its opening sentence is the pitch. */
+  /** The GitHub bio, in full. */
   bio: string;
   featured: number;
   archived: number;
@@ -71,20 +74,23 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => (
     <HeroTop>
       <NameGroup>
         <Name>
-          <NameLine>{lettersOf("Marc", 0)}</NameLine>
-          <NameLine>{lettersOf("Llobet", 4)}</NameLine>
+          <NameLine>{lettersOf(FIRST_NAME, 0)}</NameLine>
+          <NameLine>{lettersOf(LAST_NAME, FIRST_NAME.length)}</NameLine>
         </Name>
       </NameGroup>
       <ShapeSlot id={SCENE.heroSlot} data-testid="hero-shape" />
     </HeroTop>
     <HeroBottom>
-      <Pitch>{firstSentence(bio)}</Pitch>
+      <Pitch>{bio}</Pitch>
       <Facts>
-        <dt>Work</dt>
+        <dt>{copy.home.factsProjectsLabel}</dt>
         <dd>
-          {list([`(${pad(featured)}) featured`, `(${pad(archived)}) archived`])}
+          {list([
+            `(${pad(featured)}) ${copy.home.factsFeaturedSuffix}`,
+            `(${pad(archived)}) ${copy.home.factsArchivedSuffix}`,
+          ])}
         </dd>
-        <dt>Built with</dt>
+        <dt>{copy.home.factsBuiltWith}</dt>
         <dd>{list(languages.slice(0, 5))}</dd>
       </Facts>
     </HeroBottom>
@@ -118,14 +124,14 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
   /* Every section the nav already links to is shareable mid-scroll too. */
   useSectionHash(
     archive.length > 0
-      ? [SCENE.work, SCENE.archive, SCENE.footer]
-      : [SCENE.work, SCENE.footer],
+      ? [SCENE.projects, SCENE.archive, SCENE.footer]
+      : [SCENE.projects, SCENE.footer],
   );
 
   return (
     <div data-testid="app-root" id="top">
-      <a className="skip-to-content" href="#work">
-        Skip to projects
+      <a className="skip-to-content" href="#projects">
+        {copy.home.skipToContent}
       </a>
       <Hero
         bio={bio}
@@ -133,10 +139,15 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
         archived={archive.length}
         languages={languages}
       />
-      <Work id={SCENE.work} aria-label="Selected work">
+      <Projects
+        id={SCENE.projects}
+        aria-label={copy.home.selectedProjectsHeading}
+      >
         <SectionHead>
-          <span>Selected work</span>
-          <span>({pad(total)}) · Pinned on GitHub</span>
+          <span>{copy.home.selectedProjectsHeading}</span>
+          <span>
+            ({pad(total)}) {copy.home.pinnedOnGithubSuffix}
+          </span>
         </SectionHead>
         {featured.map(({ repository, accent, kind }, index) => (
           <ProjectCase
@@ -149,12 +160,9 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
           />
         ))}
         {total === 0 && (
-          <EmptyWork>
-            No pinned projects yet. Pin repositories tagged “demo” on the GitHub
-            profile to feature them here.
-          </EmptyWork>
+          <EmptyProjects>{copy.home.emptyProjects}</EmptyProjects>
         )}
-      </Work>
+      </Projects>
       {archive.length > 0 && <ArchiveIndex repositories={archive} />}
       <SiteFooter
         id={SCENE.footer}

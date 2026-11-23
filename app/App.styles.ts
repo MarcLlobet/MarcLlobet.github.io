@@ -104,7 +104,7 @@ export const Facts = styled.dl`
  * has not arrived yet sits outside the column: clipped here, it never widens
  * the page.
  */
-export const Work = styled.main`
+export const Projects = styled.main`
   display: flex;
   flex-direction: column;
   overflow: clip visible;
@@ -120,7 +120,7 @@ export const SectionHead = styled.p`
   color: var(--color-muted);
 `;
 
-export const EmptyWork = styled.p`
+export const EmptyProjects = styled.p`
   border-block-start: 1px solid var(--color-line);
   padding-block: clamp(2rem, 8svh, 4rem);
   max-inline-size: 46ch;

@@ -80,13 +80,13 @@ describe("useSectionHash", () => {
 
   it("never touches the address bar away from the home page", () => {
     const a = makeSection("a");
-    window.history.replaceState(null, "", "/about");
+    window.history.replaceState(null, "", "/design");
 
     renderHook(() => useSectionHash(["a"]));
     const observer = FakeIntersectionObserver.instances[0];
     observer.trigger([{ target: a, isIntersecting: true }]);
 
-    expect(window.location.pathname).toBe("/about");
+    expect(window.location.pathname).toBe("/design");
     expect(window.location.hash).toBe("");
   });
 
