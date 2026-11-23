@@ -71,12 +71,28 @@ export const HeroBottom = styled.div`
   animation: ${fade} 1s ease 0.7s both;
 `;
 
-export const Pitch = styled.p`
+/* The bio's tagline (bold) and detail (muted) stack together, the same
+   split and treatment splitDescription already gives a project's own text. */
+export const PitchGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   max-inline-size: 34ch;
+`;
+
+export const Pitch = styled.p`
   font-size: clamp(1.375rem, 2.2vw, 1.875rem);
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: var(--color-heading);
+  text-wrap: balance;
+`;
+
+export const PitchDetail = styled.p`
+  font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-muted);
   text-wrap: balance;
 `;
 

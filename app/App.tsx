@@ -7,7 +7,7 @@ import { ArchiveIndex } from "./components/ArchiveIndex";
 import { SCENE } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
 import { mockupFor, type MockupKind } from "./mockups";
-import { accentFor, selectProjects } from "./utils/projects";
+import { accentFor, selectProjects, splitDescription } from "./utils/projects";
 import { getAllLanguages } from "./utils/getAllLanguages";
 import { useSectionHash } from "./utils/useSectionHash";
 import { GITHUB_URL } from "./constants";
@@ -22,6 +22,8 @@ import {
   NameGroup,
   NameLine,
   Pitch,
+  PitchDetail,
+  PitchGroup,
   Projects,
   SectionHead,
   ShapeSlot,
@@ -69,33 +71,39 @@ type HeroProps = {
   languages: string[];
 };
 
-const Hero = ({ bio, featured, archived, languages }: HeroProps) => (
-  <HeroSection>
-    <HeroTop>
-      <NameGroup>
-        <Name>
-          <NameLine>{lettersOf(FIRST_NAME, 0)}</NameLine>
-          <NameLine>{lettersOf(LAST_NAME, FIRST_NAME.length)}</NameLine>
-        </Name>
-      </NameGroup>
-      <ShapeSlot id={SCENE.heroSlot} data-testid="hero-shape" />
-    </HeroTop>
-    <HeroBottom>
-      <Pitch>{bio}</Pitch>
-      <Facts>
-        <dt>{copy.home.factsProjectsLabel}</dt>
-        <dd>
-          {list([
-            `(${pad(featured)}) ${copy.home.factsFeaturedSuffix}`,
-            `(${pad(archived)}) ${copy.home.factsArchivedSuffix}`,
-          ])}
-        </dd>
-        <dt>{copy.home.factsBuiltWith}</dt>
-        <dd>{list(languages.slice(0, 5))}</dd>
-      </Facts>
-    </HeroBottom>
-  </HeroSection>
-);
+const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
+  const { tagline, detail } = splitDescription(bio);
+  return (
+    <HeroSection>
+      <HeroTop>
+        <NameGroup>
+          <Name>
+            <NameLine>{lettersOf(FIRST_NAME, 0)}</NameLine>
+            <NameLine>{lettersOf(LAST_NAME, FIRST_NAME.length)}</NameLine>
+          </Name>
+        </NameGroup>
+        <ShapeSlot id={SCENE.heroSlot} data-testid="hero-shape" />
+      </HeroTop>
+      <HeroBottom>
+        <PitchGroup>
+          <Pitch>{tagline}</Pitch>
+          {detail && <PitchDetail>{detail}</PitchDetail>}
+        </PitchGroup>
+        <Facts>
+          <dt>{copy.home.factsProjectsLabel}</dt>
+          <dd>
+            {list([
+              `(${pad(featured)}) ${copy.home.factsFeaturedSuffix}`,
+              `(${pad(archived)}) ${copy.home.factsArchivedSuffix}`,
+            ])}
+          </dd>
+          <dt>{copy.home.factsBuiltWith}</dt>
+          <dd>{list(languages.slice(0, 5))}</dd>
+        </Facts>
+      </HeroBottom>
+    </HeroSection>
+  );
+};
 
 type AppProps = {
   repositories: Repository[];
