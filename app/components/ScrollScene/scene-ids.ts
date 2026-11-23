@@ -7,6 +7,7 @@ export const SCENE = {
   heroSlot: "scene-slot-hero",
   endSlot: "scene-slot-end",
   work: "work",
+  archive: "archive",
   footer: "site-footer",
   hud: "scene-hud",
 } as const;

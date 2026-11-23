@@ -15,6 +15,9 @@ describe("AboutContent", () => {
         githubUrl={GITHUB_URL}
       />,
     );
+    expect(
+      screen.getByRole("heading", { level: 1, name: "About" }),
+    ).toBeInTheDocument();
     expect(screen.getByText(mockBio)).toBeInTheDocument();
     expect(screen.getByText(`(${mockRepos.length}) repos`)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "GitHub ↗" })).toHaveAttribute(

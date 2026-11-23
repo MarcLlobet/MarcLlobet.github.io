@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import StyledComponentsRegistry from "./registry";
 import { GlobalStyles } from "./GlobalStyles";
 import { spaceGrotesk, jetbrainsMono } from "./fonts";
 import { THEME_INIT_SCRIPT } from "./theme-init-script";
 import { BASE_PATH } from "./base-path";
+import { getPortfolioData } from "./data/github";
+import { selectProjects } from "./utils/projects";
+import { NavWrapper } from "./components/NavWrapper";
+import { PageReveal } from "./components/PageReveal";
+import { LazyCursorFollower } from "./components/Shell/LazyCursorFollower";
+import { Page, Header, Brand } from "./components/Shell/Shell.styles";
 
 /*
  * metadataBase needs a trailing slash: Next resolves a relative metadata URL
@@ -54,11 +61,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { repositories, pinned } = await getPortfolioData();
+  const { archive } = selectProjects(repositories, pinned);
+
   return (
     <html
       lang="en"
@@ -71,7 +81,18 @@ export default function RootLayout({
         />
         <StyledComponentsRegistry>
           <GlobalStyles />
-          <div id="root">{children}</div>
+          <div id="root">
+            <Page>
+              <Header>
+                <Brand as={Link} href="/">
+                  Marc Llobet
+                </Brand>
+                <NavWrapper hasArchive={archive.length > 0} />
+              </Header>
+              <PageReveal>{children}</PageReveal>
+            </Page>
+            <LazyCursorFollower />
+          </div>
         </StyledComponentsRegistry>
       </body>
     </html>

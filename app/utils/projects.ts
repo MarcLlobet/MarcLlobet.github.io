@@ -33,6 +33,23 @@ export const visibleLanguages = (repository: Repository): string[] => {
   );
 };
 
+/** Topics that describe the portfolio's own bookkeeping, not the project. */
+const INTERNAL_TOPIC_PREFIXES = ["demo", "mockup-"];
+
+/** A repository's GitHub topics, minus the ones used to drive this site itself. */
+export const visibleTopics = (repository: Repository): string[] =>
+  repository.topics.filter(
+    (topic) =>
+      !INTERNAL_TOPIC_PREFIXES.some((prefix) => topic.startsWith(prefix)),
+  );
+
+/** A GitHub timestamp, as "Jan 2026" — enough to place a project in time. */
+export const formatMonthYear = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
+
 /**
  * A sentence ends at a full stop followed by a capital, so "Next.js" and
  * "No. 5" stay whole.

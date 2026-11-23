@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { render, screen } from "@testing-library/react";
 import { ProjectCase } from "./ProjectCase";
 import { mockRepos } from "../../mocks/repos";
 
@@ -33,8 +33,7 @@ describe("ProjectCase", () => {
     expect(screen.getByText("02 / 06")).toBeInTheDocument();
   });
 
-  it("opens the demo in place on a plain click", () => {
-    const onOpen = vi.fn();
+  it("links the frame to the project's own page", () => {
     render(
       <ProjectCase
         repository={repository}
@@ -42,16 +41,11 @@ describe("ProjectCase", () => {
         total={1}
         accent="#FF7A45"
         kind="store"
-        onOpen={onOpen}
       />,
     );
-    fireEvent.click(
-      screen.getByRole("link", { name: "Open the mobile store demo" }),
-    );
-    expect(onOpen).toHaveBeenCalledWith(
-      repository,
-      expect.any(HTMLAnchorElement),
-    );
+    expect(
+      screen.getByRole("link", { name: "View mobile store" }),
+    ).toHaveAttribute("href", "/work/mobile-store");
   });
 
   it("has valid HTML", () => {

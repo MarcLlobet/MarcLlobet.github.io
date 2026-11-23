@@ -26,5 +26,3 @@ export const Button = styled.button`
   line-height: 1;
   color: var(--color-text);
 `;
-
-export const LinkButton = styled(Button).attrs({ as: "a" })``;
