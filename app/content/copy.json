@@ -32,6 +32,11 @@
     "pinnedOnGithubSuffix": "· Pinned on GitHub",
     "emptyProjects": "No pinned projects yet. Pin repositories tagged “demo” on the GitHub profile to feature them here."
   },
+  "about": {
+    "heading": "About",
+    "githubLabel": "GitHub ↗",
+    "repoCountSuffix": "repos"
+  },
   "archive": {
     "eyebrow": "Other experiments",
     "taggedDemoSuffix": "· Tagged “demo”",
