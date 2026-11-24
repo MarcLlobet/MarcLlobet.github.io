@@ -27,6 +27,7 @@ jobs:
       pull-requests: write
       pages: write
       id-token: write
+      actions: read
 
     environment:
       name: github-pages
@@ -78,12 +79,26 @@ jobs:
           path: ./combined
 
       # actions/deploy-pages looks up the artifact it was just handed through
-      # GitHub's own artifact-listing API, which can lag a few seconds behind
-      # the upload finishing — without this it sometimes sees "0 artifacts"
-      # and fails outright (see run logs: upload finalizes, then deploy-pages
-      # queries metadata under a second later and comes up empty).
+      # GitHub's own artifact-listing API, which can lag behind the upload
+      # finishing — without this it sometimes sees "0 artifacts" and fails
+      # outright (see run logs: upload finalizes, then deploy-pages queries
+      # metadata under a second later and comes up empty). Poll for the
+      # artifact to actually be listable instead of guessing a fixed delay.
       - name: Wait for the uploaded artifact to be queryable
-        run: sleep 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 10); do
+            count=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" \
+              --jq '[.artifacts[] | select(.name == "github-pages")] | length')
+            if [ "$count" -gt 0 ]; then
+              echo "Artifact is queryable (after ${i} check(s))."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::Timed out waiting for the github-pages artifact to become queryable."
+          exit 1
 
       - name: Deploy to GitHub Pages
         id: deployment
