@@ -5,6 +5,7 @@ export {
   SCENE_SLOT_END,
   PROJECTS,
   ARCHIVE,
+  META,
   SITE_FOOTER,
   SCENE_HUD,
 } from "./scene-ids";

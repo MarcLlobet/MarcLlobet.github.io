@@ -5,28 +5,33 @@ import { mono } from "../../styles";
 
 const NO_HOVER = "(hover: none), (max-width: 760px)";
 
+/* The position/z-index/background/overlap that let this cover Projects'
+ * tail end are applied in JS, by useOverlapStack. */
 export const Section = styled.section`
-  border-block-start: 1px solid var(--color-line);
-  padding-block: clamp(3rem, 12svh, 6rem);
+  padding-block-end: clamp(1.5rem, 6svh, 3rem);
 `;
 
-export const Head = styled.div`
+/* The compact row — eyebrow and detail — sits above the big title. */
+export const Header = styled.div`
   ${mono}
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem 1rem;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--color-line);
   color: var(--color-muted);
 `;
 
 export const Title = styled.h2`
-  margin-block: 1rem clamp(1.5rem, 5svh, 3rem);
+  margin-block: clamp(1.5rem, 5svh, 3rem);
   padding-block: 0;
   font-family: var(--font-sans);
   font-size: clamp(3.5rem, min(9vw, 16svh), 8.5rem);
   line-height: 0.9;
   font-weight: 500;
   letter-spacing: -0.05em;
+  color: var(--color-heading);
 `;
 
 export const List = styled.ol`

@@ -12,7 +12,7 @@ import { setTransitionOrigin } from "../../utils/pageTransition";
 import { useCopy } from "../../utils/copy";
 import type { Repository } from "../../types";
 import {
-  Head,
+  Header,
   List,
   Row,
   RowGo,
@@ -42,12 +42,12 @@ export const ArchiveIndex = ({ repositories }: ArchiveIndexProps) => {
   const { t } = useCopy();
   return (
     <Section id="archive" aria-labelledby="archive-title">
-      <Head>
+      <Header>
         <span>{t("archive.eyebrow")}</span>
         <span>
           ({pad(repositories.length)}) {t("archive.taggedDemoSuffix")}
         </span>
-      </Head>
+      </Header>
       <Title id="archive-title">{t("archive.title")}</Title>
       <List>
         {repositories.map((repository, index) => (

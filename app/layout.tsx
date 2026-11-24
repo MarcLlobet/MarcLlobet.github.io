@@ -5,10 +5,13 @@ import { GlobalStyles } from "./GlobalStyles";
 import { spaceGrotesk, jetbrainsMono } from "./fonts";
 import { THEME_INIT_SCRIPT } from "./theme-init-script";
 import { BASE_PATH } from "./base-path";
+import { getPortfolioData } from "./data/github";
+import { selectProjects } from "./utils/projects";
 import { NavWrapper } from "./components/NavWrapper";
 import { PageReveal } from "./components/PageReveal";
 import { LazyCursorFollower } from "./components/Shell/LazyCursorFollower";
 import { Page, Header, Brand } from "./components/Shell/Shell.styles";
+import { HERO } from "./components/ScrollScene/scene-ids";
 import { copy } from "./content/copy";
 
 /*
@@ -50,11 +53,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { repositories, pinned } = await getPortfolioData();
+  const { archive } = selectProjects(repositories, pinned);
+
   return (
     <html
       lang="en"
@@ -70,10 +76,10 @@ export default function RootLayout({
           <div id="root">
             <Page>
               <Header>
-                <Brand as={Link} href="/">
+                <Brand as={Link} href={`/#${HERO}`}>
                   {copy["brand.name"]}
                 </Brand>
-                <NavWrapper />
+                <NavWrapper hasArchive={archive.length > 0} />
               </Header>
               <PageReveal>{children}</PageReveal>
             </Page>

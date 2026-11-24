@@ -5,7 +5,9 @@
  */
 export const SCENE_SLOT_HERO = "scene-slot-hero";
 export const SCENE_SLOT_END = "scene-slot-end";
+export const HERO = "hero";
 export const PROJECTS = "projects";
 export const ARCHIVE = "archive";
+export const META = "meta";
 export const SITE_FOOTER = "site-footer";
 export const SCENE_HUD = "scene-hud";

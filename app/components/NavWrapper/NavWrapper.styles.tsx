@@ -3,13 +3,24 @@
 import styled from "styled-components";
 import { mono } from "../../styles";
 
-export const StyledNavWrapper = styled.nav`
+/* Lands in Header's centre grid track (1fr auto 1fr) — the anchor links to
+ * the page's own sections, equidistant from the brand and the right-hand
+ * group regardless of either one's width. */
+export const CenterNav = styled.nav`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.75rem;
+  align-items: center;
+  justify-content: center;
+`;
+
+/* Lands in Header's right grid track — links that leave the current page. */
+export const RightNav = styled.nav`
   display: flex;
   flex-wrap: wrap;
   gap: 0 1.75rem;
   align-items: center;
   justify-content: flex-end;
-  inline-size: 100%;
 `;
 
 export const Button = styled.button`
@@ -25,4 +36,10 @@ export const Button = styled.button`
   font-weight: 400;
   line-height: 1;
   color: var(--color-text);
+
+  /* The current section's link keeps the hover-wipe line permanently drawn. */
+  &[aria-current="true"]::after {
+    transform: scaleX(1);
+    transform-origin: 0 50%;
+  }
 `;

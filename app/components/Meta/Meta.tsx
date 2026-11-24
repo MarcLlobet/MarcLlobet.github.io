@@ -2,55 +2,47 @@
 
 import { useCopy } from "../../utils/copy";
 import { REPO_URL } from "../../constants";
-import { splitDescription, visibleLanguages } from "../../utils/projects";
+import { splitDescription } from "../../utils/projects";
 import type { SiteRepository } from "../../types";
 import {
   Detail,
   Dot,
+  Header,
   Index,
-  Languages,
   Lead,
   Links,
-  Meta,
   Section,
   Title,
-} from "./Colophon.styles";
+} from "./Meta.styles";
 
-export type ColophonProps = {
+export type MetaProps = {
   id: string;
   /** This repo's own description and languages, straight from GitHub. */
   repository: SiteRepository | null;
 };
 
 /** A closing note, not a second front door: how the site itself is made. */
-export const Colophon = ({ id, repository }: ColophonProps) => {
+export const Meta = ({ id, repository }: MetaProps) => {
   const { t } = useCopy();
   const { tagline, detail } = repository
     ? splitDescription(repository.description)
     : { tagline: "", detail: "" };
-  const builtWith = repository ? visibleLanguages(repository) : [];
 
   return (
-    <Section id={id} aria-labelledby="colophon-title">
-      <Meta>
+    <Section id={id} aria-labelledby="meta-title">
+      <Header>
         <Index>
           <Dot aria-hidden="true" />
-          {t("colophon.eyebrow")}
+          {t("metaSection.eyebrow")}
         </Index>
-        {builtWith.length > 0 && (
-          <Languages>
-            {builtWith.map((language) => (
-              <span key={language}>{language}</span>
-            ))}
-          </Languages>
-        )}
-      </Meta>
-      <Title id="colophon-title">{t("colophon.title")}</Title>
+        <span>{t("metaSection.detail")}</span>
+      </Header>
+      <Title id="meta-title">{t("metaSection.title")}</Title>
       {tagline && <Lead>{tagline}</Lead>}
       {detail && <Detail>{detail}</Detail>}
       <Links>
         <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-          {t("colophon.sourceLabel")}
+          {t("metaSection.sourceLabel")}
         </a>
       </Links>
     </Section>

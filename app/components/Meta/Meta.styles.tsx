@@ -3,22 +3,26 @@
 import styled from "styled-components";
 import { mono } from "../../styles";
 
+/* The position/z-index/background/overlap that let this cover Archive's
+ * tail end are applied in JS, by useOverlapStack. */
 export const Section = styled.section`
   --c: var(--color-accent);
   display: flex;
   flex-direction: column;
   gap: clamp(0.5rem, 2svh, 1rem);
-  border-block-start: 1px solid var(--color-line);
-  padding-block: clamp(1.5rem, 6svh, 3rem);
+  padding-block-end: clamp(1.5rem, 6svh, 3rem);
 `;
 
-export const Meta = styled.div`
+/* The compact row — eyebrow and detail — sits above the big title. */
+export const Header = styled.div`
   ${mono}
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--color-line);
   color: var(--color-muted);
 `;
 
@@ -35,17 +39,8 @@ export const Dot = styled.span`
   background: var(--c);
 `;
 
-export const Languages = styled.span`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
-
-  span:not(:first-child)::before {
-    content: "· ";
-  }
-`;
-
-/* Same scale as a project's Name, minus the scroll-driven pan: this title never moves. */
+/* Same scale as a project's Name, minus the scroll-driven pan: this title
+ * never moves. */
 export const Title = styled.h2`
   margin: 0;
   font-family: var(--font-sans);
@@ -65,36 +60,12 @@ export const Lead = styled.p`
   letter-spacing: -0.01em;
   color: var(--color-heading);
   text-wrap: balance;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-  overflow: hidden;
-
-  @media (max-height: 760px) {
-    -webkit-line-clamp: 3;
-  }
-
-  @media (max-height: 620px) {
-    -webkit-line-clamp: 2;
-  }
 `;
 
 export const Detail = styled.p`
   max-inline-size: 46ch;
   color: var(--color-muted);
   text-wrap: balance;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-
-  @media (max-height: 760px) {
-    -webkit-line-clamp: 2;
-  }
-
-  @media (max-height: 620px) {
-    display: none;
-  }
 `;
 
 export const Links = styled.p`

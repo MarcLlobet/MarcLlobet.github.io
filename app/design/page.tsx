@@ -58,14 +58,12 @@ const SURFACES = [
   "--color-heading",
 ] as const;
 
-const ACCENT_TOKENS = [
-  "--accent-1",
-  "--accent-2",
-  "--accent-3",
-  "--accent-4",
-  "--accent-5",
-  "--accent-6",
-] as const;
+/*
+ * One flat accent, not a ramp: --accent-2 through --accent-6 currently
+ * mirror --accent-1 exactly (see GlobalStyles), so only the one swatch
+ * that matters is shown here.
+ */
+const ACCENT_TOKENS = ["--accent-1"] as const;
 
 const MOCKUP_TONES = [
   "--mk-surf",
@@ -228,6 +226,7 @@ export default function DesignPage() {
           <span>{t("design.colour.projectAccents")}</span>
         </Eyebrow>
         <Swatches>{ACCENT_TOKENS.map(swatch)}</Swatches>
+        <Note>{t("design.colour.accentRationale")}</Note>
         <Eyebrow>
           <span>{t("design.colour.mockupRoles")}</span>
         </Eyebrow>

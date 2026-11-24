@@ -11,11 +11,26 @@ export const Page = styled.div`
   margin-inline: auto;
 `;
 
+/*
+ * Sticky so the nav (and its scroll-highlighted section links) stays
+ * reachable at any scroll position. Deliberately small by default (not
+ * shrinking from a larger size on scroll) — Hero and the other anchor
+ * sections size themselves around this fixed height. The background is
+ * solid, not bled past this box's own inline padding — but #root's own
+ * gutter outside it never holds content to begin with, so there's nothing
+ * for the sticky edge to visibly clip.
+ */
 export const Header = styled.header`
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: var(--space-s);
+  padding-block: var(--space-3xs);
+  background: var(--color-bg);
+  border-block-end: 1px solid var(--color-line);
 `;
 
 export const Brand = styled.a`

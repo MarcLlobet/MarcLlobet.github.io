@@ -4,12 +4,14 @@ import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ProjectCase } from "./components/ProjectCase";
 import { ArchiveIndex } from "./components/ArchiveIndex";
-import { Colophon } from "./components/Colophon";
+import { Meta } from "./components/Meta";
 import {
   SCENE_SLOT_HERO,
   SCENE_SLOT_END,
+  HERO,
   PROJECTS,
   ARCHIVE,
+  META,
   SITE_FOOTER,
 } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
@@ -17,23 +19,24 @@ import { mockupFor, type MockupKind } from "./mockups";
 import { accentFor, selectProjects, splitDescription } from "./utils/projects";
 import { getAllLanguages } from "./utils/getAllLanguages";
 import { useSectionHash } from "./utils/useSectionHash";
+import { useOverlapStack } from "./utils/useOverlapStack";
 import { GITHUB_URL } from "./constants";
 import {
   EmptyProjects,
   Facts,
   HeroBottom,
+  HeroMiddle,
   HeroSection,
-  HeroTop,
   Letter,
   Name,
   NameGroup,
   NameLine,
-  Pitch,
   PitchDetail,
-  PitchGroup,
   Projects,
-  SectionHead,
+  ProjectsHeader,
   ShapeSlot,
+  Tagline,
+  Title,
 } from "./App.styles";
 import type { Repository, SiteRepository } from "./types";
 import { copy } from "./content/copy";
@@ -83,8 +86,8 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
   const { t } = useCopy();
   const { tagline, detail } = splitDescription(bio);
   return (
-    <HeroSection>
-      <HeroTop>
+    <HeroSection id={HERO}>
+      <HeroMiddle>
         <NameGroup>
           <Name>
             <NameLine>{lettersOf(FIRST_NAME, 0)}</NameLine>
@@ -92,12 +95,10 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
           </Name>
         </NameGroup>
         <ShapeSlot id={SCENE_SLOT_HERO} data-testid="hero-shape" />
-      </HeroTop>
+      </HeroMiddle>
+      <Tagline>{tagline}</Tagline>
       <HeroBottom>
-        <PitchGroup>
-          <Pitch>{tagline}</Pitch>
-          {detail && <PitchDetail>{detail}</PitchDetail>}
-        </PitchGroup>
+        {detail && <PitchDetail>{detail}</PitchDetail>}
         <Facts>
           <dt>{t("home.factsProjectsLabel")}</dt>
           <dd>
@@ -119,7 +120,7 @@ type AppProps = {
   bio: string;
   /** Pinned repositories become the featured projects. */
   pinned?: string[];
-  /** This repo's own description and languages, for the Colophon. */
+  /** This repo's own description and languages, for the Meta section. */
   site: SiteRepository | null;
 };
 
@@ -149,12 +150,19 @@ export const App = ({
   /* Every section the nav already links to is shareable mid-scroll too. */
   useSectionHash(
     archive.length > 0
-      ? [PROJECTS, ARCHIVE, SITE_FOOTER]
-      : [PROJECTS, SITE_FOOTER],
+      ? [HERO, PROJECTS, ARCHIVE, META, SITE_FOOTER]
+      : [HERO, PROJECTS, META, SITE_FOOTER],
+  );
+
+  /* Each of these covers the tail end of the one before it while scrolling. */
+  useOverlapStack(
+    archive.length > 0
+      ? [HERO, PROJECTS, ARCHIVE, META, SITE_FOOTER]
+      : [HERO, PROJECTS, META, SITE_FOOTER],
   );
 
   return (
-    <div data-testid="app-root" id="top">
+    <div data-testid="app-root">
       <a className="skip-to-content" href="#projects">
         {t("home.skipToContent")}
       </a>
@@ -164,13 +172,14 @@ export const App = ({
         archived={archive.length}
         languages={languages}
       />
-      <Projects id={PROJECTS} aria-label={t("home.selectedProjectsHeading")}>
-        <SectionHead>
-          <span>{t("home.selectedProjectsHeading")}</span>
+      <Projects id={PROJECTS} aria-labelledby="projects-title">
+        <ProjectsHeader>
+          <span>{t("home.eyebrow")}</span>
           <span>
-            ({pad(total)}) {t("home.pinnedOnGithubSuffix")}
+            ({pad(total)}) {t("home.pinnedSuffix")}
           </span>
-        </SectionHead>
+        </ProjectsHeader>
+        <Title id="projects-title">{t("home.title")}</Title>
         {featured.map(({ repository, accent, kind }, index) => (
           <ProjectCase
             key={repository.id}
@@ -186,7 +195,7 @@ export const App = ({
         )}
       </Projects>
       {archive.length > 0 && <ArchiveIndex repositories={archive} />}
-      <Colophon id="colophon" repository={site} />
+      <Meta id={META} repository={site} />
       <SiteFooter
         id={SITE_FOOTER}
         slotId={SCENE_SLOT_END}
