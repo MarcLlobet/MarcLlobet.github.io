@@ -77,6 +77,14 @@ jobs:
         with:
           path: ./combined
 
+      # actions/deploy-pages looks up the artifact it was just handed through
+      # GitHub's own artifact-listing API, which can lag a few seconds behind
+      # the upload finishing — without this it sometimes sees "0 artifacts"
+      # and fails outright (see run logs: upload finalizes, then deploy-pages
+      # queries metadata under a second later and comes up empty).
+      - name: Wait for the uploaded artifact to be queryable
+        run: sleep 15
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
