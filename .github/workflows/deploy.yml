@@ -19,19 +19,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
-      pull-requests: write
-      pages: write
-      id-token: write
-      actions: read
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -78,12 +70,32 @@ jobs:
         with:
           path: ./combined
 
-      # actions/deploy-pages looks up the artifact it was just handed through
-      # GitHub's own artifact-listing API, which can lag behind the upload
-      # finishing — without this it sometimes sees "0 artifacts" and fails
-      # outright (see run logs: upload finalizes, then deploy-pages queries
-      # metadata under a second later and comes up empty). Poll for the
-      # artifact to actually be listable instead of guessing a fixed delay.
+  # A separate job so a deploy-pages hiccup (see below) only costs a
+  # re-run of this short job, not a full rebuild — and, per GitHub's own
+  # Pages starter workflow and actions/deploy-pages#305, the job boundary
+  # itself gives the artifact time to become queryable.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+      pages: write
+      id-token: write
+      actions: read
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # actions/deploy-pages looks up the artifact `build` just handed off
+      # through GitHub's own artifact-listing API, which can still lag a
+      # little behind the upload finishing even across this job boundary
+      # — without this it can see "0 artifacts" and fail outright. Poll
+      # for the artifact to actually be listable instead of guessing a
+      # fixed delay.
       - name: Wait for the uploaded artifact to be queryable
         env:
           GH_TOKEN: ${{ github.token }}
@@ -103,6 +115,25 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Checkout repository
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        if: github.event_name == 'pull_request'
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        if: github.event_name == 'pull_request'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+
+      - name: Install dependencies
+        if: github.event_name == 'pull_request'
+        run: pnpm install
 
       - name: Comment preview link on the PR
         if: github.event_name == 'pull_request'

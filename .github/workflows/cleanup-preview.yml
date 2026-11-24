@@ -15,12 +15,6 @@ jobs:
 
     permissions:
       contents: write
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -45,6 +39,38 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./combined
+
+  # Separate job — see deploy.yml's deploy job for why.
+  deploy:
+    needs: cleanup
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+      actions: read
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # See deploy.yml's identical step for why this is needed.
+      - name: Wait for the uploaded artifact to be queryable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 10); do
+            count=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" \
+              --jq '[.artifacts[] | select(.name == "github-pages")] | length')
+            if [ "$count" -gt 0 ]; then
+              echo "Artifact is queryable (after ${i} check(s))."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::Timed out waiting for the github-pages artifact to become queryable."
+          exit 1
 
       - name: Deploy to GitHub Pages
         id: deployment
