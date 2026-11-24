@@ -60,7 +60,6 @@ jobs:
           NO_COLOR: "1"
 
       - name: Bundle size summary
-        if: always()
         run: |
           {
             echo "## Bundle size"
