@@ -71,6 +71,13 @@ describe("getPortfolioData", () => {
           ],
         },
       },
+      site: {
+        description: "The portfolio itself — Next.js, read from GitHub.",
+        primaryLanguage: { name: "TypeScript" },
+        languages: {
+          edges: [{ size: 500, node: { name: "TypeScript", color: null } }],
+        },
+      },
     });
 
     const { getPortfolioData } = await import("./github");
@@ -97,14 +104,37 @@ describe("getPortfolioData", () => {
       { date: "2026-01-02", count: 0 },
       { date: "2026-01-03", count: 5 },
     ]);
+    expect(data.site).toEqual({
+      description: "The portfolio itself — Next.js, read from GitHub.",
+      primaryLanguage: { name: "TypeScript" },
+      languages: [{ name: "TypeScript", color: undefined, bytes: 500 }],
+    });
     expect(request).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({
         login: "MarcLlobet",
         from: expect.any(String),
         to: expect.any(String),
+        siteRepo: "MarcLlobet.github.io",
       }),
     );
+  });
+
+  it("is null when the site's own repo isn't in the response", async () => {
+    vi.stubEnv("GH_API_TOKEN", "token");
+    request.mockResolvedValue({
+      user: {
+        bio: "Frontend developer",
+        pinnedItems: { nodes: [] },
+        repositories: { nodes: [] },
+      },
+      site: null,
+    });
+
+    const { getPortfolioData } = await import("./github");
+    const data = await getPortfolioData();
+
+    expect(data.site).toBeNull();
   });
 
   it("falls back to fixtures when there is no token", async () => {
@@ -121,6 +151,7 @@ describe("getPortfolioData", () => {
       date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
       count: expect.any(Number),
     });
+    expect(data.site).toMatchObject({ description: expect.any(String) });
     expect(request).not.toHaveBeenCalled();
   });
 

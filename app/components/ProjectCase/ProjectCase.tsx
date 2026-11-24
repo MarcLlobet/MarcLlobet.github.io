@@ -10,7 +10,7 @@ import {
   visibleLanguages,
 } from "../../utils/projects";
 import { setTransitionOrigin } from "../../utils/pageTransition";
-import copy from "../../content/copy.json";
+import { useCopy } from "../../utils/copy";
 import type { Repository } from "../../types";
 import {
   Body,
@@ -52,8 +52,8 @@ export const ProjectCase = ({
   accent,
   kind,
 }: ProjectCaseProps) => {
+  const { t } = useCopy();
   const titleId = `title-${repository.name}`;
-  const even = index % 2 === 1;
   const name = displayName(repository.name);
   const { tagline, detail } = splitDescription(repository.description);
   const demo = repository.homepageUrl;
@@ -70,7 +70,6 @@ export const ProjectCase = ({
       data-case={repository.name}
       data-accent={accent}
       $accent={accent}
-      $even={even}
     >
       <Meta>
         <Index>
@@ -83,25 +82,22 @@ export const ProjectCase = ({
           ))}
         </Languages>
       </Meta>
-      <Name id={titleId} $even={even}>
-        {name}
-      </Name>
+      <Name id={titleId}>{name}</Name>
       <Body>
         <Frame
           as={Link}
           href={`/projects/${repository.name}`}
-          aria-label={`${copy.projectCase.viewAriaLabelPrefix}${name}`}
+          aria-label={`${t("projectCase.viewAriaLabelPrefix")}${name}`}
           data-frame="true"
           data-play="hover"
-          data-cursor={copy.projectCase.viewCursorLabel}
+          data-cursor={t("projectCase.viewCursorLabel")}
           onClick={handleFrameClick}
-          $even={even}
         >
           <Shot data-shot="true">
             <Mockup kind={kind} />
           </Shot>
         </Frame>
-        <Text $even={even}>
+        <Text>
           <Tagline>{tagline}</Tagline>
           {detail && <Detail>{detail}</Detail>}
           <Links>
@@ -110,18 +106,18 @@ export const ProjectCase = ({
                 href={demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${copy.projectCase.liveDemoAriaLabelPrefix}${name}`}
+                aria-label={`${t("projectCase.liveDemoAriaLabelPrefix")}${name}`}
               >
-                {copy.projectCase.liveDemoLabel}
+                {t("projectCase.liveDemoLabel")}
               </a>
             )}
             <a
               href={repository.url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${copy.projectCase.codeAriaLabelPrefix}${name}`}
+              aria-label={`${t("projectCase.codeAriaLabelPrefix")}${name}`}
             >
-              {copy.projectCase.codeLabel}
+              {t("projectCase.codeLabel")}
             </a>
           </Links>
         </Text>

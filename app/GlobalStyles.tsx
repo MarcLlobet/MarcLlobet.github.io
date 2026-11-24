@@ -1,6 +1,7 @@
 "use client";
 
 import { createGlobalStyle } from "styled-components";
+import { THEME_REVEAL_MS } from "./utils/theme";
 
 /*
  * Typography: Space Grotesk for everything you read, JetBrains Mono for
@@ -114,6 +115,60 @@ html.light-theme {
   syntax: '<color>';
   inherits: true;
   initial-value: #5B9BFF;
+}
+
+/*
+ * Theme toggle: a diagonal band sweeps the new theme in — left-to-right on a
+ * landscape screen, top-to-bottom on a portrait one, so the sweep always
+ * runs along the viewport's long axis — with an accent-coloured glow riding
+ * its leading edge (a drop-shadow follows the clip-path's own silhouette,
+ * which a box-shadow can't). The old snapshot is left fully opaque (its
+ * default fade-out animation turned off) so it stays put underneath as the
+ * new one sweeps over it. No-ops entirely where startViewTransition isn't
+ * called.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: theme-reveal ${THEME_REVEAL_MS}ms cubic-bezier(0.65, 0, 0.35, 1)
+    forwards;
+  filter: drop-shadow(0 0 2vmax var(--color-accent));
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: polygon(0% 0%, -18% 0%, -36% 100%, 0% 100%);
+  }
+  to {
+    clip-path: polygon(0% 0%, 118% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+@media (orientation: portrait) {
+  ::view-transition-new(root) {
+    animation-name: theme-reveal-portrait;
+  }
+
+  @keyframes theme-reveal-portrait {
+    from {
+      clip-path: polygon(0% 0%, 100% 0%, 100% -36%, 0% -18%);
+    }
+    to {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 118%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    filter: none !important;
+  }
 }
 
 /*

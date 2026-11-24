@@ -18,6 +18,12 @@ export type Repository = {
   pushedAt: string;
 };
 
+/** Just enough of a repository to say what it is and what it's built with. */
+export type SiteRepository = Pick<
+  Repository,
+  "description" | "primaryLanguage" | "languages"
+>;
+
 /** One day of the GitHub contribution calendar: an ISO date and its commit count. */
 export type ContributionDay = {
   date: string;

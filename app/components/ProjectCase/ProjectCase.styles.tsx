@@ -7,18 +7,15 @@ const TWO_COLUMNS =
   "(min-width: 900px), (min-width: 600px) and (orientation: landscape)";
 const WIDE = "(min-width: 1100px)";
 
-type Side = { $even: boolean };
-
 /*
  * One project = one screen: the section is at least as tall as the viewport and
  * the frame takes whatever the meta, the name and the text leave, so nothing is
  * measured in advance. --p (reveal) and --q (mockup build) go from 0 to 1 as the
  * project scrolls in; the scene sets them.
  */
-export const Case = styled.section<Side & { $accent: string }>`
+export const Case = styled.section<{ $accent: string }>`
   --c: ${({ $accent }) => $accent};
   --p: 1;
-  --dir: ${({ $even }) => ($even ? -1 : 1)};
   display: flex;
   flex-direction: column;
   min-block-size: 100svh;
@@ -49,14 +46,19 @@ export const Dot = styled.span`
   background: var(--c);
 `;
 
+/* A dot never starts a line: it is glued to the word before it, and it always shows. */
 export const Languages = styled.span`
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.25rem;
+
+  span:not(:first-child)::before {
+    content: "· ";
+  }
 `;
 
-export const Name = styled.h2<Side>`
-  margin-block: clamp(0.5rem, 2svh, 1rem) clamp(0.75rem, 3.5svh, 2rem);
+export const Name = styled.h2`
+  margin-block: clamp(0.5rem, 2svh, 1rem) clamp(1.5rem, 6svh, 3.5rem);
   padding-block: 0;
   font-family: var(--font-sans);
   font-size: clamp(2rem, min(12vw, 14svh), 11.5rem);
@@ -67,12 +69,8 @@ export const Name = styled.h2<Side>`
   overflow-wrap: anywhere;
   text-wrap: balance;
   text-align: start;
-  transform: translateX(calc((1 - var(--p)) * 7% * var(--dir)));
+  transform: translateX(calc((1 - var(--p)) * 7%));
   opacity: calc(0.25 + var(--p) * 0.75);
-
-  @media ${TWO_COLUMNS} {
-    text-align: ${({ $even }) => ($even ? "end" : "start")};
-  }
 `;
 
 /* The body takes the rest of the screen: the frame is its stretching row */
@@ -91,7 +89,8 @@ export const Body = styled.div`
   }
 `;
 
-export const Frame = styled.a<Side>`
+/* Every project lays out the same way: frame on the start side, text on the end side. */
+export const Frame = styled.a`
   /* The frame lifts its mockup instead of drawing a line */
   &::after {
     content: none;
@@ -109,12 +108,12 @@ export const Frame = styled.a<Side>`
 
   @media ${TWO_COLUMNS} {
     grid-row: 1;
-    grid-column: ${({ $even }) => ($even ? "6 / span 7" : "1 / span 7")};
-    justify-self: ${({ $even }) => ($even ? "end" : "start")};
+    grid-column: 1 / span 7;
+    justify-self: start;
   }
 
   @media ${WIDE} {
-    grid-column: ${({ $even }) => ($even ? "5 / span 8" : "1 / span 8")};
+    grid-column: 1 / span 8;
   }
 `;
 
@@ -127,7 +126,7 @@ export const Shot = styled.div`
   transform-origin: 50% 0;
 `;
 
-export const Text = styled.div<Side>`
+export const Text = styled.div`
   display: flex;
   flex-direction: column;
   gap: clamp(0.75rem, 2.5svh, 1.375rem);
@@ -137,13 +136,12 @@ export const Text = styled.div<Side>`
 
   @media ${TWO_COLUMNS} {
     grid-row: 1;
-    grid-column: ${({ $even }) => ($even ? "1 / span 5" : "8 / span 5")};
-    padding-block-end: ${({ $even }) =>
-      $even ? "calc(4rem + env(safe-area-inset-bottom, 0px))" : "0"};
+    grid-column: 8 / span 5;
+    padding-block-end: 0;
   }
 
   @media ${WIDE} {
-    grid-column: ${({ $even }) => ($even ? "1 / span 4" : "9 / span 4")};
+    grid-column: 9 / span 4;
   }
 `;
 

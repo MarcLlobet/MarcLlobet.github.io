@@ -7,13 +7,20 @@ import { mockBio } from "./mocks/bio";
 describe("App", () => {
   it("renders without crashing", () => {
     const { getByTestId } = render(
-      <App repositories={mockRepos} bio={mockBio} />,
+      <App repositories={mockRepos} bio={mockBio} site={null} />,
     );
     expect(getByTestId("app-root")).toBeDefined();
   });
 
   it("features the pinned projects and lists the rest in the archive", () => {
-    render(<App repositories={mockRepos} bio={mockBio} pinned={["repo-2"]} />);
+    render(
+      <App
+        repositories={mockRepos}
+        bio={mockBio}
+        pinned={["repo-2"]}
+        site={null}
+      />,
+    );
     expect(
       screen.getByRole("heading", { level: 2, name: "repo 2" }),
     ).toBeInTheDocument();
@@ -24,7 +31,7 @@ describe("App", () => {
 
   it("has valid HTML", () => {
     const { container } = render(
-      <App repositories={mockRepos} bio={mockBio} />,
+      <App repositories={mockRepos} bio={mockBio} site={null} />,
     );
 
     expect(container.innerHTML).toHTMLValidate();

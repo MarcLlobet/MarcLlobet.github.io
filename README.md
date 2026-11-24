@@ -8,6 +8,79 @@ This project is a modern, performant, and visually engaging personal portfolio a
 - [Design](https://marcllobet.github.io/design) with visual guidelines
 - [Storybook](<(https://marcllobet.github.io/storybook)>) with UI components
 
+## Architecture
+
+Nothing here is hand-authored content: every repository card is fetched from GitHub at build time, every route shares the same clip-path page transition, and the page itself is a single animation-frame loop rather than a pile of scroll listeners.
+
+### Build & deploy
+
+GitHub is the only source of truth. `getPortfolioData()` reads it once per build; a committed fixture stands in only when no API token is available, and the deploy itself refuses to fall back to it.
+
+```mermaid
+flowchart LR
+    subgraph gh["GitHub · source of truth"]
+        api["GraphQL API<br/>pinned repos · 'demo' topic · bio"]
+    end
+
+    fixtures["fixtures/portfolio.json<br/>fallback when GH_API_TOKEN is unset"]
+
+    subgraph build["Build time — next build"]
+        fetch["getPortfolioData()<br/>app/data/github.ts"]
+        pages["Static pages<br/>/ · /design · /projects/[name]"]
+    end
+
+    subgraph ci["CI — .github/workflows"]
+        exportStep["output: export"]
+        assemble["scripts/deploy-pages.ts<br/>assembles prod + every open PR's preview"]
+        ghpages["GitHub Pages"]
+    end
+
+    api --> fetch
+    fixtures -. fallback .-> fetch
+    fetch --> pages
+    pages --> exportStep
+    exportStep --> assemble
+    assemble --> ghpages
+```
+
+### Runtime
+
+Three routes share one root layout, so the header and its theme/nav state never remount between them; a handful of small, independent client systems — not a framework — supply copy, theme and motion to whichever route is on screen.
+
+```mermaid
+flowchart TD
+    layout["RootLayout<br/>app/layout.tsx"]
+    nav["NavWrapper<br/>persistent header"]
+    reveal["PageReveal<br/>clip-path route transition"]
+
+    layout --> nav
+    layout --> reveal
+
+    subgraph routes["Routes"]
+        home["Home — /<br/>Hero · ProjectCase list · ArchiveIndex · SiteFooter"]
+        design["/design<br/>design-system showcase"]
+        project["/projects/[name]<br/>ProjectContent"]
+    end
+
+    reveal --> home
+    reveal --> design
+    reveal --> project
+
+    subgraph shared["Shared client systems"]
+        copy["Copy<br/>copy.json → useCopy() / t()<br/>registerCopy() merges lazy chunks"]
+        theme["Theme<br/>toggleTheme()<br/>View Transitions circular reveal"]
+        scene["ScrollScene<br/>one rAF loop:<br/>reveal · accent colour · counter · WebGL triangle"]
+    end
+
+    nav --> theme
+    nav --> copy
+    home --> copy
+    design --> copy
+    project --> copy
+    home --> scene
+    design --> scene
+```
+
 ## Development
 
 ```bash

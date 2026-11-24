@@ -4,8 +4,14 @@ import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import { ProjectCase } from "./components/ProjectCase";
 import { ArchiveIndex } from "./components/ArchiveIndex";
-import { AboutSection } from "./components/AboutSection";
-import { SCENE } from "./components/ScrollScene/scene-ids";
+import { Colophon } from "./components/Colophon";
+import {
+  SCENE_SLOT_HERO,
+  SCENE_SLOT_END,
+  PROJECTS,
+  ARCHIVE,
+  SITE_FOOTER,
+} from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
 import { mockupFor, type MockupKind } from "./mockups";
 import { accentFor, selectProjects, splitDescription } from "./utils/projects";
@@ -29,10 +35,11 @@ import {
   SectionHead,
   ShapeSlot,
 } from "./App.styles";
-import type { Repository } from "./types";
-import copy from "./content/copy.json";
+import type { Repository, SiteRepository } from "./types";
+import { copy } from "./content/copy";
+import { useCopy } from "./utils/copy";
 
-const [FIRST_NAME, LAST_NAME] = copy.brand.name.split(" ");
+const [FIRST_NAME, LAST_NAME] = copy["brand.name"].split(" ");
 
 /*
  * Purely decorative (aria-hidden): the cards already render fully revealed
@@ -73,6 +80,7 @@ type HeroProps = {
 };
 
 const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
+  const { t } = useCopy();
   const { tagline, detail } = splitDescription(bio);
   return (
     <HeroSection>
@@ -83,7 +91,7 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
             <NameLine>{lettersOf(LAST_NAME, FIRST_NAME.length)}</NameLine>
           </Name>
         </NameGroup>
-        <ShapeSlot id={SCENE.heroSlot} data-testid="hero-shape" />
+        <ShapeSlot id={SCENE_SLOT_HERO} data-testid="hero-shape" />
       </HeroTop>
       <HeroBottom>
         <PitchGroup>
@@ -91,14 +99,14 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
           {detail && <PitchDetail>{detail}</PitchDetail>}
         </PitchGroup>
         <Facts>
-          <dt>{copy.home.factsProjectsLabel}</dt>
+          <dt>{t("home.factsProjectsLabel")}</dt>
           <dd>
             {list([
-              `(${pad(featured)}) ${copy.home.factsFeaturedSuffix}`,
-              `(${pad(archived)}) ${copy.home.factsArchivedSuffix}`,
+              `(${pad(featured)}) ${t("home.factsFeaturedSuffix")}`,
+              `(${pad(archived)}) ${t("home.factsArchivedSuffix")}`,
             ])}
           </dd>
-          <dt>{copy.home.factsBuiltWith}</dt>
+          <dt>{t("home.factsBuiltWith")}</dt>
           <dd>{list(languages.slice(0, 5))}</dd>
         </Facts>
       </HeroBottom>
@@ -111,9 +119,17 @@ type AppProps = {
   bio: string;
   /** Pinned repositories become the featured projects. */
   pinned?: string[];
+  /** This repo's own description and languages, for the Colophon. */
+  site: SiteRepository | null;
 };
 
-export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
+export const App = ({
+  repositories,
+  bio,
+  pinned = NO_PINS,
+  site,
+}: AppProps) => {
+  const { t } = useCopy();
   const { featured, archive } = useMemo(() => {
     const { featured, archive } = selectProjects(repositories, pinned);
     const toItem = (repository: Repository, index: number): Item => ({
@@ -133,14 +149,14 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
   /* Every section the nav already links to is shareable mid-scroll too. */
   useSectionHash(
     archive.length > 0
-      ? [SCENE.projects, SCENE.archive, SCENE.footer]
-      : [SCENE.projects, SCENE.footer],
+      ? [PROJECTS, ARCHIVE, SITE_FOOTER]
+      : [PROJECTS, SITE_FOOTER],
   );
 
   return (
     <div data-testid="app-root" id="top">
       <a className="skip-to-content" href="#projects">
-        {copy.home.skipToContent}
+        {t("home.skipToContent")}
       </a>
       <Hero
         bio={bio}
@@ -148,19 +164,11 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
         archived={archive.length}
         languages={languages}
       />
-      <AboutSection
-        bio={bio}
-        repositories={repositories}
-        githubUrl={GITHUB_URL}
-      />
-      <Projects
-        id={SCENE.projects}
-        aria-label={copy.home.selectedProjectsHeading}
-      >
+      <Projects id={PROJECTS} aria-label={t("home.selectedProjectsHeading")}>
         <SectionHead>
-          <span>{copy.home.selectedProjectsHeading}</span>
+          <span>{t("home.selectedProjectsHeading")}</span>
           <span>
-            ({pad(total)}) {copy.home.pinnedOnGithubSuffix}
+            ({pad(total)}) {t("home.pinnedOnGithubSuffix")}
           </span>
         </SectionHead>
         {featured.map(({ repository, accent, kind }, index) => (
@@ -174,13 +182,14 @@ export const App = ({ repositories, bio, pinned = NO_PINS }: AppProps) => {
           />
         ))}
         {total === 0 && (
-          <EmptyProjects>{copy.home.emptyProjects}</EmptyProjects>
+          <EmptyProjects>{t("home.emptyProjects")}</EmptyProjects>
         )}
       </Projects>
       {archive.length > 0 && <ArchiveIndex repositories={archive} />}
+      <Colophon id="colophon" repository={site} />
       <SiteFooter
-        id={SCENE.footer}
-        slotId={SCENE.endSlot}
+        id={SITE_FOOTER}
+        slotId={SCENE_SLOT_END}
         githubUrl={GITHUB_URL}
       />
       <ScrollScene total={total} />

@@ -23,7 +23,9 @@ export const accentFor = (index: number) =>
 /** Languages GitHub reports that say nothing about how a project is built. */
 export const IGNORED_LANGUAGES = new Set(["Bru", "Makefile", "Dockerfile"]);
 
-export const visibleLanguages = (repository: Repository): string[] => {
+export const visibleLanguages = (
+  repository: Pick<Repository, "primaryLanguage" | "languages">,
+): string[] => {
   const names = [
     repository.primaryLanguage.name,
     ...repository.languages.map(({ name }) => name),

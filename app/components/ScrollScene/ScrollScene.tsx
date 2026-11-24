@@ -16,7 +16,13 @@ import {
 } from "./triangle";
 import { createRenderer, type FaceColours, type Rgb } from "./renderer";
 import { Canvas, Count, Digits, Hud } from "./ScrollScene.styles";
-import { SCENE } from "./scene-ids";
+import {
+  SCENE_SLOT_HERO,
+  SCENE_SLOT_END,
+  PROJECTS,
+  SITE_FOOTER,
+  SCENE_HUD,
+} from "./scene-ids";
 
 const INTRO_DELAY = 0.35;
 const INTRO_STAGGER = 0.18;
@@ -185,7 +191,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
 
       /* Counter and accent while the projects section is in view */
       const projects = document
-        .getElementById(SCENE.projects)
+        .getElementById(PROJECTS)
         ?.getBoundingClientRect();
       const inProjects =
         !!projects && projects.top < vh / 2 && projects.bottom > vh / 2;
@@ -211,8 +217,8 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
       }
 
       /* Where the triangle is: hero → counter → footer */
-      const heroAnchor = anchorOf(document.getElementById(SCENE.heroSlot));
-      const endAnchor = anchorOf(document.getElementById(SCENE.endSlot));
+      const heroAnchor = anchorOf(document.getElementById(SCENE_SLOT_HERO));
+      const endAnchor = anchorOf(document.getElementById(SCENE_SLOT_END));
       const hudRect = hud?.getBoundingClientRect();
       const rtl = hud ? getComputedStyle(hud).direction === "rtl" : false;
       const hudAnchor: Anchor | null = hudRect
@@ -227,8 +233,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
         return;
       }
 
-      const projectsTop =
-        document.getElementById(SCENE.projects)?.offsetTop ?? vh;
+      const projectsTop = document.getElementById(PROJECTS)?.offsetTop ?? vh;
       const s =
         reduced || !hudAnchor
           ? 0
@@ -236,7 +241,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
               clamp(window.scrollY / Math.max(1, projectsTop - vh * 0.35)),
             );
       const footerTop =
-        document.getElementById(SCENE.footer)?.getBoundingClientRect().top ??
+        document.getElementById(SITE_FOOTER)?.getBoundingClientRect().top ??
         Infinity;
       const f =
         reduced || !endAnchor
@@ -326,7 +331,7 @@ export const ScrollScene = ({ total }: ScrollSceneProps) => {
     <>
       <Canvas ref={canvasRef} aria-hidden="true" />
       {total > 0 && (
-        <Hud ref={hudRef} id={SCENE.hud} aria-hidden="true">
+        <Hud ref={hudRef} id={SCENE_HUD} aria-hidden="true">
           <Count>
             <Digits ref={digitsRef}>
               {Array.from({ length: total }, (_, i) => (

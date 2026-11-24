@@ -5,6 +5,9 @@ import { useSyncExternalStore } from "react";
 const STORAGE_KEY = "theme";
 const LIGHT_CLASS = "light-theme";
 
+/** How long the theme-reveal keyframe (GlobalStyles) takes to sweep across. */
+export const THEME_REVEAL_MS = 1100;
+
 export const isLightTheme = () =>
   document.documentElement.classList.contains(LIGHT_CLASS);
 
@@ -22,11 +25,24 @@ export const applyPreferredTheme = () => {
   );
 };
 
-/** Toggles the theme and remembers the choice, so it survives reloads and other pages. */
+/**
+ * Toggles the theme and remembers the choice, so it survives reloads and
+ * other pages. Where the View Transitions API is available, the swap plays
+ * inside one, so the diagonal sweep declared in GlobalStyles can animate it;
+ * elsewhere it's just the instant class flip.
+ */
 export const toggleTheme = () => {
   const next = !isLightTheme();
-  document.documentElement.classList.toggle(LIGHT_CLASS, next);
-  window.localStorage.setItem(STORAGE_KEY, next ? "light" : "dark");
+  const apply = () => {
+    document.documentElement.classList.toggle(LIGHT_CLASS, next);
+    window.localStorage.setItem(STORAGE_KEY, next ? "light" : "dark");
+  };
+
+  if (!document.startViewTransition) {
+    apply();
+    return;
+  }
+  document.startViewTransition(apply);
 };
 
 /** Notifies `onChange` whenever the theme class changes, from anywhere. */

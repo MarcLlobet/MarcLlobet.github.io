@@ -2,7 +2,8 @@
 
 import styled, { css } from "styled-components";
 import { mono } from "../../styles";
-import copy from "../../content/copy.json";
+import { copy } from "../../content/copy";
+import { useCopy } from "../../utils/copy";
 
 const Footer = styled.footer`
   display: flex;
@@ -25,7 +26,9 @@ const Eyebrow = styled.p`
   color: var(--color-muted);
 `;
 
-const HELLO = copy.footer.hello;
+/* Baked into Hello's per-letter transition delays below, so it has to stay
+ * the static core string — not the (possibly still-loading) hook value. */
+const HELLO = copy["footer.hello"];
 
 const Hello = styled.a`
   display: block;
@@ -100,27 +103,30 @@ export type SiteFooterProps = {
   githubUrl: string;
 };
 
-export const SiteFooter = ({ id, slotId, githubUrl }: SiteFooterProps) => (
-  <Footer id={id}>
-    <Top>
-      <div>
-        <Eyebrow>{copy.footer.getInTouch}</Eyebrow>
-        <Hello href={githubUrl} target="_blank" rel="noopener noreferrer">
-          {[...HELLO].map((letter, i) => (
-            <span key={i}>{letter === " " ? " " : letter}</span>
-          ))}
-        </Hello>
-      </div>
-      <Slot id={slotId} aria-hidden="true" />
-    </Top>
-    <Bottom>
-      <span>{copy.footer.dataFrom}</span>
-      <Links>
-        <a href={githubUrl} target="_blank" rel="noopener noreferrer">
-          {copy.footer.githubLabel}
-        </a>
-        <a href="#top">{copy.footer.backToTop}</a>
-      </Links>
-    </Bottom>
-  </Footer>
-);
+export const SiteFooter = ({ id, slotId, githubUrl }: SiteFooterProps) => {
+  const { t } = useCopy();
+  return (
+    <Footer id={id}>
+      <Top>
+        <div>
+          <Eyebrow>{t("footer.getInTouch")}</Eyebrow>
+          <Hello href={githubUrl} target="_blank" rel="noopener noreferrer">
+            {[...HELLO].map((letter, i) => (
+              <span key={i}>{letter === " " ? " " : letter}</span>
+            ))}
+          </Hello>
+        </div>
+        <Slot id={slotId} aria-hidden="true" />
+      </Top>
+      <Bottom>
+        <span>{t("footer.dataFrom")}</span>
+        <Links>
+          <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+            {t("footer.githubLabel")}
+          </a>
+          <a href="#top">{t("footer.backToTop")}</a>
+        </Links>
+      </Bottom>
+    </Footer>
+  );
+};

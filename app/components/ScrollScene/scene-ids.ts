@@ -3,12 +3,9 @@
  * own module (no "use client", no WebGL) so importing it never pulls the
  * heavy ScrollScene component into a chunk that only needs these strings.
  */
-export const SCENE = {
-  heroSlot: "scene-slot-hero",
-  endSlot: "scene-slot-end",
-  about: "about",
-  projects: "projects",
-  archive: "archive",
-  footer: "site-footer",
-  hud: "scene-hud",
-} as const;
+export const SCENE_SLOT_HERO = "scene-slot-hero";
+export const SCENE_SLOT_END = "scene-slot-end";
+export const PROJECTS = "projects";
+export const ARCHIVE = "archive";
+export const SITE_FOOTER = "site-footer";
+export const SCENE_HUD = "scene-hud";

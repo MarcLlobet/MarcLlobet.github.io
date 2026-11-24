@@ -5,13 +5,11 @@ import { GlobalStyles } from "./GlobalStyles";
 import { spaceGrotesk, jetbrainsMono } from "./fonts";
 import { THEME_INIT_SCRIPT } from "./theme-init-script";
 import { BASE_PATH } from "./base-path";
-import { getPortfolioData } from "./data/github";
-import { selectProjects } from "./utils/projects";
 import { NavWrapper } from "./components/NavWrapper";
 import { PageReveal } from "./components/PageReveal";
 import { LazyCursorFollower } from "./components/Shell/LazyCursorFollower";
 import { Page, Header, Brand } from "./components/Shell/Shell.styles";
-import copy from "./content/copy.json";
+import { copy } from "./content/copy";
 
 /*
  * metadataBase needs a trailing slash: Next resolves a relative metadata URL
@@ -23,24 +21,24 @@ const metadataBase = new URL(`https://marcllobet.github.io${BASE_PATH}/`);
 const isPreview = BASE_PATH !== "";
 
 export const metadata: Metadata = {
-  title: copy.meta.siteTitle,
-  description: copy.meta.siteDescription,
-  keywords: copy.meta.keywords,
-  authors: [{ name: copy.brand.name }],
-  creator: copy.brand.name,
+  title: copy["meta.siteTitle"],
+  description: copy["meta.siteDescription"],
+  keywords: copy["meta.keywords"],
+  authors: [{ name: copy["brand.name"] }],
+  creator: copy["brand.name"],
   metadataBase,
   openGraph: {
     type: "website",
     locale: "en_US",
     url: ".",
-    title: copy.meta.siteTitle,
-    description: copy.meta.ogDescription,
-    siteName: copy.meta.siteName,
+    title: copy["meta.siteTitle"],
+    description: copy["meta.ogDescription"],
+    siteName: copy["meta.siteName"],
   },
   twitter: {
     card: "summary_large_image",
-    title: copy.meta.siteTitle,
-    description: copy.meta.ogDescription,
+    title: copy["meta.siteTitle"],
+    description: copy["meta.ogDescription"],
   },
   // A PR preview shouldn't show up in search results.
   robots: {
@@ -52,14 +50,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { repositories, pinned } = await getPortfolioData();
-  const { archive } = selectProjects(repositories, pinned);
-
   return (
     <html
       lang="en"
@@ -76,9 +71,9 @@ export default async function RootLayout({
             <Page>
               <Header>
                 <Brand as={Link} href="/">
-                  {copy.brand.name}
+                  {copy["brand.name"]}
                 </Brand>
-                <NavWrapper hasArchive={archive.length > 0} />
+                <NavWrapper />
               </Header>
               <PageReveal>{children}</PageReveal>
             </Page>

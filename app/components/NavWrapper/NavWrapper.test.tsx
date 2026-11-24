@@ -14,20 +14,11 @@ describe("NavWrapper", () => {
   });
 
   it("links to the sections of the home page", () => {
-    render(<NavWrapper hasArchive />);
+    render(<NavWrapper />);
     expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute(
       "href",
       "/#projects",
     );
-    expect(screen.getByRole("link", { name: "Archive" })).toHaveAttribute(
-      "href",
-      "/#archive",
-    );
-  });
-
-  it("hides the Archive link without an archive", () => {
-    render(<NavWrapper />);
-    expect(screen.queryByRole("link", { name: "Archive" })).toBeNull();
   });
 
   it("links to the design page", () => {

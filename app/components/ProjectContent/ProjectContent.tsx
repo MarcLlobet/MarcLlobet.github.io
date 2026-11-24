@@ -10,7 +10,7 @@ import {
   visibleTopics,
 } from "../../utils/projects";
 import type { Repository } from "../../types";
-import copy from "../../content/copy.json";
+import { useCopy } from "../../utils/copy";
 import {
   Detail,
   Languages,
@@ -41,6 +41,7 @@ export const ProjectContent = ({
   accent,
   kind,
 }: ProjectContentProps) => {
+  const { t } = useCopy();
   const [imageFailed, setImageFailed] = useState(false);
   const name = displayName(repository.name);
   const { tagline, detail } = splitDescription(repository.description);
@@ -58,7 +59,7 @@ export const ProjectContent = ({
         {repository.preview && !imageFailed ? (
           <ShotImage
             src={repository.preview}
-            alt={`${copy.projectContent.screenshotAltPrefix}${name}`}
+            alt={`${t("projectContent.screenshotAltPrefix")}${name}`}
             loading="lazy"
             onError={() => setImageFailed(true)}
           />
@@ -71,24 +72,24 @@ export const ProjectContent = ({
       <Tagline>{tagline}</Tagline>
       {detail && <Detail>{detail}</Detail>}
       {tags.length > 0 && (
-        <Tags role="group" aria-label={copy.projectContent.topicsAriaLabel}>
+        <Tags role="group" aria-label={t("projectContent.topicsAriaLabel")}>
           {tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}
         </Tags>
       )}
       <Stats>
-        <dt>{copy.projectContent.stars}</dt>
+        <dt>{t("projectContent.stars")}</dt>
         <dd>{repository.stars}</dd>
-        <dt>{copy.projectContent.created}</dt>
+        <dt>{t("projectContent.created")}</dt>
         <dd>{formatMonthYear(repository.createdAt)}</dd>
-        <dt>{copy.projectContent.lastPushed}</dt>
+        <dt>{t("projectContent.lastPushed")}</dt>
         <dd>{formatMonthYear(repository.pushedAt)}</dd>
       </Stats>
       {totalBytes > 0 && (
         <Languages
           role="group"
-          aria-label={copy.projectContent.languagesAriaLabel}
+          aria-label={t("projectContent.languagesAriaLabel")}
         >
           <LanguageBar>
             {repository.languages.map(({ name: lang, color, bytes }) => (
@@ -111,11 +112,11 @@ export const ProjectContent = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            {copy.projectContent.liveDemoLabel}
+            {t("projectContent.liveDemoLabel")}
           </a>
         )}
         <a href={repository.url} target="_blank" rel="noopener noreferrer">
-          {copy.projectContent.codeLabel}
+          {t("projectContent.codeLabel")}
         </a>
       </Links>
     </article>

@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import { Mockup } from "../components/Mockup";
 import { ProjectCase } from "../components/ProjectCase";
-import { ScrollScene, SCENE } from "../components/ScrollScene";
+import { ScrollScene, SCENE_SLOT_HERO } from "../components/ScrollScene";
 import { isLightTheme, subscribeToTheme } from "../utils/theme";
 import {
   Row,
@@ -15,7 +15,7 @@ import {
 } from "../components/ArchiveIndex/ArchiveIndex.styles";
 import { MOCKUP_KINDS } from "../mockups";
 import { accentFor } from "../utils/projects";
-import copy from "../content/copy.json";
+import { useCopy } from "../utils/copy";
 import type { Repository } from "../types";
 import {
   Board,
@@ -191,6 +191,7 @@ const useTokenValues = () =>
  * than with drawings of them.
  */
 export default function DesignPage() {
+  const { t } = useCopy();
   const [box, setBox] = useState<BoxId>("frame");
   const values = useTokenValues();
   const ratio = BOXES.find(({ id }) => id === box)!.ratio;
@@ -207,36 +208,36 @@ export default function DesignPage() {
     <>
       <Intro>
         <Eyebrow>
-          <span>{copy.design.intro.eyebrowLeft}</span>
-          <span>{copy.design.intro.eyebrowRight}</span>
+          <span>{t("design.intro.eyebrowLeft")}</span>
+          <span>{t("design.intro.eyebrowRight")}</span>
         </Eyebrow>
-        <PageTitle>{copy.design.intro.title}</PageTitle>
-        <Lead>{copy.design.intro.lead}</Lead>
+        <PageTitle>{t("design.intro.title")}</PageTitle>
+        <Lead>{t("design.intro.lead")}</Lead>
       </Intro>
 
       <Section id="colour">
         <SectionHead>
-          <SectionTitle>{copy.design.colour.title}</SectionTitle>
-          <Note>{copy.design.colour.note}</Note>
+          <SectionTitle>{t("design.colour.title")}</SectionTitle>
+          <Note>{t("design.colour.note")}</Note>
         </SectionHead>
         <Eyebrow>
-          <span>{copy.design.colour.paperAndInk}</span>
+          <span>{t("design.colour.paperAndInk")}</span>
         </Eyebrow>
         <Swatches>{SURFACES.map(swatch)}</Swatches>
         <Eyebrow>
-          <span>{copy.design.colour.projectAccents}</span>
+          <span>{t("design.colour.projectAccents")}</span>
         </Eyebrow>
         <Swatches>{ACCENT_TOKENS.map(swatch)}</Swatches>
         <Eyebrow>
-          <span>{copy.design.colour.mockupRoles}</span>
+          <span>{t("design.colour.mockupRoles")}</span>
         </Eyebrow>
         <Swatches>{MOCKUP_TONES.map(swatch)}</Swatches>
       </Section>
 
       <Section id="type">
         <SectionHead>
-          <SectionTitle>{copy.design.type.title}</SectionTitle>
-          <Note>{copy.design.type.note}</Note>
+          <SectionTitle>{t("design.type.title")}</SectionTitle>
+          <Note>{t("design.type.note")}</Note>
         </SectionHead>
         <Specimens>
           {TYPE.map(({ kind, name, role, size, text }) => (
@@ -254,23 +255,23 @@ export default function DesignPage() {
 
       <Section id="line">
         <SectionHead>
-          <SectionTitle>{copy.design.line.title}</SectionTitle>
-          <Note>{copy.design.line.note}</Note>
+          <SectionTitle>{t("design.line.title")}</SectionTitle>
+          <Note>{t("design.line.note")}</Note>
         </SectionHead>
         <LineRow>
-          <a href="#line">{copy.design.line.codeLabel}</a>
+          <a href="#line">{t("design.line.codeLabel")}</a>
           <a href="#line" data-accent="1">
-            {copy.design.line.liveDemoLabel}
+            {t("design.line.liveDemoLabel")}
           </a>
           <a href="#line" data-accent="2">
-            {copy.design.line.liveDemoLabel}
+            {t("design.line.liveDemoLabel")}
           </a>
           <a href="#line" data-accent="3">
-            {copy.design.line.liveDemoLabel}
+            {t("design.line.liveDemoLabel")}
           </a>
-          <button type="button">{copy.design.line.themeLabel}</button>
+          <button type="button">{t("design.line.themeLabel")}</button>
         </LineRow>
-        <Note>{copy.design.line.archiveRowNote}</Note>
+        <Note>{t("design.line.archiveRowNote")}</Note>
         <div>
           {ARCHIVE_SAMPLE.map(({ name, languages }, index) => (
             <Row key={name} href="#line" $accent={accentFor(index + 2)}>
@@ -280,7 +281,7 @@ export default function DesignPage() {
                 <RowGo aria-hidden="true">↗</RowGo>
               </RowName>
               <RowLanguages>{languages}</RowLanguages>
-              <RowTagline>{copy.design.line.archiveRowTagline}</RowTagline>
+              <RowTagline>{t("design.line.archiveRowTagline")}</RowTagline>
             </Row>
           ))}
         </div>
@@ -288,8 +289,8 @@ export default function DesignPage() {
 
       <Section id="mockups">
         <SectionHead>
-          <SectionTitle>{copy.design.mockups.title}</SectionTitle>
-          <Note>{copy.design.mockups.note}</Note>
+          <SectionTitle>{t("design.mockups.title")}</SectionTitle>
+          <Note>{t("design.mockups.note")}</Note>
         </SectionHead>
         <Switch>
           {BOXES.map(({ id, label }) => (
@@ -326,8 +327,8 @@ export default function DesignPage() {
 
       <Section id="case">
         <SectionHead>
-          <SectionTitle>{copy.design.case.title}</SectionTitle>
-          <Note>{copy.design.case.note}</Note>
+          <SectionTitle>{t("design.case.title")}</SectionTitle>
+          <Note>{t("design.case.note")}</Note>
         </SectionHead>
         <CaseFrame>
           <ProjectCase
@@ -342,15 +343,15 @@ export default function DesignPage() {
 
       <Section id="triangle">
         <SectionHead>
-          <SectionTitle>{copy.design.triangle.title}</SectionTitle>
-          <Note>{copy.design.triangle.note}</Note>
+          <SectionTitle>{t("design.triangle.title")}</SectionTitle>
+          <Note>{t("design.triangle.note")}</Note>
         </SectionHead>
         <Triangle>
-          <TriangleSlot id={SCENE.heroSlot} data-testid="design-shape" />
+          <TriangleSlot id={SCENE_SLOT_HERO} data-testid="design-shape" />
           <Note>
-            {copy.design.triangle.noteContinuedPrefix}
+            {t("design.triangle.noteContinuedPrefix")}
             <code>prefers-reduced-motion</code>
-            {copy.design.triangle.noteContinuedSuffix}
+            {t("design.triangle.noteContinuedSuffix")}
           </Note>
         </Triangle>
       </Section>

@@ -5,12 +5,7 @@ import Link from "next/link";
 import { StyledNavWrapper, Button } from "./NavWrapper.styles";
 import { setTransitionOrigin } from "../../utils/pageTransition";
 import { toggleTheme, useIsLightTheme } from "../../utils/theme";
-import copy from "../../content/copy.json";
-
-export type NavWrapperProps = {
-  /** Show the Archive link (only when the home page has an archive). */
-  hasArchive?: boolean;
-};
+import { useCopy } from "../../utils/copy";
 
 const isModifiedClick = (event: MouseEvent) =>
   event.button !== 0 ||
@@ -30,24 +25,20 @@ const recordOrigin = (event: MouseEvent<HTMLAnchorElement>) => {
  * link here is a real, basePath-aware next/link; PageReveal (also in the
  * layout) plays the actual page-to-page transition.
  */
-export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
+export const NavWrapper = () => {
   const isLight = useIsLightTheme();
+  const { t } = useCopy();
 
   return (
     <StyledNavWrapper>
       <Button as={Link} href="/#projects" onClick={recordOrigin}>
-        {copy.nav.projects}
+        {t("nav.projects")}
       </Button>
-      {hasArchive && (
-        <Button as={Link} href="/#archive" onClick={recordOrigin}>
-          {copy.nav.archive}
-        </Button>
-      )}
       <Button type="button" onClick={toggleTheme} aria-pressed={isLight}>
-        {copy.nav.theme}
+        {t("nav.theme")}
       </Button>
       <Button as={Link} href="/design" onClick={recordOrigin}>
-        {copy.nav.design}
+        {t("nav.design")}
       </Button>
     </StyledNavWrapper>
   );

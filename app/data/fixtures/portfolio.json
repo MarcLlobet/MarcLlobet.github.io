@@ -553,5 +553,21 @@
       "createdAt": "2024-03-21T00:20:14.952Z",
       "pushedAt": "2026-09-30T00:20:14.952Z"
     }
-  ]
+  ],
+  "site": {
+    "description": "The work speaks for itself — Powered by live data, this portfolio turns my projects into compelling stories and makes the technical and design decisions behind them visible. The impossible triangle reflects my appetite for ambitious challenges and the belief that careful thinking can turn the improbable into something real.",
+    "primaryLanguage": {
+      "name": "TypeScript"
+    },
+    "languages": [
+      {
+        "name": "TypeScript",
+        "bytes": 179927
+      },
+      {
+        "name": "Shell",
+        "bytes": 55
+      }
+    ]
+  }
 }

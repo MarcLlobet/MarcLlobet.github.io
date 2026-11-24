@@ -1,11 +1,14 @@
 import { cache } from "react";
 import { graphql } from "@octokit/graphql";
-import type { ContributionDay, Repository } from "../types";
+import type { ContributionDay, Repository, SiteRepository } from "../types";
 import fixtures from "./fixtures/portfolio.json";
 import { unmatchedPins } from "../utils/projects";
+import { REPO_URL } from "../constants";
 
 export const DEMO_TOPIC = "demo";
 const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+/** This very site's own repo, so the Colophon can describe it from GitHub too. */
+const SITE_REPO_NAME = REPO_URL.split("/").pop()!;
 
 export type PortfolioData = {
   bio: string;
@@ -14,8 +17,14 @@ export type PortfolioData = {
   pinned: string[];
   /** The last year of the GitHub contribution calendar, oldest day first. */
   contributions: ContributionDay[];
+  /** This repo's own description and languages; null only if the query can't find it. */
+  site: SiteRepository | null;
   source: "github" | "fixtures";
 };
+
+type LanguageEdges = {
+  edges: { size: number; node: { name: string; color: string | null } }[];
+} | null;
 
 type RepositoryNode = {
   id: string;
@@ -27,13 +36,17 @@ type RepositoryNode = {
   url: string;
   description: string | null;
   primaryLanguage: { name: string } | null;
-  languages: {
-    edges: { size: number; node: { name: string; color: string | null } }[];
-  } | null;
+  languages: LanguageEdges;
   repositoryTopics: { nodes: { topic: { name: string } }[] } | null;
   stargazerCount: number;
   createdAt: string;
   pushedAt: string;
+};
+
+type SiteRepositoryNode = {
+  description: string | null;
+  primaryLanguage: { name: string } | null;
+  languages: LanguageEdges;
 };
 
 type PortfolioQueryResponse = {
@@ -49,10 +62,12 @@ type PortfolioQueryResponse = {
     pinnedItems?: { nodes: ({ name?: string } | null)[] } | null;
     repositories: { nodes: RepositoryNode[] };
   };
+  /** This repo, queried by name alongside the user — see SITE_REPO_NAME. */
+  site: SiteRepositoryNode | null;
 };
 
 const QUERY = `
-  query Portfolio($login: String!, $from: DateTime!, $to: DateTime!) {
+  query Portfolio($login: String!, $from: DateTime!, $to: DateTime!, $siteRepo: String!) {
     user(login: $login) {
       bio
       contributionsCollection(from: $from, to: $to) {
@@ -95,8 +110,22 @@ const QUERY = `
         }
       }
     }
+    site: repository(owner: $login, name: $siteRepo) {
+      description
+      primaryLanguage { name }
+      languages(first: 10) {
+        edges { size node { name color } }
+      }
+    }
   }
 `;
+
+const toLanguages = (languages: LanguageEdges) =>
+  (languages?.edges ?? []).map(({ size, node }) => ({
+    name: node.name,
+    color: node.color ?? undefined,
+    bytes: size,
+  }));
 
 const toRepository = (node: RepositoryNode): Repository => {
   const branch = node.defaultBranchRef?.name ?? "main";
@@ -110,11 +139,7 @@ const toRepository = (node: RepositoryNode): Repository => {
     url: node.url,
     description: node.description ?? "",
     primaryLanguage: node.primaryLanguage ?? { name: "" },
-    languages: (node.languages?.edges ?? []).map(({ size, node: lang }) => ({
-      name: lang.name,
-      color: lang.color ?? undefined,
-      bytes: size,
-    })),
+    languages: toLanguages(node.languages),
     topics: node.repositoryTopics?.nodes.map(({ topic }) => topic.name) ?? [],
     preview: `https://raw.githubusercontent.com/${node.owner.login}/${node.name}/${branch}/.github/preview.png`,
     stars: node.stargazerCount,
@@ -141,6 +166,13 @@ export const toPortfolioData = (
       count: contributionCount,
     })),
   ),
+  site: response.site
+    ? {
+        description: response.site.description ?? "",
+        primaryLanguage: response.site.primaryLanguage ?? { name: "" },
+        languages: toLanguages(response.site.languages),
+      }
+    : null,
   source: "github",
 });
 
@@ -180,14 +212,16 @@ export const getPortfolioData = cache(async (): Promise<PortfolioData> => {
     );
     const data = fixtures as Omit<
       PortfolioData,
-      "source" | "pinned" | "contributions"
+      "source" | "pinned" | "contributions" | "site"
     > & {
       pinned?: string[];
+      site?: SiteRepository | null;
     };
     return {
       ...data,
       pinned: data.pinned ?? [],
       contributions: fixtureContributions(),
+      site: data.site ?? null,
       source: "fixtures",
     };
   }
@@ -200,6 +234,7 @@ export const getPortfolioData = cache(async (): Promise<PortfolioData> => {
     login: process.env.GH_API_USERNAME || "MarcLlobet",
     from: new Date(now.getTime() - ONE_YEAR_MS).toISOString(),
     to: now.toISOString(),
+    siteRepo: SITE_REPO_NAME,
   });
   const data = toPortfolioData(response);
   console.log(
