@@ -42,7 +42,7 @@ import type { Repository, SiteRepository } from "./types";
 import { copy } from "./content/copy";
 import { useCopy } from "./utils/copy";
 
-const [FIRST_NAME, LAST_NAME] = copy["brand.name"].split(" ");
+const [ROLE_WORD_1, ROLE_WORD_2] = copy["hero.role"].split(" ");
 
 /*
  * Purely decorative (aria-hidden): the cards already render fully revealed
@@ -90,8 +90,8 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
       <HeroMiddle>
         <NameGroup>
           <Name>
-            <NameLine>{lettersOf(FIRST_NAME, 0)}</NameLine>
-            <NameLine>{lettersOf(LAST_NAME, FIRST_NAME.length)}</NameLine>
+            <NameLine>{lettersOf(ROLE_WORD_1, 0)}</NameLine>
+            <NameLine>{lettersOf(ROLE_WORD_2, ROLE_WORD_1.length)}</NameLine>
           </Name>
         </NameGroup>
         <ShapeSlot id={SCENE_SLOT_HERO} data-testid="hero-shape" />

@@ -47,17 +47,17 @@ export const NameGroup = styled.hgroup`
 export const Name = styled.h1`
   margin: 0;
   font-family: var(--font-sans);
-  font-size: clamp(4.5rem, min(15vw, 22svh), 14.5rem);
-  line-height: 0.86;
+  font-size: clamp(2.5rem, min(7vw, 10svh), 5.5rem);
+  line-height: 1.1;
   font-weight: 500;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.04em;
   color: var(--color-heading);
+  padding-block-end: 0.05em;
 `;
 
 export const NameLine = styled.span`
   display: block;
   overflow: hidden;
-  padding-block-end: 0.05em;
 `;
 
 const rise = keyframes`

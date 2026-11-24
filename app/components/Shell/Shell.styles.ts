@@ -19,13 +19,18 @@ export const Page = styled.div`
  * solid, not bled past this box's own inline padding — but #root's own
  * gutter outside it never holds content to begin with, so there's nothing
  * for the sticky edge to visibly clip.
+ *
+ * Flex, not grid: a grid track stretches its item to fill it by default,
+ * which would have given Brand's underline (sized to ITS OWN box) far more
+ * width than its text. Flex children size to their own content instead, so
+ * Brand, the centre nav and the right nav each take only what they need.
  */
 export const Header = styled.header`
   position: sticky;
   inset-block-start: 0;
   z-index: 10;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: var(--space-s);
   padding-block: var(--space-3xs);

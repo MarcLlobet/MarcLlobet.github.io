@@ -4,16 +4,7 @@ import { useCopy } from "../../utils/copy";
 import { REPO_URL } from "../../constants";
 import { splitDescription } from "../../utils/projects";
 import type { SiteRepository } from "../../types";
-import {
-  Detail,
-  Dot,
-  Header,
-  Index,
-  Lead,
-  Links,
-  Section,
-  Title,
-} from "./Meta.styles";
+import { Detail, Header, Lead, Links, Section, Title } from "./Meta.styles";
 
 export type MetaProps = {
   id: string;
@@ -31,10 +22,7 @@ export const Meta = ({ id, repository }: MetaProps) => {
   return (
     <Section id={id} aria-labelledby="meta-title">
       <Header>
-        <Index>
-          <Dot aria-hidden="true" />
-          {t("metaSection.eyebrow")}
-        </Index>
+        <span>{t("metaSection.eyebrow")}</span>
         <span>{t("metaSection.detail")}</span>
       </Header>
       <Title id="meta-title">{t("metaSection.title")}</Title>

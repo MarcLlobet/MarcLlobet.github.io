@@ -7,7 +7,13 @@ import { setTransitionOrigin } from "../../utils/pageTransition";
 import { toggleTheme, useIsLightTheme } from "../../utils/theme";
 import { useCopy } from "../../utils/copy";
 import { useActiveSection } from "../../utils/useActiveSection";
-import { PROJECTS, ARCHIVE, META, SITE_FOOTER } from "../ScrollScene/scene-ids";
+import {
+  HERO,
+  PROJECTS,
+  ARCHIVE,
+  META,
+  SITE_FOOTER,
+} from "../ScrollScene/scene-ids";
 
 export type NavWrapperProps = {
   /** Show the Archive link (only when the home page has an archive). */
@@ -42,13 +48,21 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
   const { t } = useCopy();
   const active = useActiveSection(
     hasArchive
-      ? [PROJECTS, ARCHIVE, META, SITE_FOOTER]
-      : [PROJECTS, META, SITE_FOOTER],
+      ? [HERO, PROJECTS, ARCHIVE, META, SITE_FOOTER]
+      : [HERO, PROJECTS, META, SITE_FOOTER],
   );
 
   return (
     <>
       <CenterNav>
+        <Button
+          as={Link}
+          href={`/#${HERO}`}
+          onClick={recordOrigin}
+          aria-current={isCurrent(active, HERO)}
+        >
+          {t("nav.hero")}
+        </Button>
         <Button
           as={Link}
           href={`/#${PROJECTS}`}

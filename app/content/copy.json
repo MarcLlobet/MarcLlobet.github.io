@@ -12,6 +12,8 @@
     "Marc Llobet"
   ],
   "brand.name": "Marc Llobet",
+  "hero.role": "Frontend Engineer",
+  "nav.hero": "Hero",
   "nav.projects": "Projects",
   "nav.archive": "Archive",
   "nav.meta": "Meta",

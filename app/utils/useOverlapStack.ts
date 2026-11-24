@@ -11,6 +11,17 @@ import { useEffect } from "react";
  */
 const DWELL_RATIO = 1;
 
+/*
+ * Capped at a fraction of the section's OWN height too, not just the
+ * viewport: engaging is based on proximity to the bottom of the viewport,
+ * but a section shorter than roughly 2 viewports (Meta) would otherwise
+ * have most or all of its own height eaten by the dwell before anyone got
+ * to read it. This guarantees at least half of it stays real reading time,
+ * at the cost of a short section's cover starting a bit above the very
+ * bottom edge rather than exactly at it.
+ */
+const MAX_DWELL_HEIGHT_FRACTION = 0.5;
+
 const STYLE_TAG_ID = "overlap-stack-styles";
 
 /*
@@ -104,7 +115,12 @@ export const useOverlapStack = (ids: string[]) => {
          * position — only used in the "above"/"past" branches below,
          * where no transform is applied and it's the true, natural one. */
         const rect = el.getBoundingClientRect();
-        const dwell = Math.round(window.innerHeight * DWELL_RATIO);
+        const dwell = Math.round(
+          Math.min(
+            window.innerHeight * DWELL_RATIO,
+            rect.height * MAX_DWELL_HEIGHT_FRACTION,
+          ),
+        );
 
         if (state.phase === "above") {
           /* A zero-height rect means no real layout has happened (e.g. a

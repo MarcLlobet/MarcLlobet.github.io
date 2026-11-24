@@ -5,13 +5,21 @@ import { mono } from "../../styles";
 import { copy } from "../../content/copy";
 import { useCopy } from "../../utils/copy";
 
-/* The position/z-index/background/overlap that let this cover Meta's tail
- * end are applied in JS, by useOverlapStack. */
+/*
+ * One screen minus the site's own header above it, same as Hero: the gap
+ * distributes whatever room is left between the three rows rather than
+ * inflating the section past what's actually left of the viewport. The
+ * position/z-index/background/overlap that let this cover Meta's tail end
+ * are applied in JS, by useOverlapStack.
+ */
 const Footer = styled.footer`
   display: flex;
   flex-direction: column;
-  gap: clamp(3rem, 10svh, 4.5rem);
-  padding-block-end: clamp(2rem, 8svh, 4rem);
+  justify-content: space-between;
+  gap: clamp(1.5rem, 4svh, 3rem);
+  block-size: calc(100svh - 3.5rem);
+  padding-block: clamp(1rem, 4svh, 2rem);
+  scroll-margin-block-start: 3.5rem;
 `;
 
 /* The compact row — eyebrow and detail — sits above the big "Say hello". */
@@ -33,7 +41,6 @@ const Top = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 2rem;
-  padding-block-start: clamp(1.5rem, 6svh, 3rem);
 `;
 
 /* Baked into Hello's per-letter transition delays below, so it has to stay
