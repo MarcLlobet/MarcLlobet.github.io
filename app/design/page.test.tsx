@@ -22,7 +22,7 @@ describe("DesignPage", () => {
   it("names every colour token and every mockup", () => {
     render(<DesignPage />);
     expect(screen.getByText("--color-bg")).toBeVisible();
-    expect(screen.getByText("--accent-6")).toBeVisible();
+    expect(screen.getByText("--accent-1")).toBeVisible();
     for (const kind of MOCKUP_KINDS) {
       expect(screen.getByText(kind)).toBeVisible();
     }

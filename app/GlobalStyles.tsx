@@ -61,19 +61,25 @@ const GenericStyles = `
   --color-muted: #9C9A92;
   --color-line: #2A2A27;
   --color-line-strong: #3A3A36;
-  /* No brand red: the accent is the project in view */
+  /* One signature accent, not a borrowed one: the accent is the project in view */
   --color-accent: var(--scene-accent);
   --color-accent-text: var(--color-heading);
   /* Focus/hover highlight: the page's own ink, not the scrolling project accent */
   --color-focus: var(--color-heading);
 
-  /* Project accents, for frames, mockups and the triangle */
-  --accent-1: #5B9BFF;
-  --accent-2: #FF7A45;
-  --accent-3: #B6F24A;
-  --accent-4: #E879F9;
-  --accent-5: #F2C94C;
-  --accent-6: #4FD1C5;
+  /*
+   * One flat signature colour, deliberately not a ramp: every project reads
+   * the same acid-lime rather than a different hue or intensity. The six
+   * tokens stay independent (not a single variable) so a second signature
+   * colour can take over some of these slots later without a rearchitect.
+   * See the Colour section of /design for the full reasoning.
+   */
+  --accent-1: #D5EF2C;
+  --accent-2: #D5EF2C;
+  --accent-3: #D5EF2C;
+  --accent-4: #D5EF2C;
+  --accent-5: #D5EF2C;
+  --accent-6: #D5EF2C;
 
   /* Mockup colour roles */
   --mk-surf: #161614;
@@ -96,12 +102,12 @@ html.light-theme {
   --color-muted: #5F5A53;
   --color-line: #D9D4CA;
   --color-line-strong: #C4BEB2;
-  --accent-1: #2F6FD6;
-  --accent-2: #D9531E;
-  --accent-3: #5E9A0A;
-  --accent-4: #B240C8;
-  --accent-5: #B8860B;
-  --accent-6: #158F84;
+  --accent-1: #D5EF2C;
+  --accent-2: #D5EF2C;
+  --accent-3: #D5EF2C;
+  --accent-4: #D5EF2C;
+  --accent-5: #D5EF2C;
+  --accent-6: #D5EF2C;
 
   --mk-surf: #EAE6DE;
   --mk-head: #E0DBD1;
@@ -114,7 +120,7 @@ html.light-theme {
 @property --scene-accent {
   syntax: '<color>';
   inherits: true;
-  initial-value: #5B9BFF;
+  initial-value: #D5EF2C;
 }
 
 /*

@@ -5,12 +5,38 @@ import { mono } from "../../styles";
 import { copy } from "../../content/copy";
 import { useCopy } from "../../utils/copy";
 
+/*
+ * One screen minus the site's own header above it, same as Hero: the gap
+ * distributes whatever room is left between the three rows rather than
+ * inflating the section past what's actually left of the viewport. No
+ * padding-block-start: the border-block-start useOverlapStack applies to
+ * this section is the only separation from Meta above it — same as
+ * Projects and Archive's own headers, which sit flush too — so the header
+ * doesn't end up with extra space above it that those don't have. The
+ * position/z-index/background/overlap that let this cover Meta's tail end
+ * are applied in JS, by useOverlapStack.
+ */
 const Footer = styled.footer`
   display: flex;
   flex-direction: column;
-  gap: clamp(3rem, 10svh, 4.5rem);
-  border-block-start: 1px solid var(--color-line);
-  padding-block: clamp(4rem, 14svh, 7rem) 2.5rem;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 4svh, 3rem);
+  block-size: calc(100svh - 3.5rem);
+  padding-block-end: clamp(1rem, 4svh, 2rem);
+  scroll-margin-block-start: 3.5rem;
+`;
+
+/* The compact row — eyebrow and detail — sits above the big "Say hello". */
+const Header = styled.div`
+  ${mono}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--color-line);
+  color: var(--color-muted);
 `;
 
 const Top = styled.div`
@@ -21,18 +47,12 @@ const Top = styled.div`
   gap: 2rem;
 `;
 
-const Eyebrow = styled.p`
-  ${mono}
-  color: var(--color-muted);
-`;
-
 /* Baked into Hello's per-letter transition delays below, so it has to stay
  * the static core string — not the (possibly still-loading) hook value. */
 const HELLO = copy["footer.hello"];
 
 const Hello = styled.a`
   display: block;
-  margin-block-start: 1rem;
   font-size: clamp(3.5rem, min(11vw, 20svh), 10.5rem);
   line-height: 0.9;
   font-weight: 500;
@@ -107,9 +127,12 @@ export const SiteFooter = ({ id, slotId, githubUrl }: SiteFooterProps) => {
   const { t } = useCopy();
   return (
     <Footer id={id}>
+      <Header>
+        <span>{t("footer.getInTouch")}</span>
+        <span>{t("footer.detail")}</span>
+      </Header>
       <Top>
         <div>
-          <Eyebrow>{t("footer.getInTouch")}</Eyebrow>
           <Hello href={githubUrl} target="_blank" rel="noopener noreferrer">
             {[...HELLO].map((letter, i) => (
               <span key={i}>{letter === " " ? " " : letter}</span>
@@ -124,7 +147,7 @@ export const SiteFooter = ({ id, slotId, githubUrl }: SiteFooterProps) => {
           <a href={githubUrl} target="_blank" rel="noopener noreferrer">
             {t("footer.githubLabel")}
           </a>
-          <a href="#top">{t("footer.backToTop")}</a>
+          <a href="#hero">{t("footer.backToTop")}</a>
         </Links>
       </Bottom>
     </Footer>

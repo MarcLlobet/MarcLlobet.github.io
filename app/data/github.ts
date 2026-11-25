@@ -7,7 +7,7 @@ import { REPO_URL } from "../constants";
 
 export const DEMO_TOPIC = "demo";
 const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
-/** This very site's own repo, so the Colophon can describe it from GitHub too. */
+/** This very site's own repo, so the Meta section can describe it from GitHub too. */
 const SITE_REPO_NAME = REPO_URL.split("/").pop()!;
 
 export type PortfolioData = {

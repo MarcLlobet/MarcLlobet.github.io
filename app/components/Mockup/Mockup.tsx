@@ -10,9 +10,14 @@ import {
 import { buildMockup, type MockupKind, type Shape } from "../../mockups";
 import { MockupBox, MockupSvg } from "./Mockup.styles";
 
-export type MockupProps = {
-  kind: MockupKind;
-};
+export type MockupProps =
+  | { kind: MockupKind; build?: undefined }
+  /** An alternative to `kind`: draws whatever shapes this returns instead
+   * of one of the built-in archetypes, through the exact same renderer,
+   * tones and build/loop animations — for a one-off drawing (the Meta
+   * section's pipeline diagram) that still needs to look like it belongs
+   * next to every project's own mockup. */
+  | { kind?: undefined; build: (width: number, height: number) => Shape[] };
 
 const round = (value: number) => Math.round(value * 100) / 100;
 
@@ -80,7 +85,7 @@ const renderShape = (shape: Shape, index: number) => {
  * the box changes size: the layout reflows instead of scaling or cropping.
  * It fills its nearest positioned ancestor.
  */
-export const Mockup = ({ kind }: MockupProps) => {
+export const Mockup = ({ kind, build }: MockupProps) => {
   const boxRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -103,9 +108,11 @@ export const Mockup = ({ kind }: MockupProps) => {
   const shapes = useMemo(
     () =>
       size.width > 1 && size.height > 1
-        ? buildMockup(kind, size.width, size.height)
+        ? kind
+          ? buildMockup(kind, size.width, size.height)
+          : build(size.width, size.height)
         : [],
-    [kind, size.width, size.height],
+    [kind, build, size.width, size.height],
   );
 
   return (
