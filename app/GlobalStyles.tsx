@@ -288,6 +288,20 @@ button:focus-visible {
   border-radius: 2px;
 }
 
+/*
+ * A whole screen focused by the arrow keys (useScreenSteps): programmatic
+ * focus still moves here (Tab carries on from it, a screen reader
+ * announces it), but no visible ring around the entire section — the
+ * scroll position moving there already reads as the selection.
+ */
+[data-step]:focus-visible {
+  outline: none;
+}
+
+[data-step]:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Skip to content link */
 .skip-to-content {
   position: absolute;

@@ -12,6 +12,7 @@ import {
 } from "../../utils/projects";
 import type { Repository } from "../../types";
 import { useCopy } from "../../utils/copy";
+import { Key, KeyHint } from "../KeyHint";
 import {
   Data,
   Detail,
@@ -57,6 +58,10 @@ export const ProjectContent = ({
   return (
     <article>
       <BackButton />
+      <KeyHint>
+        <Key glyph="⌫" label={t("keys.backspace")} />
+        {t("projectContent.backHint")}
+      </KeyHint>
       <Layout>
         <TextColumn>
           <Title>{name}</Title>

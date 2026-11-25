@@ -15,11 +15,13 @@ import {
   SITE_FOOTER,
 } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
+import { Key } from "./components/KeyHint";
 import { mockupFor, type MockupKind } from "./mockups";
 import { accentFor, selectProjects, splitDescription } from "./utils/projects";
 import { getAllLanguages } from "./utils/getAllLanguages";
 import { useSectionHash } from "./utils/useSectionHash";
 import { useOverlapStack } from "./utils/useOverlapStack";
+import { useScreenSteps } from "./utils/useScreenSteps";
 import { useRestoreScroll } from "./utils/useRestoreScroll";
 import { GITHUB_URL } from "./constants";
 import {
@@ -28,6 +30,8 @@ import {
   HeroBottom,
   HeroMiddle,
   HeroSection,
+  KeysDetail,
+  KeysTerm,
   Letter,
   Name,
   NameGroup,
@@ -101,6 +105,14 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
       <HeroBottom>
         {detail && <PitchDetail>{detail}</PitchDetail>}
         <Facts>
+          <KeysTerm>{t("home.factsKeysLabel")}</KeysTerm>
+          <KeysDetail>
+            <Key glyph="↑" label={t("keys.arrowUp")} />
+            <Key glyph="↓" label={t("keys.arrowDown")} />
+            {t("home.factsKeysBrowse")} ·
+            <Key glyph="↵" label={t("keys.enter")} />
+            {t("home.factsKeysOpen")}
+          </KeysDetail>
           <dt>{t("home.factsProjectsLabel")}</dt>
           <dd>
             {list([
@@ -164,6 +176,18 @@ export const App = ({
     archive.length > 0
       ? [HERO, PROJECTS, ARCHIVE, META, SITE_FOOTER]
       : [HERO, PROJECTS, META, SITE_FOOTER],
+  );
+
+  /*
+   * One screen at a time from the keyboard (↑/↓, Enter opens a project),
+   * and the hero plus every project snap with a mouse or trackpad.
+   */
+  const projectIds = featured.map(({ repository }) => repository.name);
+  useScreenSteps(
+    archive.length > 0
+      ? [HERO, ...projectIds, ARCHIVE, META, SITE_FOOTER]
+      : [HERO, ...projectIds, META, SITE_FOOTER],
+    1 + projectIds.length,
   );
 
   return (

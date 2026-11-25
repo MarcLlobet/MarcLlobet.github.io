@@ -9,6 +9,7 @@ import { getPortfolioData } from "./data/github";
 import { selectProjects } from "./utils/projects";
 import { NavWrapper } from "./components/NavWrapper";
 import { PageReveal } from "./components/PageReveal";
+import { KeyboardBack } from "./components/KeyboardBack";
 import { LazyCursorFollower } from "./components/Shell/LazyCursorFollower";
 import { Page, Header, Brand } from "./components/Shell/Shell.styles";
 import { HERO } from "./components/ScrollScene/scene-ids";
@@ -84,6 +85,7 @@ export default async function RootLayout({
               <PageReveal>{children}</PageReveal>
             </Page>
             <LazyCursorFollower />
+            <KeyboardBack />
           </div>
         </StyledComponentsRegistry>
       </body>

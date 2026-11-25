@@ -1,7 +1,7 @@
 "use client";
 
 import styled, { keyframes } from "styled-components";
-import { mono } from "./styles";
+import { desktopOnly, mono } from "./styles";
 
 /*
  * One screen minus the site's own header above it (fixed height, no longer
@@ -156,4 +156,21 @@ export const EmptyProjects = styled.p`
   padding-block: clamp(2rem, 8svh, 4rem);
   max-inline-size: 46ch;
   color: var(--color-muted);
+`;
+
+/*
+ * The keyboard row of the facts: what the arrow keys and Enter do here.
+ * Only where there's a mouse or trackpad — on a phone it would promise keys
+ * nobody has.
+ */
+export const KeysTerm = styled.dt`
+  ${desktopOnly}
+`;
+
+export const KeysDetail = styled.dd`
+  ${desktopOnly}
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em 0.5em;
 `;

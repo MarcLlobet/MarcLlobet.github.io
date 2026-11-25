@@ -106,7 +106,7 @@ describe("NavWrapper", () => {
 
   it("toggles theme on click, announces it, and remembers the choice", async () => {
     render(<NavWrapper />);
-    const btn = screen.getByText("Theme");
+    const btn = screen.getByRole("button", { name: "Theme" });
     expect(btn).toHaveAttribute("aria-pressed", "false");
 
     fireEvent.click(btn);
