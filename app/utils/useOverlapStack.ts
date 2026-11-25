@@ -82,16 +82,10 @@ export const useOverlapStack = (ids: string[]) => {
       .map(() => ({ phase: "above", engageScrollY: 0, dwell: 0 }));
 
     const render = () => {
-      const rules = sections.map(({ id }, index) => {
-        /* Every section but the first is a "covering" one — the border
-         * marking its arrival is what reads as "a new section is rising"
-         * against an otherwise identical black-on-black background. */
-        const border =
-          index === 0
-            ? ""
-            : "border-block-start: 1px solid var(--color-line-strong);";
-        return `#${id} { position: relative; z-index: ${index + 1}; background: var(--color-bg); ${border} }`;
-      });
+      const rules = sections.map(
+        ({ id }, index) =>
+          `#${id} { position: relative; z-index: ${index + 1}; background: var(--color-bg); }`,
+      );
       states.forEach((state, index) => {
         if (state.phase !== "frozen") return;
         const { id } = sections[index];

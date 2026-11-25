@@ -289,12 +289,13 @@ button:focus-visible {
 }
 
 /*
- * A whole screen focused by the arrow keys (useScreenSteps): the ring sits
- * just inside its edges, so the sticky header and the next screen never
- * hide part of it.
+ * A whole screen focused by the arrow keys (useScreenSteps): programmatic
+ * focus still moves here (Tab carries on from it, a screen reader
+ * announces it), but no visible ring around the entire section — the
+ * scroll position moving there already reads as the selection.
  */
 [data-step]:focus-visible {
-  outline-offset: -2px;
+  outline: none;
 }
 
 [data-step]:focus:not(:focus-visible) {

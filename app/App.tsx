@@ -104,6 +104,14 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
       <HeroBottom>
         {detail && <PitchDetail>{detail}</PitchDetail>}
         <Facts>
+          <KeysTerm>{t("home.factsKeysLabel")}</KeysTerm>
+          <KeysDetail>
+            <Key glyph="↑" label={t("keys.arrowUp")} />
+            <Key glyph="↓" label={t("keys.arrowDown")} />
+            {t("home.factsKeysBrowse")} ·
+            <Key glyph="↵" label={t("keys.enter")} />
+            {t("home.factsKeysOpen")}
+          </KeysDetail>
           <dt>{t("home.factsProjectsLabel")}</dt>
           <dd>
             {list([
@@ -113,14 +121,6 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
           </dd>
           <dt>{t("home.factsBuiltWith")}</dt>
           <dd>{list(languages.slice(0, 5))}</dd>
-          <KeysTerm>{t("home.factsKeysLabel")}</KeysTerm>
-          <KeysDetail>
-            <Key glyph="↑" label={t("keys.arrowUp")} />
-            <Key glyph="↓" label={t("keys.arrowDown")} />
-            {t("home.factsKeysBrowse")} ·
-            <Key glyph="↵" label={t("keys.enter")} />
-            {t("home.factsKeysOpen")}
-          </KeysDetail>
         </Facts>
       </HeroBottom>
     </HeroSection>
