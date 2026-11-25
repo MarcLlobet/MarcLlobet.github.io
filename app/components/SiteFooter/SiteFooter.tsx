@@ -8,7 +8,11 @@ import { useCopy } from "../../utils/copy";
 /*
  * One screen minus the site's own header above it, same as Hero: the gap
  * distributes whatever room is left between the three rows rather than
- * inflating the section past what's actually left of the viewport. The
+ * inflating the section past what's actually left of the viewport. No
+ * padding-block-start: the border-block-start useOverlapStack applies to
+ * this section is the only separation from Meta above it — same as
+ * Projects and Archive's own headers, which sit flush too — so the header
+ * doesn't end up with extra space above it that those don't have. The
  * position/z-index/background/overlap that let this cover Meta's tail end
  * are applied in JS, by useOverlapStack.
  */
@@ -18,7 +22,7 @@ const Footer = styled.footer`
   justify-content: space-between;
   gap: clamp(1.5rem, 4svh, 3rem);
   block-size: calc(100svh - 3.5rem);
-  padding-block: clamp(1rem, 4svh, 2rem);
+  padding-block-end: clamp(1rem, 4svh, 2rem);
   scroll-margin-block-start: 3.5rem;
 `;
 

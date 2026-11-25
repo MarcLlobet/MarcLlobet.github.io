@@ -3,34 +3,31 @@
 import { useEffect } from "react";
 
 /*
- * How long a section stays frozen before releasing, as a fraction of the
- * viewport — 1 means it engages the instant the next section's edge first
- * appears at the very bottom of the screen, so the whole climb (entering
- * at the bottom, sliding all the way up to fully cover) is visible, not
- * just the back half of it.
+ * One viewport-height, both ways: a section freezes exactly when its own
+ * bottom edge reaches the bottom edge of the viewport (the true end of the
+ * section, whatever its height), then releases exactly one viewport-height
+ * of scroll later — the same instant the next section's top has risen all
+ * the way to the top of the viewport and fully covers it. Those two have
+ * to be the same number: a shorter release window would mean the pin gets
+ * dropped while the covered section is still partway up the screen, so it
+ * snaps straight to its natural (much further-scrolled) position — a
+ * visible jump, not a release. One ratio, no separate reading-time cap, is
+ * what keeps that always true.
  */
-const DWELL_RATIO = 1;
-
-/*
- * Capped at a fraction of the section's OWN height too, not just the
- * viewport: engaging is based on proximity to the bottom of the viewport,
- * but a section shorter than roughly 2 viewports (Meta) would otherwise
- * have most or all of its own height eaten by the dwell before anyone got
- * to read it. This guarantees at least half of it stays real reading time,
- * at the cost of a short section's cover starting a bit above the very
- * bottom edge rather than exactly at it.
- */
-const MAX_DWELL_HEIGHT_FRACTION = 0.5;
+const FREEZE_VIEWPORT_RATIO = 1;
 
 const STYLE_TAG_ID = "overlap-stack-styles";
 
 /*
- * "above": hasn't reached the freeze threshold yet (or has scrolled back up
- * past it). "frozen": currently held in place. "past": already released
- * going downward — stays here (no transform, plain natural scroll) until
- * scrolling back up re-crosses the threshold, so it doesn't re-freeze every
+ * "above": hasn't reached the freeze threshold yet. "frozen": currently
+ * held in place, reversible in both directions (releases upward into
+ * "above" if scrolled back past the engage point, downward into "past"
+ * once fully dwelled). "past": released going downward — stays here (no
+ * transform, plain natural scroll) rather than re-freezing every
  * subsequent tick just because its (by-then very negative) bottom still
- * satisfies "<= dwell".
+ * satisfies "<= dwell" — but re-enters "frozen" at the same engage
+ * reference the moment scrolling back up re-crosses the dwell threshold,
+ * so the cover/uncover animation is symmetric either direction.
  */
 type Phase = "above" | "frozen" | "past";
 
@@ -115,20 +112,15 @@ export const useOverlapStack = (ids: string[]) => {
          * position — only used in the "above"/"past" branches below,
          * where no transform is applied and it's the true, natural one. */
         const rect = el.getBoundingClientRect();
-        const dwell = Math.round(
-          Math.min(
-            window.innerHeight * DWELL_RATIO,
-            rect.height * MAX_DWELL_HEIGHT_FRACTION,
-          ),
-        );
+        const freezeAt = Math.round(window.innerHeight * FREEZE_VIEWPORT_RATIO);
 
         if (state.phase === "above") {
           /* A zero-height rect means no real layout has happened (e.g. a
            * test environment) — never freeze off that. */
-          if (rect.height > 0 && rect.bottom <= dwell) {
+          if (rect.height > 0 && rect.bottom <= freezeAt) {
             state.phase = "frozen";
             state.engageScrollY = window.scrollY;
-            state.dwell = dwell;
+            state.dwell = freezeAt;
             changed = true;
           }
         } else if (state.phase === "frozen") {
@@ -142,9 +134,18 @@ export const useOverlapStack = (ids: string[]) => {
           } else {
             changed = true; // keep updating translateY while frozen
           }
-        } else if (rect.bottom > dwell) {
-          state.phase = "above";
-          changed = true;
+        } else {
+          /* "past", scrolling back up: re-enter "frozen" at the exact same
+           * engageScrollY/dwell it released from, the mirror of "frozen"'s
+           * own traveled >= state.dwell exit — not a fresh rect.bottom
+           * check, which would skip the pin entirely and let this section
+           * slide naturally instead of staying held while the one above it
+           * slides back down to uncover it. */
+          const traveled = window.scrollY - state.engageScrollY;
+          if (traveled < state.dwell) {
+            state.phase = "frozen";
+            changed = true;
+          }
         }
       });
       if (changed) render();
