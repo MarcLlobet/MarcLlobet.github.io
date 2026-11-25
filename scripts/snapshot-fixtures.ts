@@ -1,6 +1,7 @@
 /**
  * Refreshes app/data/fixtures/portfolio.json with live GitHub data: the bio,
- * the pinned repositories and every repository tagged "demo". The fixture is
+ * the pinned repositories, every repository tagged "demo", and this site's
+ * own repo (what the Meta section describes itself with). The fixture is
  * what the site falls back to when GH_API_TOKEN is not set.
  *
  *   pnpm snapshot:fixtures
@@ -21,6 +22,7 @@ const run = async () => {
     bio: data.bio,
     pinned: data.pinned,
     repositories: data.repositories,
+    site: data.site,
   };
 
   await writeFile(

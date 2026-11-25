@@ -1,5 +1,10 @@
-import { describe, it, expect, afterEach } from "vitest";
-import { setTransitionOrigin } from "./pageTransition";
+import { describe, it, expect, afterEach, vi } from "vitest";
+import {
+  setTransitionOrigin,
+  requestPageExit,
+  PAGE_EXIT_EVENT,
+  REVEAL_MS,
+} from "./pageTransition";
 
 const rect = (overrides: Partial<DOMRect>): DOMRect => ({
   left: 0,
@@ -37,5 +42,46 @@ describe("setTransitionOrigin", () => {
     const style = document.documentElement.style;
     expect(style.getPropertyValue("--vt-x")).toBe(`${window.innerWidth}px`);
     expect(style.getPropertyValue("--vt-y")).toBe("0px");
+  });
+});
+
+describe("requestPageExit", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+  });
+
+  it("dispatches PAGE_EXIT_EVENT immediately, for PageReveal to collapse on", () => {
+    const listener = vi.fn();
+    window.addEventListener(PAGE_EXIT_EVENT, listener);
+    void requestPageExit();
+    window.removeEventListener(PAGE_EXIT_EVENT, listener);
+
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it("resolves only once the collapse transition has finished", async () => {
+    vi.useFakeTimers();
+    let resolved = false;
+    requestPageExit().then(() => {
+      resolved = true;
+    });
+
+    await vi.advanceTimersByTimeAsync(REVEAL_MS - 1);
+    expect(resolved).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(1);
+    expect(resolved).toBe(true);
+  });
+
+  it("resolves immediately for a reduced-motion preference, instead of waiting out a transition that isn't playing", async () => {
+    vi.stubGlobal("matchMedia", (query: string) => ({
+      matches: query.includes("reduce"),
+      media: query,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+    }));
+
+    await expect(requestPageExit()).resolves.toBeUndefined();
   });
 });

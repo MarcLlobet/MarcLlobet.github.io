@@ -10,6 +10,7 @@ import {
   visibleLanguages,
 } from "../../utils/projects";
 import { setTransitionOrigin } from "../../utils/pageTransition";
+import { rememberScroll } from "../../utils/returnNav";
 import { useCopy } from "../../utils/copy";
 import type { Repository } from "../../types";
 import {
@@ -59,7 +60,10 @@ export const ProjectCase = ({
   const demo = repository.homepageUrl;
 
   const handleFrameClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (isPlainClick(event)) setTransitionOrigin(event.currentTarget);
+    if (isPlainClick(event)) {
+      setTransitionOrigin(event.currentTarget);
+      rememberScroll();
+    }
   };
 
   return (
