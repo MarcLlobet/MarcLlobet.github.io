@@ -2,7 +2,14 @@
 
 import type { MouseEvent } from "react";
 import Link from "next/link";
-import { CenterNav, RightNav, Button } from "./NavWrapper.styles";
+import {
+  CenterNav,
+  RightNav,
+  Button,
+  Label,
+  ThemeIcon,
+  ThemeText,
+} from "./NavWrapper.styles";
 import { setTransitionOrigin } from "../../utils/pageTransition";
 import { toggleTheme, useIsLightTheme } from "../../utils/theme";
 import { useCopy } from "../../utils/copy";
@@ -36,6 +43,36 @@ const recordOrigin = (event: MouseEvent<HTMLAnchorElement>) => {
 const isCurrent = (active: string | null, id: string) =>
   active === id ? "true" : undefined;
 
+/* Sun (light theme active) or moon (dark) — Feather Icons' own paths, the
+ * same thin-stroke drawn-not-iconfont style as the rest of the site. */
+const ThemeGlyph = ({ isLight }: { isLight: boolean }) => (
+  <ThemeIcon
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {isLight ? (
+      <>
+        <circle cx="12" cy="12" r="5" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </>
+    ) : (
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    )}
+  </ThemeIcon>
+);
+
 /**
  * Lives in the root layout, so it's never remounted between pages — every
  * link here is a real, basePath-aware next/link; PageReveal (also in the
@@ -61,7 +98,7 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
           onClick={recordOrigin}
           aria-current={isCurrent(active, HERO)}
         >
-          {t("nav.hero")}
+          <Label>{t("nav.hero")}</Label>
         </Button>
         <Button
           as={Link}
@@ -69,7 +106,7 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
           onClick={recordOrigin}
           aria-current={isCurrent(active, PROJECTS)}
         >
-          {t("nav.projects")}
+          <Label>{t("nav.projects")}</Label>
         </Button>
         {hasArchive && (
           <Button
@@ -78,7 +115,7 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
             onClick={recordOrigin}
             aria-current={isCurrent(active, ARCHIVE)}
           >
-            {t("nav.archive")}
+            <Label>{t("nav.archive")}</Label>
           </Button>
         )}
         <Button
@@ -87,7 +124,7 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
           onClick={recordOrigin}
           aria-current={isCurrent(active, META)}
         >
-          {t("nav.meta")}
+          <Label>{t("nav.meta")}</Label>
         </Button>
         <Button
           as={Link}
@@ -95,12 +132,13 @@ export const NavWrapper = ({ hasArchive = false }: NavWrapperProps) => {
           onClick={recordOrigin}
           aria-current={isCurrent(active, SITE_FOOTER)}
         >
-          {t("nav.contact")}
+          <Label>{t("nav.contact")}</Label>
         </Button>
       </CenterNav>
       <RightNav>
         <Button type="button" onClick={toggleTheme} aria-pressed={isLight}>
-          {t("nav.theme")}
+          <ThemeGlyph isLight={isLight} />
+          <ThemeText>{t("nav.theme")}</ThemeText>
         </Button>
         <Button as={Link} href="/design" onClick={recordOrigin}>
           {t("nav.design")}
