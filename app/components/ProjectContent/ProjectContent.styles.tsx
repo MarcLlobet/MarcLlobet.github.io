@@ -3,27 +3,40 @@
 import styled from "styled-components";
 import { mono } from "../../styles";
 
-/* The language on the start side, the ⌫ back hint (desktop only) on the end side. */
-export const Meta = styled.p`
-  ${mono}
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem 1.5rem;
-  color: var(--color-muted);
+/*
+ * Two columns once there's room for both side by side — the text (title
+ * through the data block) on the left, the screenshot filling the right
+ * column at its full width. Narrower than that, a single column: the text
+ * first, the screenshot after it at the full width of the page instead of
+ * a column.
+ */
+export const Layout = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+
+  @media (max-width: 760px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const TextColumn = styled.div`
+  min-inline-size: 0;
 `;
 
 export const Title = styled.h1`
-  margin-block: clamp(0.5rem, 2svh, 1rem) clamp(1.5rem, 5svh, 3rem);
+  margin-block: clamp(0.5rem, 2svh, 1rem) clamp(1rem, 3svh, 1.5rem);
   font-family: var(--font-sans);
-  font-size: clamp(2.5rem, min(12vw, 16svh), 9rem);
-  line-height: 0.88;
+  font-size: clamp(2rem, min(6vw, 9svh), 4.5rem);
+  line-height: 0.95;
   font-weight: 500;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   color: var(--color-heading);
 `;
 
+/* Fills its column (or the full width, single-column): no separate cap of
+ * its own — the grid is what keeps it from reading as the whole page. */
 export const Shot = styled.div<{ $accent: string }>`
   --c: ${({ $accent }) => $accent};
   position: relative;
@@ -31,9 +44,10 @@ export const Shot = styled.div<{ $accent: string }>`
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--c);
-  margin-block-end: clamp(1.5rem, 5svh, 3rem);
 `;
 
+/* Scaled up a little past its frame (cropped by Shot's own overflow:hidden):
+ * a plain cover fit left too much empty chrome around the actual screenshot. */
 export const ShotImage = styled.img`
   position: absolute;
   inset: 0;
@@ -41,6 +55,7 @@ export const ShotImage = styled.img`
   block-size: 100%;
   object-fit: cover;
   object-position: top;
+  transform: scale(1.1);
 `;
 
 export const ShotFallback = styled.div`
@@ -52,7 +67,7 @@ export const ShotFallback = styled.div`
 
 export const Tagline = styled.p`
   max-inline-size: 48ch;
-  font-size: clamp(1.375rem, 2.3vw, 2rem);
+  font-size: clamp(1.25rem, 2vw, 1.625rem);
   line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--color-heading);
@@ -65,12 +80,22 @@ export const Detail = styled.p`
   color: var(--color-muted);
 `;
 
+/* Tags, stats and the language breakdown, as one block below the
+ * description — a single divider above all of it, not one per piece. */
+export const Data = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 4svh, 2rem);
+  margin-block-start: clamp(1.5rem, 5svh, 2.5rem);
+  padding-block-start: clamp(1.5rem, 5svh, 2.5rem);
+  border-block-start: 1px solid var(--color-line);
+`;
+
 export const Tags = styled.div`
   ${mono}
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-block-start: clamp(1.5rem, 5svh, 2.5rem);
 `;
 
 export const Tag = styled.span`
@@ -82,12 +107,9 @@ export const Tag = styled.span`
 export const Stats = styled.dl`
   ${mono}
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(2, auto);
   gap: 0.5rem 2.5rem;
   margin: 0;
-  margin-block-start: clamp(1.5rem, 5svh, 2.5rem);
-  padding-block-start: clamp(1.5rem, 5svh, 2.5rem);
-  border-block-start: 1px solid var(--color-line);
 
   dt {
     color: var(--color-muted);
@@ -99,9 +121,7 @@ export const Stats = styled.dl`
   }
 `;
 
-export const Languages = styled.div`
-  margin-block-start: clamp(1.5rem, 5svh, 2.5rem);
-`;
+export const Languages = styled.div``;
 
 export const LanguageBar = styled.div`
   display: flex;

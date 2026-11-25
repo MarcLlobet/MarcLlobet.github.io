@@ -22,6 +22,7 @@ import { getAllLanguages } from "./utils/getAllLanguages";
 import { useSectionHash } from "./utils/useSectionHash";
 import { useOverlapStack } from "./utils/useOverlapStack";
 import { useScreenSteps } from "./utils/useScreenSteps";
+import { useRestoreScroll } from "./utils/useRestoreScroll";
 import { GITHUB_URL } from "./constants";
 import {
   EmptyProjects,
@@ -158,6 +159,10 @@ export const App = ({
     () => getAllLanguages(repositories),
     [repositories],
   );
+
+  /* Lands exactly where a project's Back button was clicked from, instead
+   * of at the top — a no-op on any other mount. */
+  useRestoreScroll();
 
   /* Every section the nav already links to is shareable mid-scroll too. */
   useSectionHash(

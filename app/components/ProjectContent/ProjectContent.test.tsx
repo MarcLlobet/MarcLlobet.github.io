@@ -1,7 +1,13 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ProjectContent } from "./ProjectContent";
 import { mockRepos } from "../../mocks/repos";
+
+// BackButton (rendered by ProjectContent) reads useRouter — not available
+// without a real app-router mount, which this isolated render doesn't have.
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ back: vi.fn(), push: vi.fn() }),
+}));
 
 const repository = {
   ...mockRepos[0],
@@ -28,7 +34,9 @@ describe("ProjectContent", () => {
     // Internal topics (demo, mockup-*) are filtered out; real ones remain.
     expect(screen.getByText("ecommerce")).toBeInTheDocument();
     expect(screen.queryByText("demo")).not.toBeInTheDocument();
-    expect(screen.getByText(String(repository.stars))).toBeInTheDocument();
+    expect(screen.getByText("Jan 2024")).toBeInTheDocument();
+    // No real star count to show yet.
+    expect(screen.queryByText("Stars")).not.toBeInTheDocument();
   });
 
   it("falls back to the drawn mockup when the screenshot fails to load", () => {
