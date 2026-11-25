@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BackButton } from "../BackButton";
 import { Mockup } from "../Mockup";
 import type { MockupKind } from "../../mockups";
 import {
@@ -12,13 +13,14 @@ import {
 import type { Repository } from "../../types";
 import { useCopy } from "../../utils/copy";
 import {
+  Data,
   Detail,
   Languages,
   LanguageBar,
   LanguageLegend,
   LanguageSegment,
+  Layout,
   Links,
-  Meta,
   Shot,
   ShotFallback,
   ShotImage,
@@ -26,6 +28,7 @@ import {
   Tag,
   Tagline,
   Tags,
+  TextColumn,
   Title,
 } from "./ProjectContent.styles";
 
@@ -53,58 +56,69 @@ export const ProjectContent = ({
 
   return (
     <article>
-      <Meta>{repository.primaryLanguage.name}</Meta>
-      <Title>{name}</Title>
-      <Shot $accent={accent}>
-        {repository.preview && !imageFailed ? (
-          <ShotImage
-            src={repository.preview}
-            alt={`${t("projectContent.screenshotAltPrefix")}${name}`}
-            loading="lazy"
-            onError={() => setImageFailed(true)}
-          />
-        ) : (
-          <ShotFallback data-play="always">
-            <Mockup kind={kind} />
-          </ShotFallback>
-        )}
-      </Shot>
-      <Tagline>{tagline}</Tagline>
-      {detail && <Detail>{detail}</Detail>}
-      {tags.length > 0 && (
-        <Tags role="group" aria-label={t("projectContent.topicsAriaLabel")}>
-          {tags.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
-          ))}
-        </Tags>
-      )}
-      <Stats>
-        <dt>{t("projectContent.stars")}</dt>
-        <dd>{repository.stars}</dd>
-        <dt>{t("projectContent.created")}</dt>
-        <dd>{formatMonthYear(repository.createdAt)}</dd>
-        <dt>{t("projectContent.lastPushed")}</dt>
-        <dd>{formatMonthYear(repository.pushedAt)}</dd>
-      </Stats>
-      {totalBytes > 0 && (
-        <Languages
-          role="group"
-          aria-label={t("projectContent.languagesAriaLabel")}
-        >
-          <LanguageBar>
-            {repository.languages.map(({ name: lang, color, bytes }) => (
-              <LanguageSegment key={lang} $grow={bytes ?? 0} $color={color} />
-            ))}
-          </LanguageBar>
-          <LanguageLegend>
-            {repository.languages.map(({ name: lang, bytes }) => (
-              <span key={lang}>
-                {lang} · {Math.round(((bytes ?? 0) / totalBytes) * 100)}%
-              </span>
-            ))}
-          </LanguageLegend>
-        </Languages>
-      )}
+      <BackButton />
+      <Layout>
+        <TextColumn>
+          <Title>{name}</Title>
+          <Tagline>{tagline}</Tagline>
+          {detail && <Detail>{detail}</Detail>}
+          <Data>
+            {tags.length > 0 && (
+              <Tags
+                role="group"
+                aria-label={t("projectContent.topicsAriaLabel")}
+              >
+                {tags.map((tag) => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+              </Tags>
+            )}
+            <Stats>
+              <dt>{t("projectContent.created")}</dt>
+              <dd>{formatMonthYear(repository.createdAt)}</dd>
+              <dt>{t("projectContent.lastPushed")}</dt>
+              <dd>{formatMonthYear(repository.pushedAt)}</dd>
+            </Stats>
+            {totalBytes > 0 && (
+              <Languages
+                role="group"
+                aria-label={t("projectContent.languagesAriaLabel")}
+              >
+                <LanguageBar>
+                  {repository.languages.map(({ name: lang, color, bytes }) => (
+                    <LanguageSegment
+                      key={lang}
+                      $grow={bytes ?? 0}
+                      $color={color}
+                    />
+                  ))}
+                </LanguageBar>
+                <LanguageLegend>
+                  {repository.languages.map(({ name: lang, bytes }) => (
+                    <span key={lang}>
+                      {lang} · {Math.round(((bytes ?? 0) / totalBytes) * 100)}%
+                    </span>
+                  ))}
+                </LanguageLegend>
+              </Languages>
+            )}
+          </Data>
+        </TextColumn>
+        <Shot $accent={accent}>
+          {repository.preview && !imageFailed ? (
+            <ShotImage
+              src={repository.preview}
+              alt={`${t("projectContent.screenshotAltPrefix")}${name}`}
+              loading="lazy"
+              onError={() => setImageFailed(true)}
+            />
+          ) : (
+            <ShotFallback data-play="always">
+              <Mockup kind={kind} />
+            </ShotFallback>
+          )}
+        </Shot>
+      </Layout>
       <Links>
         {repository.homepageUrl && (
           <a

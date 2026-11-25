@@ -9,6 +9,7 @@ import {
   visibleLanguages,
 } from "../../utils/projects";
 import { setTransitionOrigin } from "../../utils/pageTransition";
+import { rememberScroll } from "../../utils/returnNav";
 import { useCopy } from "../../utils/copy";
 import type { Repository } from "../../types";
 import {
@@ -56,8 +57,10 @@ export const ArchiveIndex = ({ repositories }: ArchiveIndexProps) => {
               as={Link}
               href={`/projects/${repository.name}`}
               onClick={(event: MouseEvent<HTMLAnchorElement>) => {
-                if (isPlainClick(event))
+                if (isPlainClick(event)) {
                   setTransitionOrigin(event.currentTarget);
+                  rememberScroll();
+                }
               }}
               $accent={accentFor(index)}
             >
