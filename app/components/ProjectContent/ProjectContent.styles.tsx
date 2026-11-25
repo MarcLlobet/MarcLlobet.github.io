@@ -3,8 +3,14 @@
 import styled from "styled-components";
 import { mono } from "../../styles";
 
+/* The language on the start side, the ⌫ back hint (desktop only) on the end side. */
 export const Meta = styled.p`
   ${mono}
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
   color: var(--color-muted);
 `;
 

@@ -23,6 +23,9 @@
   "home.skipToContent": "Skip to projects",
   "home.factsProjectsLabel": "Projects",
   "home.factsBuiltWith": "Built with",
+  "home.factsKeysLabel": "Keys",
+  "home.factsKeysBrowse": "browse",
+  "home.factsKeysOpen": "open",
   "home.factsFeaturedSuffix": "featured",
   "home.factsArchivedSuffix": "archived",
   "home.eyebrow": "Selected work",
@@ -46,6 +49,7 @@
   "projectContent.liveDemoLabel": "Live demo ↗",
   "projectContent.codeLabel": "Code ↗",
   "projectContent.screenshotAltPrefix": "Screenshot of ",
+  "projectContent.backHint": "back",
   "metaSection.eyebrow": "Behind the page",
   "metaSection.title": "Meta",
   "metaSection.detail": "About this codebase",
@@ -90,5 +94,9 @@
   "design.triangle.title": "The impossible triangle",
   "design.triangle.note": "The mark is a Penrose triangle drawn in WebGL. On the home page it flies from the hero to the counter, through every project and into the footer, taking the accent of the one it is passing. Here it docks in the slot below: the same renderer, the same model.",
   "design.triangle.noteContinuedPrefix": "Three beams fly in and lock on load and the pointer tilts them. At ",
-  "design.triangle.noteContinuedSuffix": " the model is still the model: built, still, and never swapped for a flat drawing."
+  "design.triangle.noteContinuedSuffix": " the model is still the model: built, still, and never swapped for a flat drawing.",
+  "keys.arrowUp": "Arrow up",
+  "keys.arrowDown": "Arrow down",
+  "keys.enter": "Enter",
+  "keys.backspace": "Backspace"
 }

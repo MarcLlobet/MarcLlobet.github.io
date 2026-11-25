@@ -78,19 +78,3 @@ export const nearestStop = (stops: number[], y: number): number =>
       Math.abs(stop - y) < Math.abs(stops[best] - y) ? index : best,
     0,
   );
-
-const EDITABLE =
-  "input, textarea, select, [contenteditable]:not([contenteditable='false'])";
-
-/** True while the user is typing somewhere: keys belong to that field, not to the page. */
-export const isTypingTarget = (target: EventTarget | null): boolean =>
-  target instanceof Element && target.closest(EDITABLE) !== null;
-
-/** True on a key that already does something on its own (a link, a button…). */
-export const isInteractiveTarget = (target: EventTarget | null): boolean =>
-  target instanceof Element &&
-  target.closest("a[href], button, summary, [role='button'], [role='link']") !==
-    null;
-
-export const hasModifier = (event: KeyboardEvent): boolean =>
-  event.altKey || event.ctrlKey || event.metaKey || event.shiftKey;

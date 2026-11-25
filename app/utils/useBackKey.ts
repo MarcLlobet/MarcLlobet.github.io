@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { setTransitionOrigin } from "./pageTransition";
-import { hasModifier, isTypingTarget } from "./screenSteps";
+import { hasModifier, isDesktop, isTypingTarget } from "./keyTargets";
 
 const HOME = "/";
 const PROJECT_PATH = /^\/projects\/([^/]+)\/?$/;
@@ -20,7 +20,9 @@ export const fallbackFor = (pathname: string): string => {
 
 /**
  * Backspace goes back, like a browser's own back button, on every page but
- * the home page — as long as nobody is typing in a field. Lives in the
+ * the home page — on a desktop, and as long as nobody is typing in a field.
+ * The only keyboard code that ships with every page: it has to count
+ * navigations from the very first one, so it can't wait for a key press. Lives in the
  * layout, which never remounts, so it can count how many history entries
  * behind this one are part of this site (forward navigations add one, the
  * back button or this key take one away). With one behind it, it's a real
@@ -51,7 +53,7 @@ export const useBackKey = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (pathname === HOME) return;
+    if (pathname === HOME || !isDesktop()) return;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (

@@ -11,6 +11,7 @@ import {
 } from "../../utils/projects";
 import type { Repository } from "../../types";
 import { useCopy } from "../../utils/copy";
+import { Key, KeyHint } from "../KeyHint";
 import {
   Detail,
   Languages,
@@ -53,7 +54,13 @@ export const ProjectContent = ({
 
   return (
     <article>
-      <Meta>{repository.primaryLanguage.name}</Meta>
+      <Meta>
+        <span>{repository.primaryLanguage.name}</span>
+        <KeyHint>
+          <Key glyph="⌫" label={t("keys.backspace")} />
+          {t("projectContent.backHint")}
+        </KeyHint>
+      </Meta>
       <Title>{name}</Title>
       <Shot $accent={accent}>
         {repository.preview && !imageFailed ? (

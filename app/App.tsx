@@ -15,6 +15,7 @@ import {
   SITE_FOOTER,
 } from "./components/ScrollScene/scene-ids";
 import { SiteFooter } from "./components/SiteFooter";
+import { Key } from "./components/KeyHint";
 import { mockupFor, type MockupKind } from "./mockups";
 import { accentFor, selectProjects, splitDescription } from "./utils/projects";
 import { getAllLanguages } from "./utils/getAllLanguages";
@@ -28,6 +29,8 @@ import {
   HeroBottom,
   HeroMiddle,
   HeroSection,
+  KeysDetail,
+  KeysTerm,
   Letter,
   Name,
   NameGroup,
@@ -110,6 +113,14 @@ const Hero = ({ bio, featured, archived, languages }: HeroProps) => {
           </dd>
           <dt>{t("home.factsBuiltWith")}</dt>
           <dd>{list(languages.slice(0, 5))}</dd>
+          <KeysTerm>{t("home.factsKeysLabel")}</KeysTerm>
+          <KeysDetail>
+            <Key glyph="↑" label={t("keys.arrowUp")} />
+            <Key glyph="↓" label={t("keys.arrowDown")} />
+            {t("home.factsKeysBrowse")} ·
+            <Key glyph="↵" label={t("keys.enter")} />
+            {t("home.factsKeysOpen")}
+          </KeysDetail>
         </Facts>
       </HeroBottom>
     </HeroSection>
