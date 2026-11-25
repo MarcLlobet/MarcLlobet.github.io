@@ -288,6 +288,19 @@ button:focus-visible {
   border-radius: 2px;
 }
 
+/*
+ * A whole screen focused by the arrow keys (useScreenSteps): the ring sits
+ * just inside its edges, so the sticky header and the next screen never
+ * hide part of it.
+ */
+[data-step]:focus-visible {
+  outline-offset: -2px;
+}
+
+[data-step]:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Skip to content link */
 .skip-to-content {
   position: absolute;
